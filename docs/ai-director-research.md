@@ -64,7 +64,9 @@ The following is a proposed normalized state machine, not a claim about existing
 | Combat action resolving | Remember a theme or prepare content; hold deck mutations |
 | Player can act | Prepare content; Living Deck may commit at a verified safe boundary if its targeting/eligibility rules permit |
 | Card reward being prepared | Wildcard replaces exactly one option, preserving that option's rarity |
-| Card reward open | Normal player selection/skip; the displayed reward stays stable |
+| Card reward open | Normal selection/skip; no transformation of unchosen options |
+| Wildcard taken, reward interaction active | Keep, transform once, or use Lucky on the acquired card; both transformation routes consume the same allowance |
+| Next player turn starts | Fulfill draw obligations from committed deck transformations exactly once |
 | Room transition | Living Deck may commit an eligible replacement; reconcile jobs and update its progress-based budget |
 
 The companion separates the two modes' lifecycles:
@@ -76,15 +78,24 @@ stateDiagram-v2
     Preparing --> Ready: Validated definition
     Preparing --> Watching: Failed or obsolete
     Ready --> RewardOpen: Wildcard slot assigned before selection
-    RewardOpen --> Watching: Normal selection or skip
+    RewardOpen --> Watching: Pick another card or skip
+    RewardOpen --> Acquired: Commit to taking wildcard
+    Acquired --> Watching: Keep or finish reward interaction
+    Acquired --> Transforming: Transform or Lucky; reserve one allowance
+    Transforming --> Acquired: Failed request; release reservation
+    Transforming --> Watching: Commit replacement; consume allowance; schedule next draw
     Ready --> Replacing: Living Deck target valid at safe boundary
-    Replacing --> CoolingDown: One-for-one replacement committed
+    Replacing --> CoolingDown: Commit replacement and schedule next draw
     CoolingDown --> Watching: Living Deck progress budget allows another change
 ```
 
-Jev receives a small context and the currently admissible choices. While `Preparing`, another crab message may permit `reinforce_theme` or `ignore`. In Wildcard, ignoring a signal never omits the required reward replacement; absent new input, generation uses the run theme/context. In Living Deck, `do_nothing` is a valid decision even when the cooldown has expired. The LLM receives the selected request; it does not own the transition table. Code rechecks the exact reward slot or deck-card instance before application. Living Deck changes happen automatically, without per-replacement confirmation.
+Jev receives a small context and the currently admissible choices. While `Preparing`, another crab message may permit `reinforce_theme` or `ignore`. In Wildcard, ignoring a signal never omits the required reward replacement; absent new input, generation uses the run theme/context. Its optional transformation becomes legal only after acquisition. In Living Deck, `do_nothing` is valid even when the cooldown has expired. The LLM receives the selected request; it does not own the transition table. Code rechecks the target, acquisition allowance and last transformed turn immediately before application. Living Deck changes happen automatically, without per-replacement confirmation.
 
-Artwork has its own lifecycle: `unrequested → queued on first successful play → generating → ready`, with an explicit failed state. The accepted card remains playable in all of these states. Use one job per immutable definition/art revision so multiple copies and replays do not repeatedly spend generation quota.
+Transformation identity follows the persistent card instance across replacement types. Keep next-turn draw obligations separately from the director lifecycle so pending draws do not stop other AI work. Turn-start delivery must survive pile changes/reconnection and must not clone the card or deliver it twice. Outside combat, the obligation targets the next combat's first turn. Exact draw-capacity and draw-prevention interactions remain an engine implementation check.
+
+Lucky is a generation intent within an existing transformation, using a fresh deck snapshot and a target of 6–12/10 quality with a directional twist. A strong card may dismantle the current strategy or wreck the run. Evaluate its complete payoff, cost and risk; do not impose a blanket exclusion of dangerous or destructive effects. Pure punishment without a worthwhile upside fails the quality target. Mechanical validity and subjective card quality are separate checks, and a model's numerical self-rating establishes neither. See [the mode rules](game-modes.md) for the rubric.
+
+Artwork has its own lifecycle: `unrequested → queued on first successful play → generating → ready`, with an explicit failed state. The accepted card remains playable in all of these states. Use one job per immutable definition/art revision so multiple copies and replays do not repeatedly spend generation quota. A transformed definition gets its own art revision; completion of an older image job cannot overwrite its portrait.
 
 ## Local server and SQLite
 
@@ -96,8 +107,8 @@ Bun includes `bun:sqlite` with file-backed/in-memory databases and transactions.
 | --- | --- |
 | Live HP, hand, enemies, turn, legal actions | The running game; companion snapshots are observations |
 | Active queues, partial transcripts, short chat windows | Companion memory |
-| Settings, mode rules, integration bindings, definitions, reward assignments, replacement lineage/budgets, jobs, provenance, art index | Companion SQLite |
-| Generated card instance data needed to resume a run | The game's modded save, containing the required immutable definition |
+| Settings, mode rules, integrations, definitions, reward assignments, acquisition/transform allowance, replacement lineage/budgets, Lucky intent, jobs, provenance, art index | Companion SQLite |
+| Generated card data, last transformed turn and unfulfilled next-turn draw obligations needed to resume a run | The game's modded save, containing required immutable definitions and instance state |
 | Generated image files | Local asset cache, referenced by definition/art revision |
 
 SQLite gives us a card library, restart recovery, visible generation history, and deduplication. It should not become a second simulator that writes its own notion of game state. Pending jobs must be reconciled with the actual run when reconnecting.

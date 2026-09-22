@@ -58,6 +58,8 @@ Start a single request from the card's `OnPlay` override, keyed by generated def
 
 ## What remains to verify
 
+The product rules now also require a single transformation after taking a wildcard, a per-card once-per-turn cap, and guaranteed drawing of transformed deck cards on the next player turn. The existing source inspection does not establish the complete reward-acquisition or guaranteed-draw path. Verify persistent-instance identity across master-deck/combat copies, the post-take UI hook, turn-start draw scheduling, capacity/draw-prevention interactions and persistence of unfulfilled draw obligations. Reward cards transformed between fights target the next combat's opening draw.
+
 The next useful spike is specifically a **new type created after game initialization**, registered with a distinct ID, displayed and played, then saved and reloaded after recreating that definition. Separately, show a placeholder, trigger one image job on first play, and replace the artwork while the original card and a second view/copy are visible. That directly checks the two requested capabilities without confusing precompiled slot cards with new runtime types.
 
 BLANKthespire's restart requirement remains true for its chosen slot-loader implementation. It is not evidence that STS2 cannot support runtime type injection.

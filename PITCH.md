@@ -8,9 +8,9 @@ Working title and first pitch, 22 September 2026. This describes the experience 
 
 You're barely surviving a fight. You mutter, “We need a shell. Become crab.” The game gives a small acknowledgement and lets you keep playing.
 
-In **Wildcard**, the next card reward has one familiar option replaced by **Emergency Carapace**, a generated card with the same rarity as the option it replaced. The other choices remain. You choose whether the crab card belongs in your deck, or skip normally. It appears with a simple shell illustration and readable rules.
+In **Wildcard**, the next card reward has one familiar option replaced by **Emergency Carapace**, a generated card with the same rarity as the option it replaced. The other choices remain. You choose whether the crab card belongs in your deck, or skip normally. Once you take it, the reward interaction offers one optional transformation: use your inspiration or press **I'm feeling lucky** for a deck-aware twist. You commit to taking the card before seeing a transformed result.
 
-In **Living Deck**, the director can instead turn an eligible card already in your deck into Carapace when the context and tuning rules permit it. You see what changed and why; the transformation happens automatically. The aim is a surprising sidegrade with a tactical tradeoff.
+In **Living Deck**, the director can instead turn an eligible card already in your deck into Carapace when the context and tuning rules permit it. You see what changed and why; the transformation happens automatically. A card can transform at most once per turn, and its replacement is guaranteed to be drawn next turn so you get to use the new direction promptly.
 
 The first time you play it, the effect resolves immediately and an artwork job starts. Later, the portrait fills in: your character sheltering awkwardly beneath an enormous crab. On another floor, chat asks for a laser crab. The director remembers the theme; a later reward might continue it.
 
@@ -40,11 +40,15 @@ The game always keeps playing while generation is pending. A fast acknowledgemen
 
 ## Two gameplay modes
 
-**Wildcard:** replace exactly one option in every card reward. Preserve that option's rarity, keep the other choices, and let the player select or skip normally. Speech/chat shapes the concept; the wildcard still appears when there is no fresh input. Reward frequency follows the game, so this mode does not have an intervention cooldown.
+**Wildcard:** replace exactly one option in every card reward. Preserve that option's rarity, keep the other choices, and let the player select or skip normally. After taking the wildcard, offer **Keep**, **Transform**, or **I'm feeling lucky** in that reward interaction. It has one optional transformation total; both transformation buttons share that allowance. Unchosen reward cards cannot be transformed. Speech/chat shapes the concept; the wildcard still appears when there is no fresh input.
 
 **Living Deck** (working name): the director automatically replaces a card already in the persistent deck one-for-one when it finds an appropriate moment. Separate tunables control frequency, strength, synergy and eligibility. A change should create a new situation to play around. Automatically improving the weakest card every time would steadily trivialize the run even if rarity stayed constant.
 
-For the first Living Deck playtest, propose a conservative cadence, sidegrade-oriented power, protected favorites and a cooldown on repeatedly replacing the same card. Those are initial tuning hypotheses. Same rarity alone does not guarantee fair strength: account for draw/energy combinations, removed drawbacks, deck synergy and cumulative changes. Both modes keep placeholder art until the first play triggers generation. [Mode rules and proposed tuning](docs/game-modes.md).
+**Shared rule:** at most one transformation per card per turn, tracked across its changing definitions. When a deck card is transformed, guarantee it in the next player turn's draw. Between fights, this means the opening draw of the next combat. This also applies to the newly acquired wildcard if the player transforms it.
+
+**I'm feeling lucky:** look at the current deck and transform the selected card into something good with a directional twist. Aim for **6/10 to 12/10**: solid at the low end, occasionally an exceptional build-around at the high end. It can dismantle the current strategy or wreck the run, provided the whole card offers a compelling payoff. Judge benefit, cost and risk together; pure punishment does not qualify. The button consumes the existing transformation allowance and does not add another card. These grades express the card's intended opportunity, not a guarantee of safety or a measured LLM score.
+
+For the first Living Deck playtest, propose a conservative cadence, sidegrade-oriented automatic changes and protected favorites. Those are initial tuning hypotheses; the per-turn cap and next-turn draw are requirements. Lucky's explicit quality band allows stronger directional outcomes. Account for draw/energy combinations, removed drawbacks, deck synergy and cumulative changes. Both modes keep placeholder art until the first play triggers generation. [Mode rules and proposed tuning](docs/game-modes.md).
 
 The dashboard needs a handful of player-facing controls:
 
@@ -92,9 +96,9 @@ The proposed true-registration design is a shared data-driven card interpreter p
 
 ## First playable slice
 
-1. **Resolve the engine behavior.** Create a genuinely new type/ID after initialization, place its card in play, save/reload it, and replace its art after first play. Check copies and simultaneous views. Use fixed local data and a local image so model latency cannot hide engine problems.
-2. **Make Wildcard playable.** Local Parakeet → OpenCode-hosted LLM generates a card specification → exactly one same-rarity replacement in every card reward. Persist the reward assignment and accepted cards. Start the artwork backend on first play.
-3. **Make Living Deck playable.** Add autonomous one-for-one replacements, Jev routing, independent frequency/power/synergy controls, callbacks and visible change history. Check cumulative deck strength and how players adapt. Define and verify safe replacement of live combat copies before allowing in-combat changes.
+1. **Resolve the engine behavior.** Create a genuinely new type/ID after initialization, transform a persistent card without resetting its per-turn allowance, guarantee its next-turn draw, save/reload it, and replace its art after first play. Check copies and simultaneous views. Use fixed data and a local image so model latency cannot hide engine problems.
+2. **Make Wildcard playable.** Local Parakeet → OpenCode-hosted LLM generates a card specification → exactly one same-rarity replacement in every card reward. Add the post-take, single-use transformation and deck-aware Lucky button. Persist acquisition, allowance and next-turn draw state. Start artwork on first play.
+3. **Make Living Deck playable.** Add autonomous one-for-one replacements, Jev routing, independent frequency/power/synergy controls, callbacks and visible change history. Enforce one transformation per card per turn and next-turn drawing. Check cumulative deck strength and how players adapt, including live combat copies.
 4. **Open it to the audience.** Connect an existing Twitch tool through the same API. Aggregate suggestions, deduplicate TTS/chat events, and give the streamer a clear override. Expand the action catalog to additional game systems only after each action has a reliable engine implementation.
 
-The first success is one short run segment someone wants to show a friend: “I said that, it became this card, and then it saved me.” Record time to acknowledgement, time to playable card, first-play art completion, declined offers, interruptions and whether accepted cards are actually useful. Source research is complete for this first pitch; those gameplay and latency outcomes still need a playable build.
+The first success is one short run segment someone wants to show a friend: “I said that, it became this card, and it changed the whole run.” Record time to acknowledgement, time to playable card, first-play art completion, transformations, interruptions and memorable strategic pivots. The original source investigation establishes starting hooks; post-take transformation and guaranteed next-turn drawing still need engine verification, and quality/latency need a playable build.

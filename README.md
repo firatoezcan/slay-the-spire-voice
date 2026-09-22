@@ -8,6 +8,8 @@ Start with **[The Spire Is Listening — first pitch](PITCH.md)**.
 
 The two gameplay modes are **Wildcard** (one same-rarity replacement in every card reward) and **Living Deck** (autonomous, tunable replacements of existing deck cards). See [the mode rules](docs/game-modes.md).
 
+Taken wildcards have one optional transformation during the reward interaction, including a deck-aware **I'm feeling lucky** option. A card can transform at most once per turn, and transformed deck cards are guaranteed to be drawn next turn.
+
 ## Research
 
 - [Reference mods and where to read their code](references/README.md)
