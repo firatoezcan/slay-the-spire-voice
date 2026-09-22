@@ -56,31 +56,33 @@ The fast loop can choose an already prepared response while the LLM prepares som
 
 ## Game phase and director state are separate
 
-The following is a proposed normalized state machine, not a claim about existing game enum names. The bridge derives phase from game events and exposes only actions whose requirements are satisfied:
+The following is a proposed normalized state machine, not a claim about existing game enum names. The bridge derives phase from game events and exposes only actions allowed by the selected [gameplay mode](game-modes.md):
 
 | Observed game phase | Examples of allowed director actions |
 | --- | --- |
 | No active run | Configure, inspect the library; no gameplay changes |
-| Combat action resolving | Remember a theme, prepare a future offer, do nothing |
-| Player can act | Present a ready temporary-card offer if the selected mode permits it; otherwise prepare/hold |
-| Reward decision | Present a validated reward offer, accept/decline, do nothing |
-| Room transition | Reconcile queued work, expire battle-specific requests, advance opportunity budget |
+| Combat action resolving | Remember a theme or prepare content; hold deck mutations |
+| Player can act | Prepare content; Living Deck may commit at a verified safe boundary if its targeting/eligibility rules permit |
+| Card reward being prepared | Wildcard replaces exactly one option, preserving that option's rarity |
+| Card reward open | Normal player selection/skip; the displayed reward stays stable |
+| Room transition | Living Deck may commit an eligible replacement; reconcile jobs and update its progress-based budget |
 
-The companion's offer lifecycle is independent:
+The companion separates the two modes' lifecycles:
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Listening
-    Listening --> Preparing: Eligible signal and opportunity available
-    Preparing --> OfferReady: Validated proposal
-    Preparing --> Listening: Failed or obsolete
-    OfferReady --> Deciding: Matching game phase
-    OfferReady --> Listening: Run or opportunity expired
-    Deciding --> CoolingDown: Accepted or declined
-    CoolingDown --> Listening: Sufficient game progress
+    [*] --> Watching
+    Watching --> Preparing: Wildcard reward or eligible Living Deck decision
+    Preparing --> Ready: Validated definition
+    Preparing --> Watching: Failed or obsolete
+    Ready --> RewardOpen: Wildcard slot assigned before selection
+    RewardOpen --> Watching: Normal selection or skip
+    Ready --> Replacing: Living Deck target valid at safe boundary
+    Replacing --> CoolingDown: One-for-one replacement committed
+    CoolingDown --> Watching: Living Deck progress budget allows another change
 ```
 
-Jev receives a small context and the currently admissible choices. For example, while `Preparing`, another crab message may permit `reinforce_theme` or `ignore`, but not `start_another_card`. The LLM receives the selected request; it does not own the transition table. Immediately before presentation/application, code rechecks the actual game phase and request scope.
+Jev receives a small context and the currently admissible choices. While `Preparing`, another crab message may permit `reinforce_theme` or `ignore`. In Wildcard, ignoring a signal never omits the required reward replacement; absent new input, generation uses the run theme/context. In Living Deck, `do_nothing` is a valid decision even when the cooldown has expired. The LLM receives the selected request; it does not own the transition table. Code rechecks the exact reward slot or deck-card instance before application. Living Deck changes happen automatically, without per-replacement confirmation.
 
 Artwork has its own lifecycle: `unrequested → queued on first successful play → generating → ready`, with an explicit failed state. The accepted card remains playable in all of these states. Use one job per immutable definition/art revision so multiple copies and replays do not repeatedly spend generation quota.
 
@@ -94,7 +96,7 @@ Bun includes `bun:sqlite` with file-backed/in-memory databases and transactions.
 | --- | --- |
 | Live HP, hand, enemies, turn, legal actions | The running game; companion snapshots are observations |
 | Active queues, partial transcripts, short chat windows | Companion memory |
-| Settings, integration bindings, generated definitions, job records, provenance, art index | Companion SQLite |
+| Settings, mode rules, integration bindings, definitions, reward assignments, replacement lineage/budgets, jobs, provenance, art index | Companion SQLite |
 | Generated card instance data needed to resume a run | The game's modded save, containing the required immutable definition |
 | Generated image files | Local asset cache, referenced by definition/art revision |
 

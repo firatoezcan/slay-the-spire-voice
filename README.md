@@ -6,6 +6,8 @@ This repository contains the first pitch, source research, and local copies of r
 
 Start with **[The Spire Is Listening — first pitch](PITCH.md)**.
 
+The two gameplay modes are **Wildcard** (one same-rarity replacement in every card reward) and **Living Deck** (autonomous, tunable replacements of existing deck cards). See [the mode rules](docs/game-modes.md).
+
 ## Research
 
 - [Reference mods and where to read their code](references/README.md)

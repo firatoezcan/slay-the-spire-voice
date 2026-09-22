@@ -8,7 +8,9 @@ Working title and first pitch, 22 September 2026. This describes the experience 
 
 You're barely surviving a fight. You mutter, “We need a shell. Become crab.” The game gives a small acknowledgement and lets you keep playing.
 
-At the next opportunity, the Spire offers two interpretations: **Emergency Carapace**, a strong one-use defense, or **Sideways Solution**, a smaller defense that also attacks. You choose the one your deck needs—or decline. The card appears with a simple shell illustration and readable rules.
+In **Wildcard**, the next card reward has one familiar option replaced by **Emergency Carapace**, a generated card with the same rarity as the option it replaced. The other choices remain. You choose whether the crab card belongs in your deck, or skip normally. It appears with a simple shell illustration and readable rules.
+
+In **Living Deck**, the director can instead turn an eligible card already in your deck into Carapace when the context and tuning rules permit it. You see what changed and why; the transformation happens automatically. The aim is a surprising sidegrade with a tactical tradeoff.
 
 The first time you play it, the effect resolves immediately and an artwork job starts. Later, the portrait fills in: your character sheltering awkwardly beneath an enormous crab. On another floor, chat asks for a laser crab. The director remembers the theme; a later reward might continue it.
 
@@ -19,14 +21,14 @@ The satisfying part is recognizing your own idea, choosing what it becomes, and 
 The Spire already asks the player to build a strategy from unexpected offers. We add a new source of surprises: the player's speech and the audience's imagination.
 
 - **Personal meaning:** “this came from something I said” gives the card a story.
-- **A real decision:** different interpretations, a clear cost, and free decline preserve the player's role.
+- **A real decision:** Wildcard puts an unfamiliar option beside ordinary rewards. Living Deck asks the player to adapt to a changed tool.
 - **A recurring theme:** a few remembered ideas develop across the run instead of every card introducing an unrelated joke.
-- **Anticipation:** limited opportunities make the next response interesting. Chat cannot flood the deck by repeating itself.
+- **Anticipation:** every reward brings one wildcard, while Living Deck has its own cadence. Repeated chat does not multiply replacements.
 - **A shared reveal:** first-play artwork gives a good moment a second beat without delaying combat.
 
 The inspected Chimera gameplay shows a useful pattern: discovery of an unusual modifier leads into comparing alternatives. Packmaster shows how bounded themes can create variety; Downfall shows how a recognizable fantasy becomes mechanics. Mega Crit's design material emphasizes useful card niches and preserving deckbuilding, while Valve's director research emphasizes alternating intensity with quiet. These inform the proposal; they do not establish that our version will be fun. [Evidence and inspected video timestamps](docs/gameplay-research.md).
 
-Ambient listening is the main design risk. A player may become self-conscious about thinking aloud if every sentence can change the run. Provide **ambient inspiration** and **hold-to-inspire** modes. In ambient mode, the Spire offers interpretations and the player can ignore them. Sarcasm or frustration should not secretly cause punishment. Narration is optional and quiet during tactical decisions.
+Ambient listening is a design risk: a player may become self-conscious about thinking aloud if every sentence can change the run. Provide ambient listening and hold-to-inspire as input settings for either gameplay mode. Wildcard preserves the normal reward choice; Living Deck explicitly opts into autonomous changes with tuning and optional protected cards. Sarcasm or frustration should not secretly change the power budget. Narration is optional and quiet during tactical decisions.
 
 ## One director, two different kinds of intelligence
 
@@ -36,22 +38,23 @@ Ambient listening is the main design risk. A player may become self-conscious ab
 
 The game always keeps playing while generation is pending. A fast acknowledgement means the idea was heard; it does not promise that new content is ready. Jev's purpose is inexpensive selection among known options. It cannot create an arbitrary card or replace the game's rule checks. [Provider and decision research](docs/ai-director-research.md).
 
-## The player experience
+## Two gameplay modes
 
-Start with a restrained default: one unresolved offer, limited inspiration opportunities earned through progress, and a small number of supported effects. A player can ask for something absurd; the director translates the fantasy into a card with an intelligible tradeoff. Exact damage and resource costs come from the selected power rules.
+**Wildcard:** replace exactly one option in every card reward. Preserve that option's rarity, keep the other choices, and let the player select or skip normally. Speech/chat shapes the concept; the wildcard still appears when there is no fresh input. Reward frequency follows the game, so this mode does not have an intervention cooldown.
 
-Also provide an explicit **Forge** mode for “make this card now.” It starts generation on demand and can offer the result during the current combat at a safe point. A sandbox preset can remove gameplay scarcity. These modes let us explore the original spontaneous-card fantasy alongside a more paced director experience; generation availability and in-game power are separate controls.
+**Living Deck** (working name): the director automatically replaces a card already in the persistent deck one-for-one when it finds an appropriate moment. Separate tunables control frequency, strength, synergy and eligibility. A change should create a new situation to play around. Automatically improving the weakest card every time would steadily trivialize the run even if rarity stayed constant.
 
-A good generated card can become a persistent part of the deck. Temporary combat cards offer another mode, especially for Twitch interventions. Once a card is accepted, its mechanics stay stable; artwork may arrive later. A run's theme can influence later offers without silently rewriting cards the player already knows.
+For the first Living Deck playtest, propose a conservative cadence, sidegrade-oriented power, protected favorites and a cooldown on repeatedly replacing the same card. Those are initial tuning hypotheses. Same rarity alone does not guarantee fair strength: account for draw/energy combinations, removed drawbacks, deck synergy and cumulative changes. Both modes keep placeholder art until the first play triggers generation. [Mode rules and proposed tuning](docs/game-modes.md).
 
 The dashboard needs a handful of player-facing controls:
 
 | Control | Meaning |
 | --- | --- |
 | Listening | Off, hold-to-inspire, ambient; input device and transcription language handling |
-| Director style | Helpful, mischievous, or deliberately chaotic, with visible intervention rules |
-| Frequency and strength | Separate controls for how often content appears and how extreme it can be |
-| Card lifetime | Temporary combat gifts or opportunities to earn lasting deck cards |
+| Gameplay mode | Wildcard rewards or autonomous Living Deck replacements |
+| Replacement frequency | Living Deck cooldown and ceiling; Wildcard always changes one option per reward |
+| Strength and synergy | Separate limits on individual power and how aggressively changes optimize the deck |
+| Eligible/protected cards | Living Deck target rules, favorite-card pins and repeat-change protection |
 | Artwork | Generate on first play by default; show pending/ready state |
 | Sources | Microphone, audience integrations, and which source may trigger which actions |
 
@@ -90,8 +93,8 @@ The proposed true-registration design is a shared data-driven card interpreter p
 ## First playable slice
 
 1. **Resolve the engine behavior.** Create a genuinely new type/ID after initialization, place its card in play, save/reload it, and replace its art after first play. Check copies and simultaneous views. Use fixed local data and a local image so model latency cannot hide engine problems.
-2. **Make one spoken idea playable.** Local Parakeet → OpenCode-hosted LLM generates a card specification → validated card offer → accepted card. Persist it in SQLite and the run save. Start the selected artwork backend on first play and update the portrait when it completes.
-3. **Make the director worth leaving on.** Add Jev routing, quiet periods, callbacks, and a small set of intervention rules. Compare ambient offers with deliberate inspiration. Watch whether players enjoy the result and continue making meaningful deck choices.
+2. **Make Wildcard playable.** Local Parakeet → OpenCode-hosted LLM generates a card specification → exactly one same-rarity replacement in every card reward. Persist the reward assignment and accepted cards. Start the artwork backend on first play.
+3. **Make Living Deck playable.** Add autonomous one-for-one replacements, Jev routing, independent frequency/power/synergy controls, callbacks and visible change history. Check cumulative deck strength and how players adapt. Define and verify safe replacement of live combat copies before allowing in-combat changes.
 4. **Open it to the audience.** Connect an existing Twitch tool through the same API. Aggregate suggestions, deduplicate TTS/chat events, and give the streamer a clear override. Expand the action catalog to additional game systems only after each action has a reliable engine implementation.
 
 The first success is one short run segment someone wants to show a friend: “I said that, it became this card, and then it saved me.” Record time to acknowledgement, time to playable card, first-play art completion, declined offers, interruptions and whether accepted cards are actually useful. Source research is complete for this first pitch; those gameplay and latency outcomes still need a playable build.

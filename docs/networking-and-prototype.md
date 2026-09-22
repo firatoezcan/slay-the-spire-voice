@@ -47,7 +47,7 @@ Start with HTTP and a local companion. Keep provider credentials with the compan
 
 Both true runtime types/IDs and a pre-registered type with per-instance generated data are worth distinguishing. Different generated cards need independent names, descriptions, costs, effects, portraits, and saved state. The [runtime investigation](runtime-cards-and-art.md) identifies the extra registry work for new IDs and confirms concrete portrait-refresh hooks.
 
-For the first voice demo, an explicit listening button or push-to-talk would make each generation easy to trigger and observe. Continuous listening, when speech should create a card, where the card appears, and whether generation has a gameplay cost remain product choices. Multiplayer would additionally need synchronized specs and deterministic application; it is outside the first proposed experiment.
+For the first voice demo, a listening button or push-to-talk makes input easy to observe; ambient listening is another input setting. The selected gameplay modes are [Wildcard and Living Deck](game-modes.md): one same-rarity replacement in every card reward, or automatic one-for-one replacements of existing deck cards under tunable rules. Multiplayer would additionally need synchronized specs and deterministic application; it is outside the first proposed experiment.
 
 ## First experiment, in order
 

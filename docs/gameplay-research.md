@@ -2,7 +2,7 @@
 
 Research date: 22 September 2026. Target game: **Slay the Spire 2**.
 
-The strongest initial experience is a run that turns memorable things the player or audience says into a small number of consequential card offers. The player should recognize the joke or intention immediately, understand the price, and decide whether the card belongs in the deck. That is a design recommendation, not a result from a playable prototype.
+The selected direction has two experiences: **Wildcard**, which replaces one option in every card reward at the same rarity, and **Living Deck**, which autonomously replaces existing deck cards under tunable rules. The player should recognize the idea and understand its mechanical tradeoff. The [mode specification](game-modes.md) owns those rules; the research below supplies design precedents, not a result from a playable prototype.
 
 This note separates documented precedents, inspected video material, and proposals to playtest. None of the mods below was installed or run for this research. StS1 examples are gameplay references; their Java mod APIs are not StS2 integration instructions.
 
@@ -61,42 +61,42 @@ The sampled frames show the Library event, selection of an existing card, and fi
 
 ## Recommended first rules to playtest
 
-Everything in this section is a proposal. Counts and timings are initial tuning values, not measured latency or validated balance.
+The two mode definitions come from the product direction. The balance and presentation suggestions below are proposals, not measured latency or validated balance.
 
-1. **Turn speech into opportunities.** Acknowledge a memorable phrase, then introduce an offer at a suitable decision point. Start with one special offer every few rooms and at most one unresolved offer. A small “Inspired by: ‘we need a shell’” line establishes cause and effect. Optional narration stays quiet during calculation.
-2. **Make the offer a real decision.** Present two interpretations plus a free decline. Each has a useful role and a cost: energy, Exhaust, a condition, or a drawback. Saying “deal a million damage” supplies a theme, not a damage value. Declining spends the opportunity, preventing endless prompt rerolls. Accepted rules stay stable.
+1. **Connect speech to a visible result.** A small “Inspired by: ‘we need a shell’” line establishes cause and effect. Wildcard introduces one generated option in every card reward; Living Deck shows a before/after transformation when its director acts. Optional narration stays quiet during calculation.
+2. **Preserve tradeoffs.** In Wildcard, keep the other reward options and the normal ability to skip. In Living Deck, the player opts into automatic changes and adapts to the result. Both need useful roles and costs: energy, Exhaust, conditions or drawbacks. Saying “deal a million damage” supplies a theme, not a damage value. Reward reopening does not reroll the wildcard; repeated mutation cannot become a free upgrade loop.
 3. **Make first play the art trigger.** Show a consistent placeholder immediately. First play queues artwork while the effect resolves normally. Reveal completed art between actions or on the next inspection/draw. The first animation may finish long before the image arrives. Frame, icon, name, and mechanics remain stable.
-4. **Aggregate chat into a shared contribution.** Later, add a suggestion window, one counted suggestion per account, and a displayed theme. Viewers shape an offer; the player chooses whether to take it. Deduplicate TTS and its source message. Mood colors an offer without making every message an action.
-5. **Let the director do nothing.** A fast classifier labels irrelevant input, recurring themes, requests, or ideas for later. The current game phase, cooldown, pending offer, and supported actions determine whether intervention is possible. The slower LLM designs an offer only when useful. Quiet is a valid response to frustration.
-6. **Pace novelty without silently changing difficulty.** Keep mechanical budgets consistent. Make help, mischief, and chaos explicit modes. Limit repeatedly strengthening one card; preserve exciting synergies while investigating effortless, repeatable wins and slow farming loops.
+4. **Aggregate chat into a shared contribution.** Later, add a suggestion window, one counted suggestion per account, and a displayed theme. Viewers influence the concept through the selected mode's rules. Deduplicate TTS and its source message. Mood shapes a card without making every message an action.
+5. **Separate relevance from mode coverage.** A classifier can ignore an irrelevant utterance. Wildcard still replaces one option at every reward, using the current run theme when no new idea exists. Living Deck can choose to do nothing even when its cooldown allows a change. Quiet is a valid response to frustration.
+6. **Separate novelty from power.** Wildcard frequency follows rewards; Living Deck has its own frequency and ceiling. Strength, synergy and repeat-change limits are independent. Preserve interesting combinations while investigating effortless wins, cumulative deck optimization and slow farming loops.
 
-The useful states are **listening**, **preparing**, **offer ready**, **player deciding**, and **cooldown**. Art generation has an independent queue. Expire battle-specific results when that battle ends; late completion does not authorize an effect in the next battle.
+Wildcard follows reward preparation, slot assignment and normal player selection. Living Deck follows a director decision, generation, safe replacement and cooldown. Art generation has an independent queue. Expire stale targets; late completion cannot replace another card just because the original target disappeared.
 
-**The main counterargument to ambient listening:** private strategic thought becomes a performance for the mod. Players may avoid joking or thinking aloud if “I'm dead” can cause an intervention. Compare ambient offers with an explicit hold-to-inspire action in the first microphone-only playtest. Keep a free decline and a visible listening indicator in both. Twitch and autonomous pacing can follow once the voice-to-card loop is enjoyable.
+**The main counterargument to ambient listening:** private strategic thought becomes a performance for the mod. Players may avoid joking or thinking aloud if “I'm dead” can cause an intervention. Compare ambient listening with hold-to-inspire input. Wildcard keeps the normal reward choice; Living Deck makes the autonomous replacement rule explicit and provides tuning/protected cards. Both show whether listening is active.
 
 ## A three-minute example
 
-This is an imagined playtest scenario, not recorded gameplay. Card values are illustrative and need validation against actual StS2 card pools.
+This is an imagined Wildcard playtest scenario, not recorded gameplay. Card values are illustrative and need validation against actual StS2 card pools.
 
 | Time | What the player and audience experience | Why it might be fun |
 | --- | --- | --- |
 | 00:00–00:20 | During a fight, Firat says, “We need a shell. Become crab.” A small shell icon acknowledges the idea. Chat echoes the crab theme. Combat continues. | A recognizable seed and immediate acknowledgement establish cause and effect without interrupting the turn. |
 | 00:20–00:50 | The director prepares one offer while the player finishes the fight. Repeated crab messages strengthen the shared theme but do not queue more cards. | The audience collaborates around one idea; the system gives the existing fight room to resolve. |
-| 00:50–01:15 | At the reward screen, a special offer presents **Emergency Carapace**: “1 energy. Gain 11 Block. Exhaust.” Or **Sideways Solution**: “1 energy. Gain 6 Block. Deal 4 damage.” The player can also decline. Chat's shell theme is visible. | The player chooses between a concentrated defensive resource and a modest mixed card. The joke poses a deckbuilding question. |
+| 00:50–01:15 | At the normal reward screen, one common option is replaced by common **Emergency Carapace**: “1 energy. Gain 11 Block. Exhaust.” The other options remain. Firat can choose one or skip; chat's shell theme is visible. | The player weighs a concentrated defensive resource against the other cards and the value of keeping the deck small. The joke poses a deckbuilding question. |
 | 01:15–01:45 | Firat takes Carapace and enters the next room. The director stays quiet. The card has a clean shell placeholder and normal rules text. | There is time to learn and anticipate the card before another novelty arrives. |
 | 01:45–02:10 | An enemy announces a large attack. Firat plays Carapace alongside another defense. The card resolves immediately; its first play starts artwork generation. | The idea has become a tool in a real tactical choice. The payoff comes from playing well with it. |
 | 02:10–02:40 | At a later calm moment, the illustration finishes: the character is awkwardly sheltered under a crab shell. A small visual reveal is enough. If it is still pending, play carries on. | The same idea has a second, visual payoff without adding another mechanic. |
-| 02:40–03:00 | Chat asks for a giant laser crab. The cooldown indicator shows that the next inspiration slot is later. The director remembers “crab” as this run's theme, but makes no new card now. | The theme can become a running joke while scarcity protects anticipation and the deck. |
+| 02:40–03:00 | Chat asks for a giant laser crab. That becomes a candidate theme for the next reward's wildcard. Repetition creates no extra reward or immediate deck change. | A running joke develops while the game's reward structure controls how cards enter the deck. |
 
 ## What could make it fail
 
 | Failure | First design response | What to observe in a playtest |
 | --- | --- | --- |
-| Players only request unbeatable cards | Constrain mechanical budgets; reinterpret the fantasy; charge scarce generation opportunities rather than speech itself. | Does repeated prompting dominate normal play? Do choices converge on the same free advantage? |
+| Players only request unbeatable cards | Constrain power and synergy; reinterpret the fantasy; keep reward assignments stable and Living Deck changes limited. | Does repeated prompting dominate normal play? Do choices converge on the same free advantage? |
 | Cards are funny once but interchangeable, or one card replaces the deck | Require distinct tactical roles; limit repeated strengthening. | Can players explain their choice? Do later rewards and sequencing still matter? |
 | The director interrupts thinking | Prefer reward screens and room transitions; acknowledgement is small; narration is optional. | Interruptions per room, time spent reading new rules, and explicit requests for quiet. |
 | Latency makes a response irrelevant | Acknowledge immediately, generate ahead of the next safe offer point, and expire context-specific work. | Time from utterance to acknowledgment and offer; how often the original context has disappeared. |
-| Chat spam or TTS loops overwhelm the run | Deduplicate source events, count people rather than message volume, use a shared window and cooldown. | Concentration of accepted suggestions by account; duplicate-trigger frequency. |
+| Chat spam or TTS loops overwhelm the run | Deduplicate events, count people rather than messages, keep one wildcard per reward and Living Deck's own change budget. | Concentration of accepted suggestions by account; duplicate-trigger frequency. |
 | Mood classification misreads sarcasm | Show the interpreted theme; uncertain inputs produce no action; avoid hidden punishment. | Misinterpretation reports and self-censorship. |
 | Optimal play means waiting, talking, or farming | Advance opportunities through game progress, not elapsed time or microphone volume. | Whether players delay ending fights or repeat phrases to extract value. |
 
