@@ -2,6 +2,8 @@
 
 Researched 2026-09-22. Source inspection only: no reference mod was launched, no microphone recording was made, and no generated card was exercised in-game.
 
+The expanded proposal is in [PITCH.md](../PITCH.md). Read [the runtime investigation](runtime-cards-and-art.md) for the later installed-game findings, and [the AI director note](ai-director-research.md) for Codex, Jev, SQLite and external integrations.
+
 ## Network access already exists in STS2 mods
 
 These are three distinct examples, with concrete implementations checked locally:
@@ -43,16 +45,16 @@ Microphone → local companion → transcription + card generation
 
 Start with HTTP and a local companion. Keep provider credentials with the companion. Let the model produce a card specification: a name, cost, target, and ordered effects such as damage, block, draw, or applying a supported power. Implement those effects with the game's card commands. The effect vocabulary determines what generated cards can do; new mechanics require extending that vocabulary. BLANKthespire's [contract](https://github.com/ryanrinkel/BLANKthespire/tree/main/mod/contract) and [runtime](https://github.com/ryanrinkel/BLANKthespire/tree/main/mod/BlankTheSpireCode/Engine) provide a concrete example of this design.
 
-A pre-registered card type with per-instance generated data is the most useful hypothesis to test. Different generated cards need independent names, descriptions, costs, effects, portraits, and saved state even when they share the same registered model type. The [API report](modding-api.md) identifies the relevant hooks and unresolved behavior.
+Both true runtime types/IDs and a pre-registered type with per-instance generated data are worth distinguishing. Different generated cards need independent names, descriptions, costs, effects, portraits, and saved state. The [runtime investigation](runtime-cards-and-art.md) identifies the extra registry work for new IDs and confirms concrete portrait-refresh hooks.
 
 For the first voice demo, an explicit listening button or push-to-talk would make each generation easy to trigger and observe. Continuous listening, when speech should create a card, where the card appears, and whether generation has a gameplay cost remain product choices. Multiplayer would additionally need synchronized specs and deterministic application; it is outside the first proposed experiment.
 
 ## First experiment, in order
 
-1. **Prove a runtime card.** With a debug trigger, instantiate two cards carrying different hand-written specifications in one combat. Verify independent display and effects, then copying, upgrades, and save/reload for deck-persistent cards. Use placeholder art.
+1. **Prove a runtime card.** Create a genuinely new type/ID after initialization using fixed data; instantiate it during combat. Verify display/effects, copying, upgrades, and save/reload after reconstructing the canonical definition. Use placeholder art.
 2. **Connect the local service.** Have it return the same specifications over HTTP. Keep play responsive while waiting; reject late results after their intended run/combat is gone and apply each result once.
 3. **Add speech and generation.** A short utterance produces a validated spec and a playable card. Display listening/generating/error state and measure the time from speech ending to card appearing.
-4. **Add generated artwork.** Deliver playable mechanics first, then attach/cache a portrait without blocking play.
+4. **Add generated artwork.** Start one artwork job on first successful play, then update/cache the portrait without blocking card resolution. Exercise the portrait-refresh path with a fixed local image in the first engine experiment.
 
 The first experiment resolves the largest uncertainty: live creation of distinct cards. The closest generated-card reference currently loads fixed slots at startup and explicitly requires a restart after importing a class. [BLANKthespire card slots](https://github.com/ryanrinkel/BLANKthespire/blob/main/mod/BlankTheSpireCode/Engine/ForgedCards.cs), [installation behavior](https://github.com/ryanrinkel/BLANKthespire/blob/main/INSTALL.md).
 

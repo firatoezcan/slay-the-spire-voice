@@ -1,12 +1,18 @@
 # Slay the Spire Voice
 
-A Slay the Spire 2 mod idea: the game listens to what you say and generates playable cards during the run.
+A Slay the Spire 2 mod idea: the game listens to what you say, turns memorable moments into playable cards, and lets Twitch or other integrations influence the run through a local API.
 
-This repository starts with source research and local copies of reference mods. There is no playable voice mod yet.
+This repository contains the first pitch, source research, and local copies of reference mods. There is no playable voice mod yet.
+
+Start with **[The Spire Is Listening — first pitch](PITCH.md)**.
 
 ## Research
 
 - [Reference mods and where to read their code](references/README.md)
+- [Runtime card registration and lazy first-play artwork](docs/runtime-cards-and-art.md)
+- [Gameplay precedents and inspected video segments](docs/gameplay-research.md)
+- [OpenCode, optional Codex CLI, Jev, SQLite, and the integration API](docs/ai-director-research.md)
+- [Local Parakeet and embedded OpenCode v2](docs/voice-and-opencode.md)
 - [Modding APIs and runtime card generation](docs/modding-api.md)
 - [Networking examples and a proposed first experiment](docs/networking-and-prototype.md)
 

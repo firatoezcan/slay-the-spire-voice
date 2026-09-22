@@ -2,6 +2,8 @@
 
 Research date: 22 September 2026. Scope: **Slay the Spire 2**. Source inspection supports a C#/BaseLib prototype for cards whose behavior comes from generated data. Creating distinct cards during an ongoing run is the key behavior still to prove in the game; the closest inspected generation mod loads its definitions at startup.
 
+The follow-up [installed-game investigation](runtime-cards-and-art.md) confirms public runtime model injection, virtual card titles, and live portrait refresh. It also identifies frozen card pools and numeric ID caches that a complete runtime-registration implementation must handle. BLANKthespire's startup loading is an implementation choice, not a general engine restriction.
+
 ## Where the API documentation lives
 
 There is no complete game API manual in the sources inspected. The practical reference is the BaseLib maintainer's documentation and source, plus the installed game's assemblies. The BaseLib card reference itself still marks its underlying `CardModel` documentation as TODO, and its setup guide recommends inspecting the game's implementations. These are community-maintained integration surfaces, not a promised stable Mega Crit SDK. [CustomCardModel documentation](https://alchyr.github.io/BaseLib-Wiki/docs/models/custom-card.html), [modding basics](https://github.com/Alchyr/ModTemplate-StS2/wiki/Modding-Basics)
@@ -43,7 +45,7 @@ For richer object state, BaseLib exposes explicit type registration and packet s
 
 ### Names, descriptions and portraits
 
-BaseLib's `ILocalizationProvider` is read during `ModelDb.Init` and writes entries keyed by model ID. Two generated instances sharing that ID would share those localization entries. Per-instance descriptions have a concrete hook in `DescriptionOverrides.CustomizeDescription`/`CustomizeDescriptionPost`, both of which receive the actual card. Independent titles, dynamic-variable initialization and refresh behavior still need inspection of the installed game's render path. [Localization registration](https://github.com/Alchyr/BaseLib-StS2/blob/master/Patches/Localization/ModelLocPatch.cs), [description hooks](https://github.com/Alchyr/BaseLib-StS2/blob/master/Patches/Localization/DescriptionOverrides.cs)
+BaseLib's `ILocalizationProvider` is read during `ModelDb.Init` and writes entries keyed by model ID. Two generated instances sharing that ID would share those localization entries. Per-instance descriptions have a concrete hook in `DescriptionOverrides.CustomizeDescription`/`CustomizeDescriptionPost`, both of which receive the actual card. The installed game's `CardModel.Title` is virtual, so a generated card can override it independently; dynamic-variable initialization and visible refresh still need an in-game check. [Localization registration](https://github.com/Alchyr/BaseLib-StS2/blob/master/Patches/Localization/ModelLocPatch.cs), [description hooks](https://github.com/Alchyr/BaseLib-StS2/blob/master/Patches/Localization/DescriptionOverrides.cs), [installed title/render paths](runtime-cards-and-art.md)
 
 `CustomCardModel.CustomPortrait` returns a `Texture2D` and is checked before the portrait path. BLANKthespire loads PNG bytes from `user://`, creates an `ImageTexture`, caches it and assigns a resource path for BaseLib's portrait-path hook. This gives us a concrete generated-art integration example without rebuilding a `.pck`. [Portrait hooks](https://github.com/Alchyr/BaseLib-StS2/blob/master/Abstracts/CustomCardModel.cs), [ForgedCardArt](https://github.com/ryanrinkel/BLANKthespire/blob/main/mod/BlankTheSpireCode/Cards/Forged/ForgedCardArt.cs)
 
@@ -57,11 +59,12 @@ Godot's `HttpRequest` supports HTTP(S), request completion signals and byte resp
 
 This is a proposed architecture, not an implemented or runtime-verified result:
 
-1. Pre-register one simple generated attack-card type. Create two owner-bound instances during a running combat with different fixed definitions. Confirm separate text, damage and portraits.
-2. Attach an immutable definition to each instance, enable its clone handling, and execute a small set of effects through ordinary game commands. Add card shapes/types only after their constructor and targeting constraints are understood.
-3. Confirm hand/deck copies, upgrades, previews and save/reload preserve the definition and rebuild the correct state. Persistent deck cards and temporary combat cards must be exercised separately.
-4. Replace fixed input with an asynchronous generated JSON response, then add microphone capture/transcription. Validate the response before inserting the card and tie pending work to the active run so late responses cannot enter another run.
+1. Exercise the requested true-registration path: create a new type/ID after game initialization and handle the pool/ID-cache boundaries described in the [runtime investigation](runtime-cards-and-art.md).
+2. Instantiate owner-bound cards with immutable generated definitions and execute a small set of effects through ordinary game commands. Compare this with per-instance data on a pre-registered type, keeping their identity semantics distinct.
+3. Confirm hand/deck copies, upgrades, previews and save/reload preserve definitions and rebuild the correct state. Reconstruct new canonical IDs before loading saved cards.
+4. Trigger one artwork request on first play, then replace the portrait without delaying card resolution. Check existing views and the next draw.
+5. Replace fixed input with asynchronous generated JSON and local speech transcription. Validate results before insertion and tie pending work to the active run.
 
-The decisive technical question is whether one registered card type can render and retain distinct generated instance definitions across all these paths. BaseLib provides useful pieces; the inspected sources do not establish that complete behavior. No mod build, game launch, microphone session, network request from inside the game, save round trip or co-op session was performed for this report.
+Both true runtime types and per-instance definitions have source-backed integration points. The complete registration, copy/save and asynchronous art flows remain untested in-game. No mod build, game launch, microphone session, network request from inside the game, save round trip or co-op session was performed for this report.
 
 Source-code claims above were checked against the local reference submodules. The repository pins those copies; the external documentation links describe their authors' current guidance and may evolve.
