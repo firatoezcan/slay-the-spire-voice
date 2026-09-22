@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../VoiceDirector.Contracts/VoiceDirector.Contracts.csproj" />
+    <PackageReference Include="GenHTTP.Engine.Internal" Version="10.5.3" />
+    <PackageReference Include="GenHTTP.Modules.Functional" Version="10.5.3" />
+    <PackageReference Include="GenHTTP.Modules.OpenApi" Version="10.5.3" />
+    <PackageReference Include="GenHTTP.Modules.Practices" Version="10.5.3" />
+  </ItemGroup>
+</Project>

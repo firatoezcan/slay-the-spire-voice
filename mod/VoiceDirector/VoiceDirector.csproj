@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>VoiceDirector.Game</AssemblyName><CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies><NoWarn>$(NoWarn);MSB3270</NoWarn></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../VoiceDirector.Api/VoiceDirector.Api.csproj" />
+    <ProjectReference Include="../VoiceDirector.Bootstrap/VoiceDirector.Bootstrap.csproj" ReferenceOutputAssembly="false" />
+    <Reference Include="sts2" HintPath="$(GameDataDir)/sts2.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(GameDataDir)/0Harmony.dll" Private="false" />
+    <Reference Include="GodotSharp" HintPath="$(GameDataDir)/GodotSharp.dll" Private="false" />
+  </ItemGroup>
+  <ItemGroup><None Update="VoiceDirector.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <Target Name="CheckGame" BeforeTargets="ResolveReferences"><Error Condition="!Exists('$(GameDataDir)/sts2.dll')" Text="Set GameDataDir to the installed game's managed data directory." /></Target>
+</Project>

@@ -1,0 +1,5547 @@
+{
+  "info": {
+    "title": "Voice Director",
+    "description": "Local controls for the Slay the Spire 2 voice mod.",
+    "version": "0.1.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "localToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {}
+  },
+  "security": [
+    {
+      "localToken": []
+    }
+  ],
+  "openapi": "3.1.2",
+  "paths": {
+    "/api/session": {
+      "post": {
+        "operationId": "createSession",
+        "tags": [
+          "Connection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "getHealth",
+        "tags": [
+          "Connection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "game",
+                    "error",
+                    "speech"
+                  ],
+                  "properties": {
+                    "id": {
+                      "const": "health",
+                      "type": "string"
+                    },
+                    "game": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "speech": {
+                      "type": "object",
+                      "required": [
+                        "model",
+                        "modelDir",
+                        "ready",
+                        "busy",
+                        "missing"
+                      ],
+                      "properties": {
+                        "model": {
+                          "type": "string"
+                        },
+                        "modelDir": {
+                          "type": "string"
+                        },
+                        "ready": {
+                          "type": "boolean"
+                        },
+                        "busy": {
+                          "type": "boolean"
+                        },
+                        "missing": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/state": {
+      "get": {
+        "operationId": "getState",
+        "tags": [
+          "Game"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "required": [
+                    "runId",
+                    "revision",
+                    "phase",
+                    "turn",
+                    "cards",
+                    "creatures",
+                    "choices",
+                    "actions",
+                    "settings",
+                    "error"
+                  ],
+                  "properties": {
+                    "runId": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "phase": {
+                      "type": "string"
+                    },
+                    "turn": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "cards": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "modelId",
+                          "definitionId",
+                          "name",
+                          "rarity",
+                          "type",
+                          "cost",
+                          "upgradeLevel",
+                          "pile",
+                          "description",
+                          "wildcard",
+                          "resolved",
+                          "protected",
+                          "lastTransformedTurn"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "modelId": {
+                            "type": "string"
+                          },
+                          "definitionId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "rarity": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "cost": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "upgradeLevel": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "pile": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "wildcard": {
+                            "type": "boolean"
+                          },
+                          "resolved": {
+                            "type": "boolean"
+                          },
+                          "protected": {
+                            "type": "boolean"
+                          },
+                          "lastTransformedTurn": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "creatures": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "health",
+                          "maxHealth",
+                          "block",
+                          "enemy"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "health": {
+                            "type": "number"
+                          },
+                          "maxHealth": {
+                            "type": "number"
+                          },
+                          "block": {
+                            "type": "number"
+                          },
+                          "enemy": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "choices": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "kind",
+                          "label",
+                          "enabled"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "settings": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "mode",
+                        "drawChance",
+                        "maxPerTurn",
+                        "cooldownTurns",
+                        "strength",
+                        "synergy",
+                        "enabled",
+                        "debugConsole"
+                      ],
+                      "properties": {
+                        "mode": {
+                          "type": "string"
+                        },
+                        "drawChance": {
+                          "type": "number"
+                        },
+                        "maxPerTurn": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "cooldownTurns": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "strength": {
+                          "type": "number"
+                        },
+                        "synergy": {
+                          "type": "number"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "debugConsole": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs": {
+      "get": {
+        "operationId": "listRuns",
+        "tags": [
+          "Game"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "runId",
+                      "revision",
+                      "phase",
+                      "turn",
+                      "cards",
+                      "creatures",
+                      "choices",
+                      "actions",
+                      "settings",
+                      "error",
+                      "id"
+                    ],
+                    "properties": {
+                      "runId": {
+                        "type": "string"
+                      },
+                      "revision": {
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "phase": {
+                        "type": "string"
+                      },
+                      "turn": {
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "cards": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "modelId",
+                            "definitionId",
+                            "name",
+                            "rarity",
+                            "type",
+                            "cost",
+                            "upgradeLevel",
+                            "pile",
+                            "description",
+                            "wildcard",
+                            "resolved",
+                            "protected",
+                            "lastTransformedTurn"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "modelId": {
+                              "type": "string"
+                            },
+                            "definitionId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "rarity": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "cost": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "upgradeLevel": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "pile": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "wildcard": {
+                              "type": "boolean"
+                            },
+                            "resolved": {
+                              "type": "boolean"
+                            },
+                            "protected": {
+                              "type": "boolean"
+                            },
+                            "lastTransformedTurn": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "creatures": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name",
+                            "health",
+                            "maxHealth",
+                            "block",
+                            "enemy"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "health": {
+                              "type": "number"
+                            },
+                            "maxHealth": {
+                              "type": "number"
+                            },
+                            "block": {
+                              "type": "number"
+                            },
+                            "enemy": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      },
+                      "choices": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "kind",
+                            "label",
+                            "enabled"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "kind": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "enabled": {
+                              "type": "boolean"
+                            }
+                          }
+                        }
+                      },
+                      "actions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "settings": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "mode",
+                          "drawChance",
+                          "maxPerTurn",
+                          "cooldownTurns",
+                          "strength",
+                          "synergy",
+                          "enabled",
+                          "debugConsole"
+                        ],
+                        "properties": {
+                          "mode": {
+                            "type": "string"
+                          },
+                          "drawChance": {
+                            "type": "number"
+                          },
+                          "maxPerTurn": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "cooldownTurns": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "strength": {
+                            "type": "number"
+                          },
+                          "synergy": {
+                            "type": "number"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "debugConsole": {
+                            "type": "boolean"
+                          }
+                        }
+                      },
+                      "error": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "id": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs": {
+      "get": {
+        "operationId": "listJobs",
+        "tags": [
+          "Generation"
+        ],
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "runId",
+                      "kind",
+                      "status",
+                      "instanceId",
+                      "definitionId",
+                      "lucky",
+                      "immediate",
+                      "createdAt",
+                      "completedAt",
+                      "error",
+                      "result"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "runId": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "card",
+                          "art"
+                        ]
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "instanceId": {
+                        "type": "string"
+                      },
+                      "definitionId": {
+                        "nullable": true,
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "lucky": {
+                        "type": "boolean"
+                      },
+                      "immediate": {
+                        "type": "boolean"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "completedAt": {
+                        "nullable": true,
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "error": {
+                        "nullable": true,
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "result": {
+                        "nullable": true,
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCardJob",
+        "tags": [
+          "Generation"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "instanceId",
+                  "lucky",
+                  "immediate"
+                ],
+                "properties": {
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "lucky": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "immediate": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "instanceId",
+                  "lucky",
+                  "immediate"
+                ],
+                "properties": {
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "lucky": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "immediate": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "instanceId",
+                  "lucky",
+                  "immediate"
+                ],
+                "properties": {
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "lucky": {
+                    "default": false,
+                    "type": "boolean"
+                  },
+                  "immediate": {
+                    "default": false,
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "runId",
+                    "kind",
+                    "status",
+                    "instanceId",
+                    "definitionId",
+                    "lucky",
+                    "immediate",
+                    "createdAt",
+                    "completedAt",
+                    "error",
+                    "result"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "runId": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "card",
+                        "art"
+                      ]
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "instanceId": {
+                      "type": "string"
+                    },
+                    "definitionId": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "lucky": {
+                      "type": "boolean"
+                    },
+                    "immediate": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "result": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{id}/cancel": {
+      "post": {
+        "operationId": "cancelJob",
+        "tags": [
+          "Generation"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "runId",
+                    "kind",
+                    "status",
+                    "instanceId",
+                    "definitionId",
+                    "lucky",
+                    "immediate",
+                    "createdAt",
+                    "completedAt",
+                    "error",
+                    "result"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "runId": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "card",
+                        "art"
+                      ]
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "instanceId": {
+                      "type": "string"
+                    },
+                    "definitionId": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "lucky": {
+                      "type": "boolean"
+                    },
+                    "immediate": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "result": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{id}/retry": {
+      "post": {
+        "operationId": "retryJob",
+        "tags": [
+          "Generation"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "runId",
+                    "kind",
+                    "status",
+                    "instanceId",
+                    "definitionId",
+                    "lucky",
+                    "immediate",
+                    "createdAt",
+                    "completedAt",
+                    "error",
+                    "result"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "runId": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "card",
+                        "art"
+                      ]
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "instanceId": {
+                      "type": "string"
+                    },
+                    "definitionId": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "lucky": {
+                      "type": "boolean"
+                    },
+                    "immediate": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "result": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transcripts": {
+      "get": {
+        "operationId": "listTranscripts",
+        "tags": [
+          "Voice"
+        ],
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "runId",
+                      "text",
+                      "source",
+                      "mood",
+                      "createdAt"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "runId": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "mood": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/inspiration": {
+      "post": {
+        "operationId": "addInspiration",
+        "tags": [
+          "Voice"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "text",
+                  "source"
+                ],
+                "properties": {
+                  "text": {
+                    "minLength": 1,
+                    "maxLength": 4000,
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "microphone",
+                      "chat",
+                      "tts",
+                      "manual"
+                    ]
+                  },
+                  "mood": {
+                    "maxLength": 120,
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "text",
+                  "source"
+                ],
+                "properties": {
+                  "text": {
+                    "minLength": 1,
+                    "maxLength": 4000,
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "microphone",
+                      "chat",
+                      "tts",
+                      "manual"
+                    ]
+                  },
+                  "mood": {
+                    "maxLength": 120,
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "text",
+                  "source"
+                ],
+                "properties": {
+                  "text": {
+                    "minLength": 1,
+                    "maxLength": 4000,
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "microphone",
+                      "chat",
+                      "tts",
+                      "manual"
+                    ]
+                  },
+                  "mood": {
+                    "maxLength": 120,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "runId",
+                    "text",
+                    "source",
+                    "mood",
+                    "createdAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "runId": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "mood": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/voice/utterances": {
+      "post": {
+        "operationId": "transcribeUtterance",
+        "tags": [
+          "Voice"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "samples"
+                ],
+                "properties": {
+                  "samples": {
+                    "minItems": 1600,
+                    "maxItems": 480000,
+                    "type": "array",
+                    "items": {
+                      "minimum": -1,
+                      "maximum": 1,
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "samples"
+                ],
+                "properties": {
+                  "samples": {
+                    "minItems": 1600,
+                    "maxItems": 480000,
+                    "type": "array",
+                    "items": {
+                      "minimum": -1,
+                      "maximum": 1,
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "samples"
+                ],
+                "properties": {
+                  "samples": {
+                    "minItems": 1600,
+                    "maxItems": 480000,
+                    "type": "array",
+                    "items": {
+                      "minimum": -1,
+                      "maximum": 1,
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "required": [
+                    "id",
+                    "runId",
+                    "text",
+                    "source",
+                    "mood",
+                    "createdAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "runId": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "mood": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events": {
+      "get": {
+        "operationId": "listEvents",
+        "tags": [
+          "Director"
+        ],
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "runId",
+                      "kind",
+                      "instanceId",
+                      "definitionId",
+                      "message",
+                      "at"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "runId": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string"
+                      },
+                      "instanceId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "definitionId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/definitions": {
+      "get": {
+        "operationId": "listDefinitions",
+        "tags": [
+          "Cards"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "rarity",
+                      "type",
+                      "target",
+                      "cost",
+                      "effects",
+                      "keywords",
+                      "theme",
+                      "rationale",
+                      "artPrompt",
+                      "quality"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "rarity": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "target": {
+                        "type": "string"
+                      },
+                      "cost": {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "maximum": 5,
+                            "minimum": 0,
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "effects": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "kind",
+                            "amount",
+                            "target",
+                            "power",
+                            "upgradeAmount",
+                            "condition",
+                            "repeat"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "amount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "target": {
+                              "type": "string"
+                            },
+                            "power": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "upgradeAmount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "condition": {
+                              "type": "string"
+                            },
+                            "repeat": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "keywords": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "theme": {
+                        "type": "string"
+                      },
+                      "rationale": {
+                        "type": "string"
+                      },
+                      "artPrompt": {
+                        "type": "string"
+                      },
+                      "quality": {
+                        "maximum": 12,
+                        "minimum": 0,
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/provider": {
+      "get": {
+        "operationId": "getProviderSettings",
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "model",
+                    "modelDir",
+                    "autoPrepare",
+                    "cardTimeoutMs",
+                    "artTimeoutMs"
+                  ],
+                  "properties": {
+                    "id": {
+                      "const": "provider",
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "modelDir": {
+                      "type": "string"
+                    },
+                    "autoPrepare": {
+                      "type": "boolean"
+                    },
+                    "cardTimeoutMs": {
+                      "minimum": 10000,
+                      "maximum": 600000,
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 10000,
+                          "maximum": 600000,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "artTimeoutMs": {
+                      "minimum": 10000,
+                      "maximum": 900000,
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 10000,
+                          "maximum": 900000,
+                          "type": "integer"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "setProviderSettings",
+        "tags": [
+          "Settings"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "model",
+                  "modelDir",
+                  "autoPrepare",
+                  "cardTimeoutMs",
+                  "artTimeoutMs"
+                ],
+                "properties": {
+                  "id": {
+                    "const": "provider",
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "modelDir": {
+                    "type": "string"
+                  },
+                  "autoPrepare": {
+                    "type": "boolean"
+                  },
+                  "cardTimeoutMs": {
+                    "minimum": 10000,
+                    "maximum": 600000,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "minimum": 10000,
+                        "maximum": 600000,
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "artTimeoutMs": {
+                    "minimum": 10000,
+                    "maximum": 900000,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "minimum": 10000,
+                        "maximum": 900000,
+                        "type": "integer"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "model",
+                  "modelDir",
+                  "autoPrepare",
+                  "cardTimeoutMs",
+                  "artTimeoutMs"
+                ],
+                "properties": {
+                  "id": {
+                    "const": "provider",
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "modelDir": {
+                    "type": "string"
+                  },
+                  "autoPrepare": {
+                    "type": "boolean"
+                  },
+                  "cardTimeoutMs": {
+                    "minimum": 10000,
+                    "maximum": 600000,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "minimum": 10000,
+                        "maximum": 600000,
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "artTimeoutMs": {
+                    "minimum": 10000,
+                    "maximum": 900000,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "minimum": 10000,
+                        "maximum": 900000,
+                        "type": "integer"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "model",
+                  "modelDir",
+                  "autoPrepare",
+                  "cardTimeoutMs",
+                  "artTimeoutMs"
+                ],
+                "properties": {
+                  "id": {
+                    "const": "provider",
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "modelDir": {
+                    "type": "string"
+                  },
+                  "autoPrepare": {
+                    "type": "boolean"
+                  },
+                  "cardTimeoutMs": {
+                    "minimum": 10000,
+                    "maximum": 600000,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "minimum": 10000,
+                        "maximum": 600000,
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "artTimeoutMs": {
+                    "minimum": 10000,
+                    "maximum": 900000,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "minimum": 10000,
+                        "maximum": 900000,
+                        "type": "integer"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "model",
+                    "modelDir",
+                    "autoPrepare",
+                    "cardTimeoutMs",
+                    "artTimeoutMs"
+                  ],
+                  "properties": {
+                    "id": {
+                      "const": "provider",
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "modelDir": {
+                      "type": "string"
+                    },
+                    "autoPrepare": {
+                      "type": "boolean"
+                    },
+                    "cardTimeoutMs": {
+                      "minimum": 10000,
+                      "maximum": 600000,
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 10000,
+                          "maximum": 600000,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "artTimeoutMs": {
+                      "minimum": 10000,
+                      "maximum": 900000,
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 10000,
+                          "maximum": 900000,
+                          "type": "integer"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/art/{id}": {
+      "get": {
+        "operationId": "getArtwork",
+        "tags": [
+          "Cards"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/game/state": {
+      "get": {
+        "operationId": "game_Get_state",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "runId",
+                    "revision",
+                    "phase",
+                    "turn",
+                    "cards",
+                    "creatures",
+                    "choices",
+                    "actions",
+                    "settings",
+                    "error"
+                  ],
+                  "properties": {
+                    "runId": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "phase": {
+                      "type": "string"
+                    },
+                    "turn": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "cards": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "modelId",
+                          "definitionId",
+                          "name",
+                          "rarity",
+                          "type",
+                          "cost",
+                          "upgradeLevel",
+                          "pile",
+                          "description",
+                          "wildcard",
+                          "resolved",
+                          "protected",
+                          "lastTransformedTurn"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "modelId": {
+                            "type": "string"
+                          },
+                          "definitionId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "rarity": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "cost": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "upgradeLevel": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "pile": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "wildcard": {
+                            "type": "boolean"
+                          },
+                          "resolved": {
+                            "type": "boolean"
+                          },
+                          "protected": {
+                            "type": "boolean"
+                          },
+                          "lastTransformedTurn": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "creatures": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "health",
+                          "maxHealth",
+                          "block",
+                          "enemy"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "health": {
+                            "type": "number"
+                          },
+                          "maxHealth": {
+                            "type": "number"
+                          },
+                          "block": {
+                            "type": "number"
+                          },
+                          "enemy": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "choices": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "kind",
+                          "label",
+                          "enabled"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "settings": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "mode",
+                        "drawChance",
+                        "maxPerTurn",
+                        "cooldownTurns",
+                        "strength",
+                        "synergy",
+                        "enabled",
+                        "debugConsole"
+                      ],
+                      "properties": {
+                        "mode": {
+                          "type": "string"
+                        },
+                        "drawChance": {
+                          "type": "number"
+                        },
+                        "maxPerTurn": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "cooldownTurns": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "strength": {
+                          "type": "number"
+                        },
+                        "synergy": {
+                          "type": "number"
+                        },
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "debugConsole": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/capabilities": {
+      "get": {
+        "operationId": "game_Get_capabilities",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "gameVersion",
+                    "connected",
+                    "effects",
+                    "powers",
+                    "singlePlayerOnly"
+                  ],
+                  "properties": {
+                    "gameVersion": {
+                      "type": "string"
+                    },
+                    "connected": {
+                      "type": "boolean"
+                    },
+                    "effects": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "powers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "singlePlayerOnly": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/definitions": {
+      "get": {
+        "operationId": "game_Get_definitions",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "rarity",
+                      "type",
+                      "target",
+                      "cost",
+                      "effects",
+                      "keywords",
+                      "theme",
+                      "rationale",
+                      "artPrompt",
+                      "quality"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "rarity": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "target": {
+                        "type": "string"
+                      },
+                      "cost": {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "maximum": 5,
+                            "minimum": 0,
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "effects": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "kind",
+                            "amount",
+                            "target",
+                            "power",
+                            "upgradeAmount",
+                            "condition",
+                            "repeat"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "amount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "target": {
+                              "type": "string"
+                            },
+                            "power": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "upgradeAmount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "condition": {
+                              "type": "string"
+                            },
+                            "repeat": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "keywords": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "theme": {
+                        "type": "string"
+                      },
+                      "rationale": {
+                        "type": "string"
+                      },
+                      "artPrompt": {
+                        "type": "string"
+                      },
+                      "quality": {
+                        "maximum": 12,
+                        "minimum": 0,
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/cards/references": {
+      "get": {
+        "operationId": "game_Get_cards_references",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "modelId",
+                      "name",
+                      "pool",
+                      "rarity",
+                      "type",
+                      "cost",
+                      "description",
+                      "upgradeDescription",
+                      "keywords"
+                    ],
+                    "properties": {
+                      "modelId": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "pool": {
+                        "type": "string"
+                      },
+                      "rarity": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "cost": {
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "upgradeDescription": {
+                        "type": "string"
+                      },
+                      "keywords": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/cards/art-reference": {
+      "post": {
+        "operationId": "game_Post_cards_art_reference",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "modelId"
+                ],
+                "properties": {
+                  "modelId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "modelId"
+                ],
+                "properties": {
+                  "modelId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "modelId"
+                ],
+                "properties": {
+                  "modelId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "pool",
+                    "modelIds",
+                    "pngBase64"
+                  ],
+                  "properties": {
+                    "pool": {
+                      "type": "string"
+                    },
+                    "modelIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "pngBase64": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/cards/validate": {
+      "post": {
+        "operationId": "game_Post_cards_validate",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "rarity",
+                  "type",
+                  "target",
+                  "cost",
+                  "effects",
+                  "keywords",
+                  "theme",
+                  "rationale",
+                  "artPrompt",
+                  "quality"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "rarity": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  },
+                  "cost": {
+                    "maximum": 5,
+                    "minimum": 0,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "effects": {
+                    "type": "array",
+                    "items": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "kind",
+                        "amount",
+                        "target",
+                        "power",
+                        "upgradeAmount",
+                        "condition",
+                        "repeat"
+                      ],
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "target": {
+                          "type": "string"
+                        },
+                        "power": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "upgradeAmount": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "condition": {
+                          "type": "string"
+                        },
+                        "repeat": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "keywords": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "theme": {
+                    "type": "string"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "artPrompt": {
+                    "type": "string"
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 0,
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "rarity",
+                  "type",
+                  "target",
+                  "cost",
+                  "effects",
+                  "keywords",
+                  "theme",
+                  "rationale",
+                  "artPrompt",
+                  "quality"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "rarity": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  },
+                  "cost": {
+                    "maximum": 5,
+                    "minimum": 0,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "effects": {
+                    "type": "array",
+                    "items": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "kind",
+                        "amount",
+                        "target",
+                        "power",
+                        "upgradeAmount",
+                        "condition",
+                        "repeat"
+                      ],
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "target": {
+                          "type": "string"
+                        },
+                        "power": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "upgradeAmount": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "condition": {
+                          "type": "string"
+                        },
+                        "repeat": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "keywords": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "theme": {
+                    "type": "string"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "artPrompt": {
+                    "type": "string"
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 0,
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "rarity",
+                  "type",
+                  "target",
+                  "cost",
+                  "effects",
+                  "keywords",
+                  "theme",
+                  "rationale",
+                  "artPrompt",
+                  "quality"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "rarity": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  },
+                  "cost": {
+                    "maximum": 5,
+                    "minimum": 0,
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "effects": {
+                    "type": "array",
+                    "items": {
+                      "additionalProperties": false,
+                      "type": "object",
+                      "required": [
+                        "kind",
+                        "amount",
+                        "target",
+                        "power",
+                        "upgradeAmount",
+                        "condition",
+                        "repeat"
+                      ],
+                      "properties": {
+                        "kind": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "target": {
+                          "type": "string"
+                        },
+                        "power": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "upgradeAmount": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "condition": {
+                          "type": "string"
+                        },
+                        "repeat": {
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "keywords": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "theme": {
+                    "type": "string"
+                  },
+                  "rationale": {
+                    "type": "string"
+                  },
+                  "artPrompt": {
+                    "type": "string"
+                  },
+                  "quality": {
+                    "maximum": 12,
+                    "minimum": 0,
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "valid",
+                    "error"
+                  ],
+                  "properties": {
+                    "valid": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/events": {
+      "get": {
+        "operationId": "game_Get_events",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "runId",
+                      "kind",
+                      "instanceId",
+                      "definitionId",
+                      "message",
+                      "at"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "runId": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string"
+                      },
+                      "instanceId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "definitionId": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/operations": {
+      "get": {
+        "operationId": "game_Get_operations",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "kind",
+                      "status",
+                      "error",
+                      "createdAt",
+                      "completedAt"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "error": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "completedAt": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/console/commands": {
+      "get": {
+        "operationId": "game_Get_console_commands",
+        "tags": [
+          "Console"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "arguments",
+                      "description",
+                      "debugOnly"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "arguments": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "debugOnly": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/console/complete": {
+      "post": {
+        "operationId": "game_Post_console_complete",
+        "tags": [
+          "Console"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/console/arguments": {
+      "post": {
+        "operationId": "game_Post_console_arguments",
+        "tags": [
+          "Console"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "label",
+                      "kind",
+                      "required",
+                      "defaultValue",
+                      "options"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "type": "string"
+                      },
+                      "required": {
+                        "type": "boolean"
+                      },
+                      "defaultValue": {
+                        "type": "string"
+                      },
+                      "options": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "value",
+                            "label"
+                          ],
+                          "properties": {
+                            "value": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/console/execute": {
+      "post": {
+        "operationId": "game_Post_console_execute",
+        "tags": [
+          "Console"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "requestId",
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "requestId",
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "requestId",
+                  "command",
+                  "arguments"
+                ],
+                "properties": {
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "command": {
+                    "type": "string"
+                  },
+                  "arguments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/combat/play": {
+      "post": {
+        "operationId": "game_Post_combat_play",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "instanceId",
+                  "targetId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "targetId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "instanceId",
+                  "targetId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "targetId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "instanceId",
+                  "targetId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "targetId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/combat/end-turn": {
+      "post": {
+        "operationId": "game_Post_combat_end_turn",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/choices/select": {
+      "post": {
+        "operationId": "game_Post_choices_select",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "choiceId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "choiceId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "choiceId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "choiceId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "choiceId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "choiceId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/potions/use": {
+      "post": {
+        "operationId": "game_Post_potions_use",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "slot",
+                  "targetId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "slot": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "targetId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "slot",
+                  "targetId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "slot": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "targetId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "requestId",
+                  "slot",
+                  "targetId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  },
+                  "slot": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "targetId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/candidates": {
+      "post": {
+        "operationId": "game_Post_candidates",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "instanceId",
+                  "definition",
+                  "lucky"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "definition": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "rarity",
+                      "type",
+                      "target",
+                      "cost",
+                      "effects",
+                      "keywords",
+                      "theme",
+                      "rationale",
+                      "artPrompt",
+                      "quality"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "rarity": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "target": {
+                        "type": "string"
+                      },
+                      "cost": {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "maximum": 5,
+                            "minimum": 0,
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "effects": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "kind",
+                            "amount",
+                            "target",
+                            "power",
+                            "upgradeAmount",
+                            "condition",
+                            "repeat"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "amount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "target": {
+                              "type": "string"
+                            },
+                            "power": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "upgradeAmount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "condition": {
+                              "type": "string"
+                            },
+                            "repeat": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "keywords": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "theme": {
+                        "type": "string"
+                      },
+                      "rationale": {
+                        "type": "string"
+                      },
+                      "artPrompt": {
+                        "type": "string"
+                      },
+                      "quality": {
+                        "maximum": 12,
+                        "minimum": 0,
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "lucky": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "instanceId",
+                  "definition",
+                  "lucky"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "definition": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "rarity",
+                      "type",
+                      "target",
+                      "cost",
+                      "effects",
+                      "keywords",
+                      "theme",
+                      "rationale",
+                      "artPrompt",
+                      "quality"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "rarity": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "target": {
+                        "type": "string"
+                      },
+                      "cost": {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "maximum": 5,
+                            "minimum": 0,
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "effects": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "kind",
+                            "amount",
+                            "target",
+                            "power",
+                            "upgradeAmount",
+                            "condition",
+                            "repeat"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "amount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "target": {
+                              "type": "string"
+                            },
+                            "power": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "upgradeAmount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "condition": {
+                              "type": "string"
+                            },
+                            "repeat": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "keywords": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "theme": {
+                        "type": "string"
+                      },
+                      "rationale": {
+                        "type": "string"
+                      },
+                      "artPrompt": {
+                        "type": "string"
+                      },
+                      "quality": {
+                        "maximum": 12,
+                        "minimum": 0,
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "lucky": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "instanceId",
+                  "definition",
+                  "lucky"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "definition": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "rarity",
+                      "type",
+                      "target",
+                      "cost",
+                      "effects",
+                      "keywords",
+                      "theme",
+                      "rationale",
+                      "artPrompt",
+                      "quality"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "rarity": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "target": {
+                        "type": "string"
+                      },
+                      "cost": {
+                        "maximum": 5,
+                        "minimum": 0,
+                        "anyOf": [
+                          {
+                            "format": "integer",
+                            "default": 0,
+                            "type": "string"
+                          },
+                          {
+                            "maximum": 5,
+                            "minimum": 0,
+                            "type": "integer"
+                          }
+                        ]
+                      },
+                      "effects": {
+                        "type": "array",
+                        "items": {
+                          "additionalProperties": false,
+                          "type": "object",
+                          "required": [
+                            "kind",
+                            "amount",
+                            "target",
+                            "power",
+                            "upgradeAmount",
+                            "condition",
+                            "repeat"
+                          ],
+                          "properties": {
+                            "kind": {
+                              "type": "string"
+                            },
+                            "amount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "target": {
+                              "type": "string"
+                            },
+                            "power": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "upgradeAmount": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            },
+                            "condition": {
+                              "type": "string"
+                            },
+                            "repeat": {
+                              "anyOf": [
+                                {
+                                  "format": "integer",
+                                  "default": 0,
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "integer"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "keywords": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "theme": {
+                        "type": "string"
+                      },
+                      "rationale": {
+                        "type": "string"
+                      },
+                      "artPrompt": {
+                        "type": "string"
+                      },
+                      "quality": {
+                        "maximum": 12,
+                        "minimum": 0,
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "lucky": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/cards/transform": {
+      "post": {
+        "operationId": "game_Post_cards_transform",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "instanceId",
+                  "definitionId",
+                  "requestId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "definitionId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "instanceId",
+                  "definitionId",
+                  "requestId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "definitionId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "runId",
+                  "instanceId",
+                  "definitionId",
+                  "requestId"
+                ],
+                "properties": {
+                  "runId": {
+                    "type": "string"
+                  },
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "definitionId": {
+                    "type": "string"
+                  },
+                  "requestId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/cards/art": {
+      "post": {
+        "operationId": "game_Post_cards_art",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "definitionId",
+                  "pngBase64"
+                ],
+                "properties": {
+                  "definitionId": {
+                    "type": "string"
+                  },
+                  "pngBase64": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "definitionId",
+                  "pngBase64"
+                ],
+                "properties": {
+                  "definitionId": {
+                    "type": "string"
+                  },
+                  "pngBase64": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "definitionId",
+                  "pngBase64"
+                ],
+                "properties": {
+                  "definitionId": {
+                    "type": "string"
+                  },
+                  "pngBase64": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "kind",
+                    "status",
+                    "error",
+                    "createdAt",
+                    "completedAt"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "completedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/settings": {
+      "put": {
+        "operationId": "game_Put_settings",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "mode",
+                  "drawChance",
+                  "maxPerTurn",
+                  "cooldownTurns",
+                  "strength",
+                  "synergy",
+                  "enabled",
+                  "debugConsole"
+                ],
+                "properties": {
+                  "mode": {
+                    "type": "string"
+                  },
+                  "drawChance": {
+                    "type": "number"
+                  },
+                  "maxPerTurn": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "cooldownTurns": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "strength": {
+                    "type": "number"
+                  },
+                  "synergy": {
+                    "type": "number"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "debugConsole": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "mode",
+                  "drawChance",
+                  "maxPerTurn",
+                  "cooldownTurns",
+                  "strength",
+                  "synergy",
+                  "enabled",
+                  "debugConsole"
+                ],
+                "properties": {
+                  "mode": {
+                    "type": "string"
+                  },
+                  "drawChance": {
+                    "type": "number"
+                  },
+                  "maxPerTurn": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "cooldownTurns": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "strength": {
+                    "type": "number"
+                  },
+                  "synergy": {
+                    "type": "number"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "debugConsole": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "mode",
+                  "drawChance",
+                  "maxPerTurn",
+                  "cooldownTurns",
+                  "strength",
+                  "synergy",
+                  "enabled",
+                  "debugConsole"
+                ],
+                "properties": {
+                  "mode": {
+                    "type": "string"
+                  },
+                  "drawChance": {
+                    "type": "number"
+                  },
+                  "maxPerTurn": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "cooldownTurns": {
+                    "anyOf": [
+                      {
+                        "format": "integer",
+                        "default": 0,
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "strength": {
+                    "type": "number"
+                  },
+                  "synergy": {
+                    "type": "number"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "debugConsole": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "mode",
+                    "drawChance",
+                    "maxPerTurn",
+                    "cooldownTurns",
+                    "strength",
+                    "synergy",
+                    "enabled",
+                    "debugConsole"
+                  ],
+                  "properties": {
+                    "mode": {
+                      "type": "string"
+                    },
+                    "drawChance": {
+                      "type": "number"
+                    },
+                    "maxPerTurn": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "cooldownTurns": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "strength": {
+                      "type": "number"
+                    },
+                    "synergy": {
+                      "type": "number"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "debugConsole": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/cards/protection": {
+      "put": {
+        "operationId": "game_Put_cards_protection",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "instanceId",
+                  "protected"
+                ],
+                "properties": {
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "protected": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "instanceId",
+                  "protected"
+                ],
+                "properties": {
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "protected": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "instanceId",
+                  "protected"
+                ],
+                "properties": {
+                  "instanceId": {
+                    "type": "string"
+                  },
+                  "protected": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "modelId",
+                    "definitionId",
+                    "name",
+                    "rarity",
+                    "type",
+                    "cost",
+                    "upgradeLevel",
+                    "pile",
+                    "description",
+                    "wildcard",
+                    "resolved",
+                    "protected",
+                    "lastTransformedTurn"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "modelId": {
+                      "type": "string"
+                    },
+                    "definitionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "rarity": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "cost": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "upgradeLevel": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "pile": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "wildcard": {
+                      "type": "boolean"
+                    },
+                    "resolved": {
+                      "type": "boolean"
+                    },
+                    "protected": {
+                      "type": "boolean"
+                    },
+                    "lastTransformedTurn": {
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

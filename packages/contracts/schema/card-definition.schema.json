@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "CardDefinition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "rarity",
+    "type",
+    "target",
+    "cost",
+    "effects",
+    "keywords",
+    "theme",
+    "rationale",
+    "artPrompt",
+    "quality"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "rarity": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "target": {
+      "type": "string"
+    },
+    "cost": {
+      "type": "integer",
+      "format": "int32",
+      "maximum": 5.0,
+      "minimum": 0.0
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CardEffect"
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "theme": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "artPrompt": {
+      "type": "string"
+    },
+    "quality": {
+      "type": "number",
+      "format": "double",
+      "maximum": 12.0,
+      "minimum": 0.0
+    }
+  },
+  "definitions": {
+    "CardEffect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "amount",
+        "target",
+        "power",
+        "upgradeAmount",
+        "condition",
+        "repeat"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "target": {
+          "type": "string"
+        },
+        "power": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "upgradeAmount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "condition": {
+          "type": "string"
+        },
+        "repeat": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}

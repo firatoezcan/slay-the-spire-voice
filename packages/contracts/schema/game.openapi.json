@@ -1,0 +1,2273 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Voice Director Game API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:57544"
+    }
+  ],
+  "paths": {
+    "/state": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_state",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameSnapshot"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameSnapshot"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameSnapshot"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameSnapshot"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameSnapshot"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/capabilities": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_capabilities",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capabilities"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capabilities"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capabilities"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capabilities"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Capabilities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/definitions": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_definitions",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardDefinition"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardDefinition"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardDefinition"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardDefinition"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardDefinition"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/references": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_cards_references",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardReference"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardReference"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardReference"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardReference"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CardReference"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/art-reference": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_cards_art_reference",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtReferenceRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtReferenceRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtReferenceRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtReferenceRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtReferenceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArtReferenceSheet"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArtReferenceSheet"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArtReferenceSheet"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArtReferenceSheet"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArtReferenceSheet"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/validate": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_cards_validate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardDefinition"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/CardDefinition"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CardDefinition"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CardDefinition"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CardDefinition"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardValidation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardValidation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardValidation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardValidation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardValidation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_events",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameEvent"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameEvent"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameEvent"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameEvent"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GameEvent"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/operations": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_operations",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Operation"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Operation"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Operation"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Operation"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Operation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/commands": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_console_commands",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleCommand"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleCommand"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleCommand"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleCommand"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleCommand"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/complete": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_console_complete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/arguments": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_console_arguments",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleCompletionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleArgument"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleArgument"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleArgument"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleArgument"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsoleArgument"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/execute": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_console_execute",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsoleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/combat/play": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_combat_play",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/combat/end-turn": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_combat_end_turn",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/choices/select": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_choices_select",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChoiceRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ChoiceRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ChoiceRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ChoiceRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ChoiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/potions/use": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_potions_use",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PotionRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/PotionRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PotionRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/PotionRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/PotionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/candidates": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_candidates",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CandidateRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/CandidateRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CandidateRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CandidateRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CandidateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/transform": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_cards_transform",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/art": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_cards_art",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ArtRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Operation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings": {
+      "put": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Put_settings",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectorSettings"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectorSettings"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectorSettings"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectorSettings"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectorSettings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectorSettings"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectorSettings"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectorSettings"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectorSettings"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectorSettings"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/protection": {
+      "put": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Put_cards_protection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtectionRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtectionRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtectionRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtectionRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtectionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardInstance"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardInstance"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardInstance"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardInstance"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardInstance"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GameSnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runId",
+          "revision",
+          "phase",
+          "turn",
+          "cards",
+          "creatures",
+          "choices",
+          "actions",
+          "settings",
+          "error"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "turn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardInstance"
+            }
+          },
+          "creatures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreatureView"
+            }
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChoiceView"
+            }
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "settings": {
+            "$ref": "#/components/schemas/DirectorSettings"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CardInstance": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "modelId",
+          "definitionId",
+          "name",
+          "rarity",
+          "type",
+          "cost",
+          "upgradeLevel",
+          "pile",
+          "description",
+          "wildcard",
+          "resolved",
+          "protected",
+          "lastTransformedTurn"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "modelId": {
+            "type": "string"
+          },
+          "definitionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "rarity": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "upgradeLevel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pile": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "wildcard": {
+            "type": "boolean"
+          },
+          "resolved": {
+            "type": "boolean"
+          },
+          "protected": {
+            "type": "boolean"
+          },
+          "lastTransformedTurn": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CreatureView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "health",
+          "maxHealth",
+          "block",
+          "enemy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "health": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "maxHealth": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "block": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "enemy": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ChoiceView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "label",
+          "enabled"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DirectorSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "mode",
+          "drawChance",
+          "maxPerTurn",
+          "cooldownTurns",
+          "strength",
+          "synergy",
+          "enabled",
+          "debugConsole"
+        ],
+        "properties": {
+          "mode": {
+            "type": "string"
+          },
+          "drawChance": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxPerTurn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cooldownTurns": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "strength": {
+            "type": "number",
+            "format": "double"
+          },
+          "synergy": {
+            "type": "number",
+            "format": "double"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "debugConsole": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Capabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "gameVersion",
+          "connected",
+          "effects",
+          "powers",
+          "singlePlayerOnly"
+        ],
+        "properties": {
+          "gameVersion": {
+            "type": "string"
+          },
+          "connected": {
+            "type": "boolean"
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "powers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "singlePlayerOnly": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CardDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "rarity",
+          "type",
+          "target",
+          "cost",
+          "effects",
+          "keywords",
+          "theme",
+          "rationale",
+          "artPrompt",
+          "quality"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "rarity": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 5.0,
+            "minimum": 0.0
+          },
+          "effects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardEffect"
+            }
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "theme": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "artPrompt": {
+            "type": "string"
+          },
+          "quality": {
+            "type": "number",
+            "format": "double",
+            "maximum": 12.0,
+            "minimum": 0.0
+          }
+        }
+      },
+      "CardEffect": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "amount",
+          "target",
+          "power",
+          "upgradeAmount",
+          "condition",
+          "repeat"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "target": {
+            "type": "string"
+          },
+          "power": {
+            "type": "string",
+            "nullable": true
+          },
+          "upgradeAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "condition": {
+            "type": "string"
+          },
+          "repeat": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CardReference": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "modelId",
+          "name",
+          "pool",
+          "rarity",
+          "type",
+          "cost",
+          "description",
+          "upgradeDescription",
+          "keywords"
+        ],
+        "properties": {
+          "modelId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "pool": {
+            "type": "string"
+          },
+          "rarity": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string"
+          },
+          "upgradeDescription": {
+            "type": "string"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ArtReferenceRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "modelId"
+        ],
+        "properties": {
+          "modelId": {
+            "type": "string"
+          }
+        }
+      },
+      "ArtReferenceSheet": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pool",
+          "modelIds",
+          "pngBase64"
+        ],
+        "properties": {
+          "pool": {
+            "type": "string"
+          },
+          "modelIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pngBase64": {
+            "type": "string"
+          }
+        }
+      },
+      "CardValidation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "valid",
+          "error"
+        ],
+        "properties": {
+          "valid": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GameEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "runId",
+          "kind",
+          "instanceId",
+          "definitionId",
+          "message",
+          "at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "runId": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "instanceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "definitionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Operation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "error",
+          "createdAt",
+          "completedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "ConsoleCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "arguments",
+          "description",
+          "debugOnly"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "arguments": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "debugOnly": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ConsoleCompletionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command",
+          "arguments"
+        ],
+        "properties": {
+          "command": {
+            "type": "string"
+          },
+          "arguments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ConsoleArgument": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "label",
+          "kind",
+          "required",
+          "defaultValue",
+          "options"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "defaultValue": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsoleOption"
+            }
+          }
+        }
+      },
+      "ConsoleOption": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "value",
+          "label"
+        ],
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "ConsoleRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "requestId",
+          "command",
+          "arguments"
+        ],
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "command": {
+            "type": "string"
+          },
+          "arguments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PlayRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runId",
+          "requestId",
+          "instanceId",
+          "targetId"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "instanceId": {
+            "type": "string"
+          },
+          "targetId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ActionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runId",
+          "requestId"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          }
+        }
+      },
+      "ChoiceRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runId",
+          "requestId",
+          "choiceId"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "choiceId": {
+            "type": "string"
+          }
+        }
+      },
+      "PotionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runId",
+          "requestId",
+          "slot",
+          "targetId"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "slot": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "targetId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CandidateRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runId",
+          "instanceId",
+          "definition",
+          "lucky"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "instanceId": {
+            "type": "string"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/CardDefinition"
+          },
+          "lucky": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TransformRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runId",
+          "instanceId",
+          "definitionId",
+          "requestId"
+        ],
+        "properties": {
+          "runId": {
+            "type": "string"
+          },
+          "instanceId": {
+            "type": "string"
+          },
+          "definitionId": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          }
+        }
+      },
+      "ArtRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "definitionId",
+          "pngBase64"
+        ],
+        "properties": {
+          "definitionId": {
+            "type": "string"
+          },
+          "pngBase64": {
+            "type": "string"
+          }
+        }
+      },
+      "ProtectionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "instanceId",
+          "protected"
+        ],
+        "properties": {
+          "instanceId": {
+            "type": "string"
+          },
+          "protected": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Inline"
+    }
+  ]
+}

@@ -9,3 +9,7 @@
 recordings/
 generated/
 .research/
+node_modules/
+dist/
+.local/
+*.log

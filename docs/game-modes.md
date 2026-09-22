@@ -1,5 +1,7 @@
 # Two gameplay modes
 
+Historical proposal. [Current behavior](current-behavior.md) supersedes the timing and balance proposals below, including the former sidegrade and 6/10 targets.
+
 Product direction, 22 September 2026. These are the two core gameplay modes. Listening settings, providers, artwork and input integrations are shared. This document defines intended behavior; neither mode is implemented yet.
 
 | Mode | Where generated cards enter | Who decides |

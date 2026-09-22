@@ -1,0 +1,9 @@
+{
+  "name": "@voice/companion", "private": true, "type": "module",
+  "dependencies": {
+    "elysia": "latest", "@elysiajs/openapi": "latest", "@elysiajs/static": "latest",
+    "effect": "^3.19.0", "@sinclair/typebox": "^0.34.41",
+    "openapi-fetch": "latest", "sherpa-onnx-node": "1.13.2",
+    "@modelcontextprotocol/sdk": "latest", "ajv-draft-04": "latest"
+  }
+}

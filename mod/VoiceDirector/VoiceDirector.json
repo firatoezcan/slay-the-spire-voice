@@ -1,0 +1,5 @@
+{
+  "id": "VoiceDirector", "name": "Voice Director", "author": "Firat",
+  "description": "Draw-triggered AI card surprises and a local control API.",
+  "version": "0.1.0", "has_pck": false, "has_dll": true, "affects_gameplay": true
+}

@@ -1,16 +1,33 @@
 # Slay the Spire Voice
 
-A Slay the Spire 2 mod idea: the game listens to what you say, turns memorable moments into playable cards, and lets Twitch or other integrations influence the run through a local API.
+A Slay the Spire 2 mod that turns speech and chat into cards. A C# mod runs inside the game; a Bun companion handles Codex generation, local Parakeet transcription, SQLite, and the React dashboard.
 
-This repository contains the first pitch, source research, and local copies of reference mods. There is no playable voice mod yet.
+The mod is running on macOS ARM64 against Slay the Spire 2 v0.107.1. [Current behavior](docs/current-behavior.md) describes the implementation. [Runtime validation](docs/runtime-validation.md) records what has been played and checked.
 
-Start with **[The Spire Is Listening — first pitch](PITCH.md)**.
+## Run locally
 
-The two gameplay modes are **Wildcard** (one same-rarity replacement in every card reward) and **Living Deck** (autonomous, tunable replacements of existing deck cards). See [the mode rules](docs/game-modes.md).
+Install Bun, Nix, the game through Steam, and Codex with an existing sign in. The local Parakeet path defaults to the Oh My Pi model cache; adjust it in Settings if needed.
 
-Taken wildcards have one optional transformation during the reward interaction, including a deck-aware **I'm feeling lucky** option. A card can transform at most once per turn, and transformed deck cards are guaranteed to be drawn next turn.
+```sh
+bun install
+bun run contracts
+bun run check
+bun run mod:install
+```
+
+Save and close the game before installation. Open it through Steam and load Voice Director. The mod starts the companion automatically. `bun run cli open` opens the authenticated dashboard. For web development, `bun run web` serves it on port 5173.
+
+The game API uses port 57542; the companion and packaged dashboard use 57543. The dashboard links to the generated OpenAPI reference. `bun run cli list` lists API operations; `bun run mcp` exposes them to MCP clients. Local data and the authentication token live under `~/.local/share/slay-the-spire-voice`.
+
+## Card generation
+
+Every new card aims above the strongest native card of its rarity. Basic, Common, and Uncommon cards cannot carry drawback effects. Rares may have a drawback only with an exceptional payoff that changes how you play. Generation uses the installed game's card catalogue, executable rules validation, and a separate model review. Failed designs are revised before becoming candidates.
+
+Artwork begins on first play. The mod builds a sprite sheet from original portraits in the source card's pool and supplies it as an image reference to Codex image generation. Original art, reference sheets, generated cards, and game saves remain local and are not included in this repository.
 
 ## Research
+
+The [first pitch](PITCH.md) and early design notes record the investigation. The current behavior document takes precedence over their earlier tuning proposals.
 
 - [Reference mods and where to read their code](references/README.md)
 - [Runtime card registration and lazy first-play artwork](docs/runtime-cards-and-art.md)

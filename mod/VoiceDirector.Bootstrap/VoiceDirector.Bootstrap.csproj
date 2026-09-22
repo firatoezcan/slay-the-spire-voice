@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>VoiceDirector</AssemblyName><NoWarn>$(NoWarn);MSB3270</NoWarn></PropertyGroup>
+  <ItemGroup><Reference Include="sts2" HintPath="$(GameDataDir)/sts2.dll" Private="false" /></ItemGroup>
+</Project>

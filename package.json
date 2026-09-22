@@ -1,0 +1,16 @@
+{
+  "name": "slay-the-spire-voice", "private": true, "type": "module",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "bun run apps/companion/src/main.ts",
+    "web": "bun run --cwd apps/dashboard dev",
+    "build": "bun run scripts/build.ts",
+    "check": "tsc --noEmit",
+    "contracts": "bun run scripts/contracts.ts",
+    "cli": "bun run apps/companion/src/cli.ts",
+    "mcp": "bun run apps/companion/src/mcp.ts",
+    "mod:build": "nix shell nixpkgs#dotnet-sdk_9 --command dotnet build mod/VoiceDirector/VoiceDirector.csproj",
+    "mod:install": "bun run scripts/install-mod.ts"
+  },
+  "devDependencies": {"@types/bun": "latest", "typescript": "~5.9.3", "openapi-typescript": "^7.13.0"}
+}

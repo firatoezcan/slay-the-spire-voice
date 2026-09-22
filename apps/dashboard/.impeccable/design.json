@@ -1,0 +1,611 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-22T13:22:56Z",
+  "title": "Design System: Voice Director dashboard",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Deep green",
+        "tonalRamp": [
+          "oklch(15% 0.06668 159.77)",
+          "oklch(26.4% 0.06668 159.77)",
+          "oklch(37.9% 0.06668 159.77)",
+          "oklch(49.3% 0.06668 159.77)",
+          "oklch(60.7% 0.06668 159.77)",
+          "oklch(72.1% 0.06668 159.77)",
+          "oklch(83.6% 0.06668 159.77)",
+          "oklch(95% 0.06668 159.77)"
+        ]
+      },
+      "primary-foreground": {
+        "role": "neutral",
+        "displayName": "Action text",
+        "tonalRamp": [
+          "oklch(15% 0.00000 0.00)",
+          "oklch(26.4% 0.00000 0.00)",
+          "oklch(37.9% 0.00000 0.00)",
+          "oklch(49.3% 0.00000 0.00)",
+          "oklch(60.7% 0.00000 0.00)",
+          "oklch(72.1% 0.00000 0.00)",
+          "oklch(83.6% 0.00000 0.00)",
+          "oklch(95% 0.00000 0.00)"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Off-white page",
+        "tonalRamp": [
+          "oklch(15% 0.00283 128.49)",
+          "oklch(26.4% 0.00283 128.49)",
+          "oklch(37.9% 0.00283 128.49)",
+          "oklch(49.3% 0.00283 128.49)",
+          "oklch(60.7% 0.00283 128.49)",
+          "oklch(72.1% 0.00283 128.49)",
+          "oklch(83.6% 0.00283 128.49)",
+          "oklch(95% 0.00283 128.49)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Reading green",
+        "tonalRamp": [
+          "oklch(15% 0.02352 164.67)",
+          "oklch(26.4% 0.02352 164.67)",
+          "oklch(37.9% 0.02352 164.67)",
+          "oklch(49.3% 0.02352 164.67)",
+          "oklch(60.7% 0.02352 164.67)",
+          "oklch(72.1% 0.02352 164.67)",
+          "oklch(83.6% 0.02352 164.67)",
+          "oklch(95% 0.02352 164.67)"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "White surface",
+        "tonalRamp": [
+          "oklch(15% 0.00000 0.00)",
+          "oklch(26.4% 0.00000 0.00)",
+          "oklch(37.9% 0.00000 0.00)",
+          "oklch(49.3% 0.00000 0.00)",
+          "oklch(60.7% 0.00000 0.00)",
+          "oklch(72.1% 0.00000 0.00)",
+          "oklch(83.6% 0.00000 0.00)",
+          "oklch(95% 0.00000 0.00)"
+        ]
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "Quiet green",
+        "tonalRamp": [
+          "oklch(15% 0.00921 150.69)",
+          "oklch(26.4% 0.00921 150.69)",
+          "oklch(37.9% 0.00921 150.69)",
+          "oklch(49.3% 0.00921 150.69)",
+          "oklch(60.7% 0.00921 150.69)",
+          "oklch(72.1% 0.00921 150.69)",
+          "oklch(83.6% 0.00921 150.69)",
+          "oklch(95% 0.00921 150.69)"
+        ]
+      },
+      "secondary-foreground": {
+        "role": "neutral",
+        "displayName": "Quiet control text",
+        "tonalRamp": [
+          "oklch(15% 0.04384 160.64)",
+          "oklch(26.4% 0.04384 160.64)",
+          "oklch(37.9% 0.04384 160.64)",
+          "oklch(49.3% 0.04384 160.64)",
+          "oklch(60.7% 0.04384 160.64)",
+          "oklch(72.1% 0.04384 160.64)",
+          "oklch(83.6% 0.04384 160.64)",
+          "oklch(95% 0.04384 160.64)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted surface",
+        "tonalRamp": [
+          "oklch(15% 0.00617 137.77)",
+          "oklch(26.4% 0.00617 137.77)",
+          "oklch(37.9% 0.00617 137.77)",
+          "oklch(49.3% 0.00617 137.77)",
+          "oklch(60.7% 0.00617 137.77)",
+          "oklch(72.1% 0.00617 137.77)",
+          "oklch(83.6% 0.00617 137.77)",
+          "oklch(95% 0.00617 137.77)"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Supporting text",
+        "tonalRamp": [
+          "oklch(15% 0.01941 156.43)",
+          "oklch(26.4% 0.01941 156.43)",
+          "oklch(37.9% 0.01941 156.43)",
+          "oklch(49.3% 0.01941 156.43)",
+          "oklch(60.7% 0.01941 156.43)",
+          "oklch(72.1% 0.01941 156.43)",
+          "oklch(83.6% 0.01941 156.43)",
+          "oklch(95% 0.01941 156.43)"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Selection accent",
+        "tonalRamp": [
+          "oklch(15% 0.01430 148.77)",
+          "oklch(26.4% 0.01430 148.77)",
+          "oklch(37.9% 0.01430 148.77)",
+          "oklch(49.3% 0.01430 148.77)",
+          "oklch(60.7% 0.01430 148.77)",
+          "oklch(72.1% 0.01430 148.77)",
+          "oklch(83.6% 0.01430 148.77)",
+          "oklch(95% 0.01430 148.77)"
+        ]
+      },
+      "accent-foreground": {
+        "role": "primary",
+        "displayName": "Accent text",
+        "tonalRamp": [
+          "oklch(15% 0.05177 155.33)",
+          "oklch(26.4% 0.05177 155.33)",
+          "oklch(37.9% 0.05177 155.33)",
+          "oklch(49.3% 0.05177 155.33)",
+          "oklch(60.7% 0.05177 155.33)",
+          "oklch(72.1% 0.05177 155.33)",
+          "oklch(83.6% 0.05177 155.33)",
+          "oklch(95% 0.05177 155.33)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Surface rule",
+        "tonalRamp": [
+          "oklch(15% 0.01205 145.47)",
+          "oklch(26.4% 0.01205 145.47)",
+          "oklch(37.9% 0.01205 145.47)",
+          "oklch(49.3% 0.01205 145.47)",
+          "oklch(60.7% 0.01205 145.47)",
+          "oklch(72.1% 0.01205 145.47)",
+          "oklch(83.6% 0.01205 145.47)",
+          "oklch(95% 0.01205 145.47)"
+        ]
+      },
+      "input": {
+        "role": "neutral",
+        "displayName": "Input rule",
+        "tonalRamp": [
+          "oklch(15% 0.01634 148.38)",
+          "oklch(26.4% 0.01634 148.38)",
+          "oklch(37.9% 0.01634 148.38)",
+          "oklch(49.3% 0.01634 148.38)",
+          "oklch(60.7% 0.01634 148.38)",
+          "oklch(72.1% 0.01634 148.38)",
+          "oklch(83.6% 0.01634 148.38)",
+          "oklch(95% 0.01634 148.38)"
+        ]
+      },
+      "ring": {
+        "role": "primary",
+        "displayName": "Focus green",
+        "tonalRamp": [
+          "oklch(15% 0.08206 159.76)",
+          "oklch(26.4% 0.08206 159.76)",
+          "oklch(37.9% 0.08206 159.76)",
+          "oklch(49.3% 0.08206 159.76)",
+          "oklch(60.7% 0.08206 159.76)",
+          "oklch(72.1% 0.08206 159.76)",
+          "oklch(83.6% 0.08206 159.76)",
+          "oklch(95% 0.08206 159.76)"
+        ]
+      },
+      "destructive": {
+        "role": "neutral",
+        "displayName": "Action red",
+        "tonalRamp": [
+          "oklch(15% 0.14194 28.13)",
+          "oklch(26.4% 0.14194 28.13)",
+          "oklch(37.9% 0.14194 28.13)",
+          "oklch(49.3% 0.14194 28.13)",
+          "oklch(60.7% 0.14194 28.13)",
+          "oklch(72.1% 0.14194 28.13)",
+          "oklch(83.6% 0.14194 28.13)",
+          "oklch(95% 0.14194 28.13)"
+        ]
+      },
+      "sidebar-frame": {
+        "role": "neutral",
+        "displayName": "Dark green rail",
+        "tonalRamp": [
+          "oklch(15% 0.02771 169.58)",
+          "oklch(26.4% 0.02771 169.58)",
+          "oklch(37.9% 0.02771 169.58)",
+          "oklch(49.3% 0.02771 169.58)",
+          "oklch(60.7% 0.02771 169.58)",
+          "oklch(72.1% 0.02771 169.58)",
+          "oklch(83.6% 0.02771 169.58)",
+          "oklch(95% 0.02771 169.58)"
+        ]
+      },
+      "sidebar-label": {
+        "role": "neutral",
+        "displayName": "Rail label",
+        "tonalRamp": [
+          "oklch(15% 0.02131 156.74)",
+          "oklch(26.4% 0.02131 156.74)",
+          "oklch(37.9% 0.02131 156.74)",
+          "oklch(49.3% 0.02131 156.74)",
+          "oklch(60.7% 0.02131 156.74)",
+          "oklch(72.1% 0.02131 156.74)",
+          "oklch(83.6% 0.02131 156.74)",
+          "oklch(95% 0.02131 156.74)"
+        ]
+      },
+      "sidebar-selection": {
+        "role": "neutral",
+        "displayName": "Selected navigation",
+        "tonalRamp": [
+          "oklch(15% 0.01600 148.40)",
+          "oklch(26.4% 0.01600 148.40)",
+          "oklch(37.9% 0.01600 148.40)",
+          "oklch(49.3% 0.01600 148.40)",
+          "oklch(60.7% 0.01600 148.40)",
+          "oklch(72.1% 0.01600 148.40)",
+          "oklch(83.6% 0.01600 148.40)",
+          "oklch(95% 0.01600 148.40)"
+        ]
+      },
+      "sidebar-selection-text": {
+        "role": "neutral",
+        "displayName": "Selected navigation text",
+        "tonalRamp": [
+          "oklch(15% 0.05911 156.88)",
+          "oklch(26.4% 0.05911 156.88)",
+          "oklch(37.9% 0.05911 156.88)",
+          "oklch(49.3% 0.05911 156.88)",
+          "oklch(60.7% 0.05911 156.88)",
+          "oklch(72.1% 0.05911 156.88)",
+          "oklch(83.6% 0.05911 156.88)",
+          "oklch(95% 0.05911 156.88)"
+        ]
+      },
+      "inspector": {
+        "role": "neutral",
+        "displayName": "Inspector surface",
+        "tonalRamp": [
+          "oklch(15% 0.00692 124.45)",
+          "oklch(26.4% 0.00692 124.45)",
+          "oklch(37.9% 0.00692 124.45)",
+          "oklch(49.3% 0.00692 124.45)",
+          "oklch(60.7% 0.00692 124.45)",
+          "oklch(72.1% 0.00692 124.45)",
+          "oklch(83.6% 0.00692 124.45)",
+          "oklch(95% 0.00692 124.45)"
+        ]
+      },
+      "selected-row": {
+        "role": "neutral",
+        "displayName": "Selected row",
+        "tonalRamp": [
+          "oklch(15% 0.01519 136.08)",
+          "oklch(26.4% 0.01519 136.08)",
+          "oklch(37.9% 0.01519 136.08)",
+          "oklch(49.3% 0.01519 136.08)",
+          "oklch(60.7% 0.01519 136.08)",
+          "oklch(72.1% 0.01519 136.08)",
+          "oklch(83.6% 0.01519 136.08)",
+          "oklch(95% 0.01519 136.08)"
+        ]
+      },
+      "state-background": {
+        "role": "neutral",
+        "displayName": "Ordinary state surface",
+        "tonalRamp": [
+          "oklch(15% 0.00734 132.42)",
+          "oklch(26.4% 0.00734 132.42)",
+          "oklch(37.9% 0.00734 132.42)",
+          "oklch(49.3% 0.00734 132.42)",
+          "oklch(60.7% 0.00734 132.42)",
+          "oklch(72.1% 0.00734 132.42)",
+          "oklch(83.6% 0.00734 132.42)",
+          "oklch(95% 0.00734 132.42)"
+        ]
+      },
+      "state-text": {
+        "role": "neutral",
+        "displayName": "Ordinary state text",
+        "tonalRamp": [
+          "oklch(15% 0.02403 156.26)",
+          "oklch(26.4% 0.02403 156.26)",
+          "oklch(37.9% 0.02403 156.26)",
+          "oklch(49.3% 0.02403 156.26)",
+          "oklch(60.7% 0.02403 156.26)",
+          "oklch(72.1% 0.02403 156.26)",
+          "oklch(83.6% 0.02403 156.26)",
+          "oklch(95% 0.02403 156.26)"
+        ]
+      },
+      "generated-background": {
+        "role": "neutral",
+        "displayName": "Generated state surface",
+        "tonalRamp": [
+          "oklch(15% 0.02945 137.38)",
+          "oklch(26.4% 0.02945 137.38)",
+          "oklch(37.9% 0.02945 137.38)",
+          "oklch(49.3% 0.02945 137.38)",
+          "oklch(60.7% 0.02945 137.38)",
+          "oklch(72.1% 0.02945 137.38)",
+          "oklch(83.6% 0.02945 137.38)",
+          "oklch(95% 0.02945 137.38)"
+        ]
+      },
+      "generated-text": {
+        "role": "neutral",
+        "displayName": "Generated state text",
+        "tonalRamp": [
+          "oklch(15% 0.06614 145.57)",
+          "oklch(26.4% 0.06614 145.57)",
+          "oklch(37.9% 0.06614 145.57)",
+          "oklch(49.3% 0.06614 145.57)",
+          "oklch(60.7% 0.06614 145.57)",
+          "oklch(72.1% 0.06614 145.57)",
+          "oklch(83.6% 0.06614 145.57)",
+          "oklch(95% 0.06614 145.57)"
+        ]
+      },
+      "failed-background": {
+        "role": "neutral",
+        "displayName": "Failed state surface",
+        "tonalRamp": [
+          "oklch(15% 0.02191 42.57)",
+          "oklch(26.4% 0.02191 42.57)",
+          "oklch(37.9% 0.02191 42.57)",
+          "oklch(49.3% 0.02191 42.57)",
+          "oklch(60.7% 0.02191 42.57)",
+          "oklch(72.1% 0.02191 42.57)",
+          "oklch(83.6% 0.02191 42.57)",
+          "oklch(95% 0.02191 42.57)"
+        ]
+      },
+      "failed-text": {
+        "role": "neutral",
+        "displayName": "Failed state text",
+        "tonalRamp": [
+          "oklch(15% 0.11532 30.30)",
+          "oklch(26.4% 0.11532 30.30)",
+          "oklch(37.9% 0.11532 30.30)",
+          "oklch(49.3% 0.11532 30.30)",
+          "oklch(60.7% 0.11532 30.30)",
+          "oklch(72.1% 0.11532 30.30)",
+          "oklch(83.6% 0.11532 30.30)",
+          "oklch(95% 0.11532 30.30)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Page heading",
+        "purpose": "The current page title."
+      },
+      "headline-mobile": {
+        "displayName": "Mobile page heading",
+        "purpose": "Page headings at widths of 600px or less."
+      },
+      "title": {
+        "displayName": "Section title",
+        "purpose": "Section headings and form group titles."
+      },
+      "inspector-title": {
+        "displayName": "Selected card title",
+        "purpose": "The selected card name; reduced to 18px in the 701–900px layout."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default reading text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Small section headings."
+      },
+      "table": {
+        "displayName": "Table text",
+        "purpose": "Compact row data."
+      },
+      "metadata": {
+        "displayName": "Metadata",
+        "purpose": "Secondary context and state labels."
+      },
+      "button": {
+        "displayName": "Button text",
+        "purpose": "Standard shadcn button label."
+      }
+    },
+    "shadows": [
+      {
+        "name": "select-popup",
+        "value": "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        "purpose": "Temporary select popup elevation; persistent surfaces remain flat."
+      },
+      {
+        "name": "control-focus",
+        "value": "0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent)",
+        "purpose": "The shared Base UI form-control focus ring."
+      }
+    ],
+    "motion": [
+      {
+        "name": "navigation-background",
+        "value": "120ms ease",
+        "purpose": "Navigation hover background."
+      },
+      {
+        "name": "control-transition",
+        "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default component state transitions."
+      },
+      {
+        "name": "row-selection",
+        "value": "230ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Brief inset highlight on selection when reduced motion is not requested."
+      },
+      {
+        "name": "select-popup",
+        "value": "100ms",
+        "purpose": "Select popup appearance when it is not aligned with the trigger."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "Global animation and transition duration override for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop-max",
+        "value": "1180px"
+      },
+      {
+        "name": "icon-rail-max",
+        "value": "900px"
+      },
+      {
+        "name": "library-input-md-min",
+        "value": "768px"
+      },
+      {
+        "name": "side-by-side-inspector-min",
+        "value": "701px"
+      },
+      {
+        "name": "mobile-max",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action in a working region.",
+      "html": "<button class=\"ds-button-primary\" type=\"button\">Prepare a transformation</button>",
+      "css": ".ds-button-primary{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 10px;border:1px solid transparent;border-radius:var(--radius,0.5rem);font-family:\"Geist Variable\",sans-serif;font-size:14px;font-weight:500;line-height:20px;white-space:nowrap;cursor:pointer;transition:all 150ms cubic-bezier(0.4,0,0.2,1)}.ds-button-primary:focus-visible{border-color:var(--ring,#498767);box-shadow:0 0 0 3px color-mix(in oklab,var(--ring,#498767) 50%,transparent);outline:2px solid var(--ring,#498767);outline-offset:3px}.ds-button-primary:active:not(:disabled){transform:translateY(1px)}.ds-button-primary:disabled{opacity:.5;pointer-events:none}@media(prefers-reduced-motion:reduce){.ds-button-primary{transition-duration:.01ms}}.ds-button-primary{background:var(--primary,#285840);color:var(--primary-foreground,#fff)}.ds-button-primary:hover{background:color-mix(in oklab,var(--primary,#285840) 80%,transparent)}"
+    },
+    {
+      "name": "Outline button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary actions such as recording, retrying, or ending the turn.",
+      "html": "<button class=\"ds-button-outline\" type=\"button\">End turn</button>",
+      "css": ".ds-button-outline{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 10px;border:1px solid transparent;border-radius:var(--radius,0.5rem);font-family:\"Geist Variable\",sans-serif;font-size:14px;font-weight:500;line-height:20px;white-space:nowrap;cursor:pointer;transition:all 150ms cubic-bezier(0.4,0,0.2,1)}.ds-button-outline:focus-visible{border-color:var(--ring,#498767);box-shadow:0 0 0 3px color-mix(in oklab,var(--ring,#498767) 50%,transparent);outline:2px solid var(--ring,#498767);outline-offset:3px}.ds-button-outline:active:not(:disabled){transform:translateY(1px)}.ds-button-outline:disabled{opacity:.5;pointer-events:none}@media(prefers-reduced-motion:reduce){.ds-button-outline{transition-duration:.01ms}}.ds-button-outline{background:var(--background,#fafbf9);border-color:var(--border,#d9e0d9);color:var(--foreground,#26352e)}.ds-button-outline:hover{background:var(--muted,#f0f3ef)}"
+    },
+    {
+      "name": "Ghost button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "A light action inside a message or other existing surface.",
+      "html": "<button class=\"ds-button-ghost\" type=\"button\" aria-label=\"Dismiss message\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"m18 6-12 12M6 6l12 12\"/></svg></button>",
+      "css": ".ds-button-ghost{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 10px;border:1px solid transparent;border-radius:var(--radius,0.5rem);font-family:\"Geist Variable\",sans-serif;font-size:14px;font-weight:500;line-height:20px;white-space:nowrap;cursor:pointer;transition:all 150ms cubic-bezier(0.4,0,0.2,1)}.ds-button-ghost:focus-visible{border-color:var(--ring,#498767);box-shadow:0 0 0 3px color-mix(in oklab,var(--ring,#498767) 50%,transparent);outline:2px solid var(--ring,#498767);outline-offset:3px}.ds-button-ghost:active:not(:disabled){transform:translateY(1px)}.ds-button-ghost:disabled{opacity:.5;pointer-events:none}@media(prefers-reduced-motion:reduce){.ds-button-ghost{transition-duration:.01ms}}.ds-button-ghost{background:transparent;color:var(--foreground,#26352e)}.ds-button-ghost:hover{background:var(--muted,#f0f3ef)}"
+    },
+    {
+      "name": "Destructive button",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "The recording control uses this treatment while recording is active.",
+      "html": "<button class=\"ds-button-destructive\" type=\"button\">Stop recording</button>",
+      "css": ".ds-button-destructive{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 10px;border:1px solid transparent;border-radius:var(--radius,0.5rem);font-family:\"Geist Variable\",sans-serif;font-size:14px;font-weight:500;line-height:20px;white-space:nowrap;cursor:pointer;transition:all 150ms cubic-bezier(0.4,0,0.2,1)}.ds-button-destructive:focus-visible{border-color:var(--ring,#498767);box-shadow:0 0 0 3px color-mix(in oklab,var(--ring,#498767) 50%,transparent);outline:2px solid var(--ring,#498767);outline-offset:3px}.ds-button-destructive:active:not(:disabled){transform:translateY(1px)}.ds-button-destructive:disabled{opacity:.5;pointer-events:none}@media(prefers-reduced-motion:reduce){.ds-button-destructive{transition-duration:.01ms}}.ds-button-destructive{background:color-mix(in oklab,var(--destructive,#a43a31) 10%,transparent);color:var(--destructive,#a43a31)}.ds-button-destructive:hover{background:color-mix(in oklab,var(--destructive,#a43a31) 20%,transparent)}.ds-button-destructive:focus-visible{border-color:color-mix(in oklab,var(--destructive,#a43a31) 40%,transparent);box-shadow:0 0 0 3px color-mix(in oklab,var(--destructive,#a43a31) 20%,transparent)}"
+    },
+    {
+      "name": "Text field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "The shared compact text input, with visible focus and invalid states.",
+      "html": "<input class=\"ds-input\" aria-label=\"Model\" placeholder=\"Model\" />",
+      "css": ".ds-input{width:100%;min-width:0;height:32px;padding:4px 10px;border:1px solid var(--input,#cbd5cc);border-radius:var(--radius,.5rem);background:transparent;color:var(--foreground,#26352e);caret-color:var(--primary,#285840);font-family:\"Geist Variable\",sans-serif;font-size:16px;transition:color 150ms cubic-bezier(.4,0,.2,1),border-color 150ms cubic-bezier(.4,0,.2,1)}.ds-input::placeholder{color:var(--muted-foreground,#58645c)}.ds-input:focus-visible{outline:none;border-color:var(--ring,#498767);box-shadow:0 0 0 3px color-mix(in oklab,var(--ring,#498767) 50%,transparent)}.ds-input[aria-invalid=true]{border-color:var(--destructive,#a43a31);box-shadow:0 0 0 3px color-mix(in oklab,var(--destructive,#a43a31) 20%,transparent)}.ds-input:disabled{opacity:.5;cursor:not-allowed;background:color-mix(in oklab,var(--input,#cbd5cc) 50%,transparent)}@media(min-width:768px){.ds-input{font-size:14px}}@media(prefers-reduced-motion:reduce){.ds-input{transition-duration:.01ms}}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Dark navigation with a pale selected item and explicit current-page state.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><button class=\"ds-nav-item\" type=\"button\" aria-current=\"page\">Run</button><button class=\"ds-nav-item\" type=\"button\">Director</button><button class=\"ds-nav-item\" type=\"button\">Voice</button></nav>",
+      "css": ".ds-nav{display:flex;flex-direction:column;gap:5px;padding:16px;background:#23362f;font-family:\"Geist Variable\",sans-serif}.ds-nav-item{padding:11px 13px;border:0;border-radius:6px;background:transparent;color:#bfcec4;text-align:left;font:inherit;font-size:14px;line-height:1.55;cursor:pointer;transition:background 120ms ease}.ds-nav-item:hover{background:#31483c;color:#fff}.ds-nav-item[aria-current=page]{background:#e4eee5;color:#1f4630;font-weight:600}.ds-nav-item:focus-visible{outline:2px solid var(--ring,#498767);outline-offset:3px}@media(max-width:600px){.ds-nav{flex-direction:row;flex-wrap:wrap;gap:3px}.ds-nav-item{font-size:11px;padding:8px 11px}}@media(prefers-reduced-motion:reduce){.ds-nav-item{transition-duration:.01ms}}"
+    },
+    {
+      "name": "State labels",
+      "kind": "chip",
+      "refersTo": "state-label",
+      "description": "Read-only state text for ordinary, transformed, and failed work.",
+      "html": "<span class=\"ds-state\">Original</span> <span class=\"ds-state ds-state-generated\">Transformed</span> <span class=\"ds-state ds-state-failed\">Failed</span>",
+      "css": ".ds-state{display:inline-flex;padding:3px 7px;border-radius:4px;background:#eff2ed;color:#5a695f;font-family:\"Geist Variable\",sans-serif;font-size:11px;line-height:1.55}.ds-state-generated{background:#dbe9d6;color:#315333}.ds-state-failed{background:#f8e6df;color:#903d31}"
+    },
+    {
+      "name": "Workspace and inspector",
+      "kind": "card",
+      "refersTo": "workspace",
+      "description": "One flat surface connects the working table with the selected item's details.",
+      "html": "<section class=\"ds-workspace\"><div class=\"ds-working-area\"><h2 class=\"ds-workspace-title\">Run cards</h2><p class=\"ds-workspace-copy\">Select a card to inspect it.</p></div><aside class=\"ds-inspector\"><h2 class=\"ds-workspace-title\">Card inspector</h2><p class=\"ds-workspace-copy\">Card details appear here.</p></aside></section>",
+      "css": ".ds-workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;overflow:hidden;border:1px solid var(--border,#d9e0d9);border-radius:10px;background:var(--card,#fff);color:var(--foreground,#26352e);font-family:\"Geist Variable\",sans-serif}.ds-working-area{min-width:0;padding:18px}.ds-inspector{min-width:0;padding:22px;border-left:1px solid var(--border,#d9e0d9);background:#f5f7f2}.ds-workspace-title{margin:0;font-size:17px;font-weight:600;line-height:1.4;letter-spacing:-.015em}.ds-workspace-copy{margin:8px 0 0;color:var(--muted-foreground,#58645c);font-size:12px;line-height:1.55}@media(max-width:1180px){.ds-workspace{grid-template-columns:minmax(0,1fr) 270px}.ds-inspector{padding:18px}}@media(min-width:701px) and (max-width:900px){.ds-workspace{grid-template-columns:minmax(0,1fr) 245px}}@media(max-width:700px){.ds-workspace{grid-template-columns:1fr}.ds-inspector{border-left:0;border-top:1px solid var(--border,#d9e0d9)}}"
+    },
+    {
+      "name": "Selected card row",
+      "kind": "custom",
+      "refersTo": "selected-row",
+      "description": "A named button supplies keyboard access and selection state; the whole row shows the selected fill.",
+      "html": "<table class=\"ds-table\"><tbody><tr class=\"ds-row\" data-selected=\"true\"><td><button class=\"ds-card-name\" type=\"button\" aria-pressed=\"true\" aria-controls=\"ds-card-inspector\">Fear into Fury</button><span class=\"ds-rarity\">Common</span></td><td class=\"ds-numeric\">0</td><td>Skill</td></tr></tbody></table><div class=\"ds-inspector-note\" id=\"ds-card-inspector\" aria-label=\"Card inspector\">Selected: Fear into Fury</div>",
+      "css": ".ds-table{width:100%;border-collapse:collapse;color:var(--foreground,#26352e);font-family:\"Geist Variable\",sans-serif}.ds-row td{padding:10px 18px;border-bottom:1px solid #edf0ea;font-size:12px;line-height:1.55}.ds-row[data-selected=true] td{background:#eaf1e7}.ds-row:hover td{background:#f3f6ef}.ds-card-name{display:flex;align-items:center;gap:7px;padding:0;border:0;background:transparent;color:inherit;font-family:inherit;font-size:13px;font-weight:560;line-height:1.55;text-align:left;cursor:pointer}.ds-card-name:hover{color:#237047}.ds-card-name:focus-visible{outline:2px solid var(--ring,#498767);outline-offset:3px}.ds-rarity{display:block;margin-top:2px;color:#586552;font-size:10px}.ds-numeric{font-variant-numeric:tabular-nums}.ds-inspector-note{padding:12px;color:var(--muted-foreground,#58645c);font-family:\"Geist Variable\",sans-serif;font-size:11px}@media(prefers-reduced-motion:no-preference){.ds-row[data-selected=true]{animation:ds-select-row 230ms cubic-bezier(.16,1,.3,1)}@keyframes ds-select-row{from{box-shadow:inset 0 0 0 30px #c9dec8}to{box-shadow:inset 0 0 0 0 transparent}}}"
+    },
+    {
+      "name": "Switch",
+      "kind": "custom",
+      "refersTo": "switch",
+      "description": "A compact Base UI switch treatment with a clear label and expanded interaction area.",
+      "html": "<div class=\"ds-switch-line\"><span id=\"ds-protect-label\">Protect this card</span><button type=\"button\" class=\"ds-switch\" role=\"switch\" aria-checked=\"true\" aria-labelledby=\"ds-protect-label\"><span class=\"ds-switch-thumb\"></span></button></div>",
+      "css": ".ds-switch-line{display:flex;align-items:center;justify-content:space-between;gap:20px;color:var(--foreground,#26352e);font-family:\"Geist Variable\",sans-serif;font-size:13px;line-height:1.55}.ds-switch{position:relative;display:inline-flex;align-items:center;flex-shrink:0;width:32px;height:18.4px;padding:0;border:1px solid transparent;border-radius:9999px;background:var(--input,#cbd5cc);cursor:pointer;transition:all 150ms cubic-bezier(.4,0,.2,1)}.ds-switch::after{position:absolute;content:\"\";inset:-8px -12px}.ds-switch[aria-checked=true]{background:var(--primary,#285840)}.ds-switch-thumb{display:block;width:16px;height:16px;border-radius:9999px;background:var(--background,#fafbf9);pointer-events:none;transition:transform 150ms cubic-bezier(.4,0,.2,1)}.ds-switch[aria-checked=true] .ds-switch-thumb{transform:translateX(14px)}.ds-switch:focus-visible{border-color:var(--ring,#498767);outline:2px solid var(--ring,#498767);outline-offset:3px;box-shadow:0 0 0 3px color-mix(in oklab,var(--ring,#498767) 50%,transparent)}.ds-switch:disabled{opacity:.5;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-switch,.ds-switch-thumb{transition-duration:.01ms}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A quiet workspace",
+    "overview": "Voice Director uses a quiet green workspace for inspecting game data beside the game. Dark navigation anchors the page; pale surfaces, fine rules, and compact controls keep long tables and explanations easy to read. The visual character comes from the relationship between rows, selection, and detail.\n\nThis document records the implemented dashboard package. The surface strategy remains in [.impeccable/surfaces/apps-dashboard.md](.impeccable/surfaces/apps-dashboard.md), with product constraints in [PRODUCT.md](../../PRODUCT.md). The source is the light theme in src/styles.css and the shadcn components built on Base UI.",
+    "keyCharacteristics": [
+      "A dark navigation rail and a light working area.",
+      "One restrained green accent for actions, selection, and focus.",
+      "Compact Geist typography with aligned numbers.",
+      "Flat tables and panels separated by fine rules.",
+      "Card artwork appears as content inside the inspector."
+    ],
+    "rules": [
+      {
+        "name": "The State Rule",
+        "body": "Use words and control state alongside color so connection, selection, failure, and pending work remain understandable.",
+        "section": "colors"
+      },
+      {
+        "name": "The Reading Rule",
+        "body": "Keep supporting text quiet but readable; reserve the smallest type for metadata and counts.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Use borders and surface tone to separate persistent content. Reserve floating elevation for temporary overlays.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do reuse the semantic colors and shadcn components built on Base UI.",
+      "Do preserve keyboard focus, accessible selection state, and text labels for status.",
+      "Do keep numeric data aligned with tabular figures.",
+      "Do let the table scroll inside its container while keeping the inspector available at narrow widths.",
+      "Do describe pending, offline, and failed actions accurately, including the available recovery.",
+      "Do give runtime card artwork a defined content area and a useful loading or failure state."
+    ],
+    "donts": [
+      "Don't treat the unused scaffold dark theme or chart palette as a confirmed dashboard design.",
+      "Don't communicate a selected card or a connection state through color alone.",
+      "Don't show an unavailable game action as enabled.",
+      "Don't turn generated card artwork into a decorative dashboard background.",
+      "Don't add promotional copy or invented labels to operational controls."
+    ]
+  }
+}
