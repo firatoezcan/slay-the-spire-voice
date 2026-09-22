@@ -1,0 +1,21 @@
+[submodule "references/mod-template"]
+	path = references/mod-template
+	url = https://github.com/Alchyr/ModTemplate-StS2.git
+[submodule "references/baselib"]
+	path = references/baselib
+	url = https://github.com/Alchyr/BaseLib-StS2.git
+[submodule "references/blank-the-spire"]
+	path = references/blank-the-spire
+	url = https://github.com/ryanrinkel/BLANKthespire.git
+[submodule "references/neuro-sts2"]
+	path = references/neuro-sts2
+	url = https://github.com/VedalAI/neuro-sts2.git
+[submodule "references/sts2-ai-mod"]
+	path = references/sts2-ai-mod
+	url = https://github.com/ndwang/sts2-ai-mod.git
+[submodule "references/communication-mod"]
+	path = references/communication-mod
+	url = https://github.com/Manuelbbl/Communication_Mod_STS2.git
+[submodule "references/boxer"]
+	path = references/boxer
+	url = https://github.com/RiddlerQ/BoxerMod.git
