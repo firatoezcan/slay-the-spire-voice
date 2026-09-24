@@ -79,6 +79,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/decisions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["listAmbientDecisions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/jobs/{id}/cancel": {
         parameters: {
             query?: never;
@@ -191,6 +207,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/prompts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["listPrompts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/prompts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["setPrompt"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/provider": {
         parameters: {
             query?: never;
@@ -249,6 +297,70 @@ export interface paths {
         get: operations["game_Get_capabilities"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/game/multiplayer/cards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["game_Get_multiplayer_cards"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/game/voice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["game_Get_voice"];
+        put: operations["game_Put_voice"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/game/voice/segments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["game_Post_voice_segments"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/game/multiplayer/cards/resync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["game_Post_multiplayer_cards_resync"];
         delete?: never;
         options?: never;
         head?: never;
@@ -543,22 +655,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/game/cards/protection": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put: operations["game_Put_cards_protection"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -658,8 +754,10 @@ export interface operations {
                             description: string;
                             wildcard: boolean;
                             resolved: boolean;
-                            protected: boolean;
                             lastTransformedTurn: string | number;
+                            playerId: string;
+                            playerName: string;
+                            localPlayer: boolean;
                         }[];
                         creatures: {
                             id: string;
@@ -678,7 +776,6 @@ export interface operations {
                         actions: string[];
                         settings: {
                             mode: string;
-                            drawChance: number;
                             maxPerTurn: string | number;
                             cooldownTurns: string | number;
                             strength: number;
@@ -686,6 +783,7 @@ export interface operations {
                             enabled: boolean;
                             debugConsole: boolean;
                         };
+                        host: boolean;
                         error: string | null;
                     } | null;
                 };
@@ -725,8 +823,10 @@ export interface operations {
                             description: string;
                             wildcard: boolean;
                             resolved: boolean;
-                            protected: boolean;
                             lastTransformedTurn: string | number;
+                            playerId: string;
+                            playerName: string;
+                            localPlayer: boolean;
                         }[];
                         creatures: {
                             id: string;
@@ -745,7 +845,6 @@ export interface operations {
                         actions: string[];
                         settings: {
                             mode: string;
-                            drawChance: number;
                             maxPerTurn: string | number;
                             cooldownTurns: string | number;
                             strength: number;
@@ -753,6 +852,7 @@ export interface operations {
                             enabled: boolean;
                             debugConsole: boolean;
                         };
+                        host: boolean;
                         error: string | null;
                         id: string;
                     }[];
@@ -854,6 +954,74 @@ export interface operations {
             };
         };
     };
+    listAmbientDecisions: {
+        parameters: {
+            query?: {
+                runId?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        runId: string;
+                        at: string;
+                        /** @enum {string} */
+                        action: "ignore" | "create_card";
+                        reason: string;
+                        anchorId: string;
+                        transcriptIds: string[];
+                        contextIds: string[];
+                        windowStartedAt: string;
+                        windowEndedAt: string;
+                        classifier: {
+                            answers: {
+                                create_card: {
+                                    /** @constant */
+                                    type: "noul";
+                                    noul: number;
+                                };
+                            };
+                            inputs: {
+                                id: string;
+                                answers: {
+                                    noise: {
+                                        /** @constant */
+                                        type: "noul";
+                                        noul: number;
+                                    };
+                                    accidental: {
+                                        /** @constant */
+                                        type: "noul";
+                                        noul: number;
+                                    };
+                                };
+                            }[];
+                        } | null;
+                        confirmation: {
+                            answers: {
+                                create_card: {
+                                    /** @constant */
+                                    type: "noul";
+                                    noul: number;
+                                };
+                            };
+                            instanceId: string | null;
+                        } | null;
+                    }[];
+                };
+            };
+        };
+    };
     cancelJob: {
         parameters: {
             query?: never;
@@ -950,6 +1118,13 @@ export interface operations {
                         source: string;
                         mood: string;
                         createdAt: string;
+                        playerId?: string;
+                        playerName?: string;
+                        startedAt?: string;
+                        endedAt?: string;
+                        noiseProbability?: number;
+                        accidentalProbability?: number;
+                        error?: string;
                     }[];
                 };
             };
@@ -998,6 +1173,13 @@ export interface operations {
                         source: string;
                         mood: string;
                         createdAt: string;
+                        playerId?: string;
+                        playerName?: string;
+                        startedAt?: string;
+                        endedAt?: string;
+                        noiseProbability?: number;
+                        accidentalProbability?: number;
+                        error?: string;
                     };
                 };
             };
@@ -1037,6 +1219,13 @@ export interface operations {
                         source: string;
                         mood: string;
                         createdAt: string;
+                        playerId?: string;
+                        playerName?: string;
+                        startedAt?: string;
+                        endedAt?: string;
+                        noiseProbability?: number;
+                        accidentalProbability?: number;
+                        error?: string;
                     } | null;
                 };
             };
@@ -1113,6 +1302,78 @@ export interface operations {
             };
         };
     };
+    listPrompts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        id: "classifier" | "confirmation" | "quality" | "design" | "review" | "artwork";
+                        title: string;
+                        description: string;
+                        model: string;
+                        instructions: string;
+                        defaultInstructions: string;
+                        contract: string;
+                    }[];
+                };
+            };
+        };
+    };
+    setPrompt: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: "classifier" | "confirmation" | "quality" | "design" | "review" | "artwork";
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    instructions: string;
+                };
+                "application/x-www-form-urlencoded": {
+                    instructions: string;
+                };
+                "multipart/form-data": {
+                    instructions: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        id: "classifier" | "confirmation" | "quality" | "design" | "review" | "artwork";
+                        title: string;
+                        description: string;
+                        model: string;
+                        instructions: string;
+                        defaultInstructions: string;
+                        contract: string;
+                    };
+                };
+            };
+        };
+    };
     getProviderSettings: {
         parameters: {
             query?: never;
@@ -1131,7 +1392,8 @@ export interface operations {
                     "application/json": {
                         /** @constant */
                         id: "provider";
-                        model: string;
+                        /** @constant */
+                        model: "gpt-6-astra";
                         modelDir: string;
                         autoPrepare: boolean;
                         cardTimeoutMs: string | number;
@@ -1153,7 +1415,8 @@ export interface operations {
                 "application/json": {
                     /** @constant */
                     id: "provider";
-                    model: string;
+                    /** @constant */
+                    model: "gpt-6-astra";
                     modelDir: string;
                     autoPrepare: boolean;
                     cardTimeoutMs: string | number;
@@ -1162,7 +1425,8 @@ export interface operations {
                 "application/x-www-form-urlencoded": {
                     /** @constant */
                     id: "provider";
-                    model: string;
+                    /** @constant */
+                    model: "gpt-6-astra";
                     modelDir: string;
                     autoPrepare: boolean;
                     cardTimeoutMs: string | number;
@@ -1171,7 +1435,8 @@ export interface operations {
                 "multipart/form-data": {
                     /** @constant */
                     id: "provider";
-                    model: string;
+                    /** @constant */
+                    model: "gpt-6-astra";
                     modelDir: string;
                     autoPrepare: boolean;
                     cardTimeoutMs: string | number;
@@ -1189,7 +1454,8 @@ export interface operations {
                     "application/json": {
                         /** @constant */
                         id: "provider";
-                        model: string;
+                        /** @constant */
+                        model: "gpt-6-astra";
                         modelDir: string;
                         autoPrepare: boolean;
                         cardTimeoutMs: string | number;
@@ -1244,8 +1510,10 @@ export interface operations {
                             description: string;
                             wildcard: boolean;
                             resolved: boolean;
-                            protected: boolean;
                             lastTransformedTurn: string | number;
+                            playerId: string;
+                            playerName: string;
+                            localPlayer: boolean;
                         }[];
                         creatures: {
                             id: string;
@@ -1264,7 +1532,6 @@ export interface operations {
                         actions: string[];
                         settings: {
                             mode: string;
-                            drawChance: number;
                             maxPerTurn: string | number;
                             cooldownTurns: string | number;
                             strength: number;
@@ -1272,6 +1539,7 @@ export interface operations {
                             enabled: boolean;
                             debugConsole: boolean;
                         };
+                        host: boolean;
                         error: string | null;
                     };
                 };
@@ -1299,6 +1567,168 @@ export interface operations {
                         effects: string[];
                         powers: string[];
                         singlePlayerOnly: boolean;
+                    };
+                };
+            };
+        };
+    };
+    game_Get_multiplayer_cards: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        role: string;
+                        runId: string;
+                        active: boolean;
+                        peers: {
+                            playerId: string;
+                            connected: boolean;
+                            pending: string | number;
+                            received: string | number;
+                            error: string | null;
+                        }[];
+                    };
+                };
+            };
+        };
+    };
+    game_Get_voice: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        enabled: boolean;
+                        listening: boolean;
+                        error: string | null;
+                    };
+                };
+            };
+        };
+    };
+    game_Put_voice: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    enabled: boolean;
+                };
+                "application/x-www-form-urlencoded": {
+                    enabled: boolean;
+                };
+                "multipart/form-data": {
+                    enabled: boolean;
+                };
+            };
+        };
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        enabled: boolean;
+                        listening: boolean;
+                        error: string | null;
+                    };
+                };
+            };
+        };
+    };
+    game_Post_voice_segments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        runId: string;
+                        playerId: string;
+                        playerName: string;
+                        startedAt: string;
+                        endedAt: string;
+                        pcmBase64: string;
+                    }[];
+                };
+            };
+        };
+    };
+    game_Post_multiplayer_cards_resync: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    playerId: string;
+                };
+                "application/x-www-form-urlencoded": {
+                    playerId: string;
+                };
+                "multipart/form-data": {
+                    playerId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        role: string;
+                        runId: string;
+                        active: boolean;
+                        peers: {
+                            playerId: string;
+                            connected: boolean;
+                            pending: string | number;
+                            received: string | number;
+                            error: string | null;
+                        }[];
                     };
                 };
             };
@@ -2103,7 +2533,6 @@ export interface operations {
             content: {
                 "application/json": {
                     mode: string;
-                    drawChance: number;
                     maxPerTurn: string | number;
                     cooldownTurns: string | number;
                     strength: number;
@@ -2113,7 +2542,6 @@ export interface operations {
                 };
                 "application/x-www-form-urlencoded": {
                     mode: string;
-                    drawChance: number;
                     maxPerTurn: string | number;
                     cooldownTurns: string | number;
                     strength: number;
@@ -2123,7 +2551,6 @@ export interface operations {
                 };
                 "multipart/form-data": {
                     mode: string;
-                    drawChance: number;
                     maxPerTurn: string | number;
                     cooldownTurns: string | number;
                     strength: number;
@@ -2142,63 +2569,12 @@ export interface operations {
                 content: {
                     "application/json": {
                         mode: string;
-                        drawChance: number;
                         maxPerTurn: string | number;
                         cooldownTurns: string | number;
                         strength: number;
                         synergy: number;
                         enabled: boolean;
                         debugConsole: boolean;
-                    };
-                };
-            };
-        };
-    };
-    game_Put_cards_protection: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    instanceId: string;
-                    protected: boolean;
-                };
-                "application/x-www-form-urlencoded": {
-                    instanceId: string;
-                    protected: boolean;
-                };
-                "multipart/form-data": {
-                    instanceId: string;
-                    protected: boolean;
-                };
-            };
-        };
-        responses: {
-            /** @description Response for status 200 */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        id: string;
-                        modelId: string;
-                        definitionId: string | null;
-                        name: string;
-                        rarity: string;
-                        type: string;
-                        cost: string | number;
-                        upgradeLevel: string | number;
-                        pile: string;
-                        description: string;
-                        wildcard: boolean;
-                        resolved: boolean;
-                        protected: boolean;
-                        lastTransformedTurn: string | number;
                     };
                 };
             };

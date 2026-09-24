@@ -31,6 +31,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/multiplayer/cards": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["game_Get_multiplayer_cards"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/voice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["game_Get_voice"];
+        put: operations["game_Put_voice"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/voice/segments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["game_Post_voice_segments"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/multiplayer/cards/resync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["game_Post_multiplayer_cards_resync"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/definitions": {
         parameters: {
             query?: never;
@@ -319,22 +383,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/cards/protection": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put: operations["game_Put_cards_protection"];
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -351,6 +399,7 @@ export interface components {
             choices: components["schemas"]["ChoiceView"][];
             actions: string[];
             settings: components["schemas"]["DirectorSettings"];
+            host: boolean;
             error: string | null;
         };
         CardInstance: {
@@ -368,9 +417,11 @@ export interface components {
             description: string;
             wildcard: boolean;
             resolved: boolean;
-            protected: boolean;
             /** Format: int32 */
             lastTransformedTurn: number;
+            playerId: string;
+            playerName: string;
+            localPlayer: boolean;
         };
         CreatureView: {
             id: string;
@@ -391,8 +442,6 @@ export interface components {
         };
         DirectorSettings: {
             mode: string;
-            /** Format: double */
-            drawChance: number;
             /** Format: int32 */
             maxPerTurn: number;
             /** Format: int32 */
@@ -410,6 +459,43 @@ export interface components {
             effects: string[];
             powers: string[];
             singlePlayerOnly: boolean;
+        };
+        CardSyncStatus: {
+            role: string;
+            runId: string;
+            active: boolean;
+            peers: components["schemas"]["CardSyncPeer"][];
+        };
+        CardSyncPeer: {
+            playerId: string;
+            connected: boolean;
+            /** Format: int32 */
+            pending: number;
+            /** Format: int32 */
+            received: number;
+            error: string | null;
+        };
+        VoiceStatus: {
+            enabled: boolean;
+            listening: boolean;
+            error: string | null;
+        };
+        VoiceSettings: {
+            enabled: boolean;
+        };
+        VoiceSegment: {
+            id: string;
+            runId: string;
+            playerId: string;
+            playerName: string;
+            /** Format: date-time */
+            startedAt: string;
+            /** Format: date-time */
+            endedAt: string;
+            pcmBase64: string;
+        };
+        CardSyncRequest: {
+            playerId: string;
         };
         CardDefinition: {
             id: string;
@@ -548,10 +634,6 @@ export interface components {
             definitionId: string;
             pngBase64: string;
         };
-        ProtectionRequest: {
-            instanceId: string;
-            protected: boolean;
-        };
     };
     responses: never;
     parameters: never;
@@ -610,6 +692,172 @@ export interface operations {
                     "application/x-www-form-urlencoded": components["schemas"]["Capabilities"];
                     "application/xml": components["schemas"]["Capabilities"];
                     "text/xml": components["schemas"]["Capabilities"];
+                };
+            };
+            /** @description A response containing no body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    game_Get_multiplayer_cards: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CardSyncStatus"];
+                    "application/yaml": components["schemas"]["CardSyncStatus"];
+                    "application/x-www-form-urlencoded": components["schemas"]["CardSyncStatus"];
+                    "application/xml": components["schemas"]["CardSyncStatus"];
+                    "text/xml": components["schemas"]["CardSyncStatus"];
+                };
+            };
+            /** @description A response containing no body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    game_Get_voice: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VoiceStatus"];
+                    "application/yaml": components["schemas"]["VoiceStatus"];
+                    "application/x-www-form-urlencoded": components["schemas"]["VoiceStatus"];
+                    "application/xml": components["schemas"]["VoiceStatus"];
+                    "text/xml": components["schemas"]["VoiceStatus"];
+                };
+            };
+            /** @description A response containing no body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    game_Put_voice: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["VoiceSettings"];
+                "application/yaml": components["schemas"]["VoiceSettings"];
+                "application/x-www-form-urlencoded": components["schemas"]["VoiceSettings"];
+                "application/xml": components["schemas"]["VoiceSettings"];
+                "text/xml": components["schemas"]["VoiceSettings"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VoiceStatus"];
+                    "application/yaml": components["schemas"]["VoiceStatus"];
+                    "application/x-www-form-urlencoded": components["schemas"]["VoiceStatus"];
+                    "application/xml": components["schemas"]["VoiceStatus"];
+                    "text/xml": components["schemas"]["VoiceStatus"];
+                };
+            };
+            /** @description A response containing no body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    game_Post_voice_segments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VoiceSegment"][];
+                    "application/yaml": components["schemas"]["VoiceSegment"][];
+                    "application/x-www-form-urlencoded": components["schemas"]["VoiceSegment"][];
+                    "application/xml": components["schemas"]["VoiceSegment"][];
+                    "text/xml": components["schemas"]["VoiceSegment"][];
+                };
+            };
+            /** @description A response containing no body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    game_Post_multiplayer_cards_resync: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["CardSyncRequest"];
+                "application/yaml": components["schemas"]["CardSyncRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CardSyncRequest"];
+                "application/xml": components["schemas"]["CardSyncRequest"];
+                "text/xml": components["schemas"]["CardSyncRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CardSyncStatus"];
+                    "application/yaml": components["schemas"]["CardSyncStatus"];
+                    "application/x-www-form-urlencoded": components["schemas"]["CardSyncStatus"];
+                    "application/xml": components["schemas"]["CardSyncStatus"];
+                    "text/xml": components["schemas"]["CardSyncStatus"];
                 };
             };
             /** @description A response containing no body */
@@ -1254,44 +1502,6 @@ export interface operations {
                     "application/x-www-form-urlencoded": components["schemas"]["DirectorSettings"];
                     "application/xml": components["schemas"]["DirectorSettings"];
                     "text/xml": components["schemas"]["DirectorSettings"];
-                };
-            };
-            /** @description A response containing no body */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    game_Put_cards_protection: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["ProtectionRequest"];
-                "application/yaml": components["schemas"]["ProtectionRequest"];
-                "application/x-www-form-urlencoded": components["schemas"]["ProtectionRequest"];
-                "application/xml": components["schemas"]["ProtectionRequest"];
-                "text/xml": components["schemas"]["ProtectionRequest"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CardInstance"];
-                    "application/yaml": components["schemas"]["CardInstance"];
-                    "application/x-www-form-urlencoded": components["schemas"]["CardInstance"];
-                    "application/xml": components["schemas"]["CardInstance"];
-                    "text/xml": components["schemas"]["CardInstance"];
                 };
             };
             /** @description A response containing no body */

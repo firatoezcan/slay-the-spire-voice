@@ -24,7 +24,7 @@ export { ConsoleView } from "./ConsoleView";
 
 export function DirectorView(props: GameProps) {
   return props.state ? (
-    <DirectorForm {...props} initial={props.state.settings} />
+    <DirectorForm key={props.state.runId} {...props} initial={props.state.settings} />
   ) : (
     <div className="empty">Connect the game to edit the director.</div>
   );
@@ -86,15 +86,9 @@ function DirectorForm({
           <p className="help">
             {draft.mode === "wildcard"
               ? "One reward option becomes a wildcard. Take it to transform now or save its one change for a later draw."
-              : "Eligible deck cards can change as they are drawn. Protect cards you want to keep."}
+              : "Living Deck is the default. A prepared replacement takes effect on the next eligible draw."}
           </p>
         </div>
-        <Range
-          label="Chance per draw"
-          help="Applies when an eligible card has a prepared replacement."
-          value={draft.drawChance}
-          set={(v) => set("drawChance", v)}
-        />
         <div className="field-pair">
           <div className="field">
             <label htmlFor="max-turn">Changes per turn</label>
@@ -139,9 +133,10 @@ function DirectorForm({
         </Button>
       </form>
       <aside className="notes">
+        <p>Changes apply to everyone in your hosted run. Players who reconnect receive the current settings.</p>
         <h2>When a change happens</h2>
         <p>
-          A ready card takes the same slot as the card being drawn. Draw limits
+          A ready card always takes the same slot on its next eligible draw. Draw limits
           and effects that prevent drawing still apply.
         </p>
         <p>
@@ -156,8 +151,8 @@ function DirectorForm({
         </p>
         <h3>Generation timing</h3>
         <p>
-          Card rules are prepared ahead of the draw. Artwork starts when the new
-          card is first played.
+          Your original card stays playable while its replacement is prepared.
+          Artwork starts when the new card is first played.
         </p>
       </aside>
     </div>
@@ -246,21 +241,18 @@ function ProviderForm({
       >
         <h2>Generation</h2>
         <div className="field">
-          <label htmlFor="model">Codex model</label>
+          <label htmlFor="model">Card generation</label>
           <Input
             id="model"
             value={draft.model}
-            placeholder="Codex default"
-            onChange={(event) =>
-              setDraft({ ...draft, model: event.target.value })
-            }
+            readOnly
           />
-          <p className="help">Uses your existing Codex sign in.</p>
+          <p className="help">Luna classifies. Astra handles confirmation, card design, review, and art direction. Uses your existing Codex sign in.</p>
         </div>
         <label htmlFor="auto-prepare" className="switch-line">
           <span>
-            Prepare cards automatically
-            <small>Keep up to three candidates ready or in progress.</small>
+            Generate cards from conversation
+            <small>Use the classifier and confirmation before queuing a card.</small>
           </span>
           <Switch
             id="auto-prepare"

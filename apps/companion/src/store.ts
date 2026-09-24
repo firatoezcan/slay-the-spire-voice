@@ -2,7 +2,7 @@ import { Database } from "bun:sqlite";
 import { join } from "node:path";
 import { dataDir } from "./config";
 
-export type Collection = "jobs" | "transcripts" | "events" | "decisions" | "definitions" | "settings" | "snapshots" | "card-sources" | "card-reviews";
+export type Collection = "jobs" | "transcripts" | "events" | "moment-evaluations" | "definitions" | "settings" | "snapshots" | "card-sources" | "card-reviews" | "card-inspirations";
 export const db = new Database(join(dataDir, "director.sqlite"), { create: true });
 db.exec("PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS records (collection TEXT NOT NULL, id TEXT NOT NULL, run_id TEXT NOT NULL, payload TEXT NOT NULL, updated_at TEXT NOT NULL, PRIMARY KEY(collection,id)); CREATE INDEX IF NOT EXISTS records_run ON records(collection,run_id,updated_at);");
 const upsert = db.query("INSERT INTO records VALUES(?,?,?,?,?) ON CONFLICT(collection,id) DO UPDATE SET run_id=excluded.run_id,payload=excluded.payload,updated_at=excluded.updated_at");

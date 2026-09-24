@@ -147,6 +147,7 @@
                     "choices",
                     "actions",
                     "settings",
+                    "host",
                     "error"
                   ],
                   "properties": {
@@ -198,8 +199,10 @@
                           "description",
                           "wildcard",
                           "resolved",
-                          "protected",
-                          "lastTransformedTurn"
+                          "lastTransformedTurn",
+                          "playerId",
+                          "playerName",
+                          "localPlayer"
                         ],
                         "properties": {
                           "id": {
@@ -259,9 +262,6 @@
                           "resolved": {
                             "type": "boolean"
                           },
-                          "protected": {
-                            "type": "boolean"
-                          },
                           "lastTransformedTurn": {
                             "anyOf": [
                               {
@@ -273,6 +273,15 @@
                                 "type": "integer"
                               }
                             ]
+                          },
+                          "playerId": {
+                            "type": "string"
+                          },
+                          "playerName": {
+                            "type": "string"
+                          },
+                          "localPlayer": {
+                            "type": "boolean"
                           }
                         }
                       }
@@ -350,7 +359,6 @@
                       "type": "object",
                       "required": [
                         "mode",
-                        "drawChance",
                         "maxPerTurn",
                         "cooldownTurns",
                         "strength",
@@ -361,9 +369,6 @@
                       "properties": {
                         "mode": {
                           "type": "string"
-                        },
-                        "drawChance": {
-                          "type": "number"
                         },
                         "maxPerTurn": {
                           "anyOf": [
@@ -402,6 +407,9 @@
                           "type": "boolean"
                         }
                       }
+                    },
+                    "host": {
+                      "type": "boolean"
                     },
                     "error": {
                       "type": [
@@ -442,6 +450,7 @@
                       "choices",
                       "actions",
                       "settings",
+                      "host",
                       "error",
                       "id"
                     ],
@@ -494,8 +503,10 @@
                             "description",
                             "wildcard",
                             "resolved",
-                            "protected",
-                            "lastTransformedTurn"
+                            "lastTransformedTurn",
+                            "playerId",
+                            "playerName",
+                            "localPlayer"
                           ],
                           "properties": {
                             "id": {
@@ -555,9 +566,6 @@
                             "resolved": {
                               "type": "boolean"
                             },
-                            "protected": {
-                              "type": "boolean"
-                            },
                             "lastTransformedTurn": {
                               "anyOf": [
                                 {
@@ -569,6 +577,15 @@
                                   "type": "integer"
                                 }
                               ]
+                            },
+                            "playerId": {
+                              "type": "string"
+                            },
+                            "playerName": {
+                              "type": "string"
+                            },
+                            "localPlayer": {
+                              "type": "boolean"
                             }
                           }
                         }
@@ -646,7 +663,6 @@
                         "type": "object",
                         "required": [
                           "mode",
-                          "drawChance",
                           "maxPerTurn",
                           "cooldownTurns",
                           "strength",
@@ -657,9 +673,6 @@
                         "properties": {
                           "mode": {
                             "type": "string"
-                          },
-                          "drawChance": {
-                            "type": "number"
                           },
                           "maxPerTurn": {
                             "anyOf": [
@@ -698,6 +711,9 @@
                             "type": "boolean"
                           }
                         }
+                      },
+                      "host": {
+                        "type": "boolean"
                       },
                       "error": {
                         "type": [
@@ -986,6 +1002,248 @@
         }
       }
     },
+    "/api/decisions": {
+      "get": {
+        "operationId": "listAmbientDecisions",
+        "tags": [
+          "Voice"
+        ],
+        "parameters": [
+          {
+            "name": "runId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "runId",
+                      "at",
+                      "action",
+                      "reason",
+                      "anchorId",
+                      "transcriptIds",
+                      "contextIds",
+                      "windowStartedAt",
+                      "windowEndedAt",
+                      "classifier",
+                      "confirmation"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "runId": {
+                        "type": "string"
+                      },
+                      "at": {
+                        "type": "string"
+                      },
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "ignore",
+                          "create_card"
+                        ]
+                      },
+                      "reason": {
+                        "type": "string"
+                      },
+                      "anchorId": {
+                        "type": "string"
+                      },
+                      "transcriptIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "contextIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "windowStartedAt": {
+                        "type": "string"
+                      },
+                      "windowEndedAt": {
+                        "type": "string"
+                      },
+                      "classifier": {
+                        "additionalProperties": false,
+                        "type": [
+                          "object",
+                          "null"
+                        ],
+                        "required": [
+                          "answers",
+                          "inputs"
+                        ],
+                        "properties": {
+                          "answers": {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "create_card"
+                            ],
+                            "properties": {
+                              "create_card": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "noul"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "const": "noul",
+                                    "type": "string"
+                                  },
+                                  "noul": {
+                                    "minimum": 0,
+                                    "maximum": 1,
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "inputs": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "additionalProperties": false,
+                              "type": "object",
+                              "required": [
+                                "id",
+                                "answers"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "answers": {
+                                  "additionalProperties": false,
+                                  "type": "object",
+                                  "required": [
+                                    "noise",
+                                    "accidental"
+                                  ],
+                                  "properties": {
+                                    "noise": {
+                                      "additionalProperties": false,
+                                      "type": "object",
+                                      "required": [
+                                        "type",
+                                        "noul"
+                                      ],
+                                      "properties": {
+                                        "type": {
+                                          "const": "noul",
+                                          "type": "string"
+                                        },
+                                        "noul": {
+                                          "minimum": 0,
+                                          "maximum": 1,
+                                          "type": "number"
+                                        }
+                                      }
+                                    },
+                                    "accidental": {
+                                      "additionalProperties": false,
+                                      "type": "object",
+                                      "required": [
+                                        "type",
+                                        "noul"
+                                      ],
+                                      "properties": {
+                                        "type": {
+                                          "const": "noul",
+                                          "type": "string"
+                                        },
+                                        "noul": {
+                                          "minimum": 0,
+                                          "maximum": 1,
+                                          "type": "number"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "confirmation": {
+                        "additionalProperties": false,
+                        "type": [
+                          "object",
+                          "null"
+                        ],
+                        "required": [
+                          "answers",
+                          "instanceId"
+                        ],
+                        "properties": {
+                          "answers": {
+                            "additionalProperties": false,
+                            "type": "object",
+                            "required": [
+                              "create_card"
+                            ],
+                            "properties": {
+                              "create_card": {
+                                "additionalProperties": false,
+                                "type": "object",
+                                "required": [
+                                  "type",
+                                  "noul"
+                                ],
+                                "properties": {
+                                  "type": {
+                                    "const": "noul",
+                                    "type": "string"
+                                  },
+                                  "noul": {
+                                    "minimum": 0,
+                                    "maximum": 1,
+                                    "type": "number"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "instanceId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/jobs/{id}/cancel": {
       "post": {
         "operationId": "cancelJob",
@@ -1241,6 +1499,27 @@
                       },
                       "createdAt": {
                         "type": "string"
+                      },
+                      "playerId": {
+                        "type": "string"
+                      },
+                      "playerName": {
+                        "type": "string"
+                      },
+                      "startedAt": {
+                        "type": "string"
+                      },
+                      "endedAt": {
+                        "type": "string"
+                      },
+                      "noiseProbability": {
+                        "type": "number"
+                      },
+                      "accidentalProbability": {
+                        "type": "number"
+                      },
+                      "error": {
+                        "type": "string"
                       }
                     }
                   }
@@ -1382,6 +1661,27 @@
                     },
                     "createdAt": {
                       "type": "string"
+                    },
+                    "playerId": {
+                      "type": "string"
+                    },
+                    "playerName": {
+                      "type": "string"
+                    },
+                    "startedAt": {
+                      "type": "string"
+                    },
+                    "endedAt": {
+                      "type": "string"
+                    },
+                    "noiseProbability": {
+                      "type": "number"
+                    },
+                    "accidentalProbability": {
+                      "type": "number"
+                    },
+                    "error": {
+                      "type": "string"
                     }
                   }
                 }
@@ -1497,6 +1797,27 @@
                       "type": "string"
                     },
                     "createdAt": {
+                      "type": "string"
+                    },
+                    "playerId": {
+                      "type": "string"
+                    },
+                    "playerName": {
+                      "type": "string"
+                    },
+                    "startedAt": {
+                      "type": "string"
+                    },
+                    "endedAt": {
+                      "type": "string"
+                    },
+                    "noiseProbability": {
+                      "type": "number"
+                    },
+                    "accidentalProbability": {
+                      "type": "number"
+                    },
+                    "error": {
                       "type": "string"
                     }
                   }
@@ -1739,6 +2060,203 @@
         }
       }
     },
+    "/api/prompts": {
+      "get": {
+        "operationId": "listPrompts",
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "title",
+                      "description",
+                      "model",
+                      "instructions",
+                      "defaultInstructions",
+                      "contract"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "enum": [
+                          "classifier",
+                          "confirmation",
+                          "quality",
+                          "design",
+                          "review",
+                          "artwork"
+                        ]
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "model": {
+                        "type": "string"
+                      },
+                      "instructions": {
+                        "type": "string"
+                      },
+                      "defaultInstructions": {
+                        "type": "string"
+                      },
+                      "contract": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/prompts/{id}": {
+      "put": {
+        "operationId": "setPrompt",
+        "tags": [
+          "Settings"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "classifier",
+                "confirmation",
+                "quality",
+                "design",
+                "review",
+                "artwork"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "instructions"
+                ],
+                "properties": {
+                  "instructions": {
+                    "minLength": 1,
+                    "maxLength": 24000,
+                    "pattern": "\\S",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "instructions"
+                ],
+                "properties": {
+                  "instructions": {
+                    "minLength": 1,
+                    "maxLength": 24000,
+                    "pattern": "\\S",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "instructions"
+                ],
+                "properties": {
+                  "instructions": {
+                    "minLength": 1,
+                    "maxLength": 24000,
+                    "pattern": "\\S",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "model",
+                    "instructions",
+                    "defaultInstructions",
+                    "contract"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "enum": [
+                        "classifier",
+                        "confirmation",
+                        "quality",
+                        "design",
+                        "review",
+                        "artwork"
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "type": "string"
+                    },
+                    "defaultInstructions": {
+                      "type": "string"
+                    },
+                    "contract": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/provider": {
       "get": {
         "operationId": "getProviderSettings",
@@ -1766,6 +2284,7 @@
                       "type": "string"
                     },
                     "model": {
+                      "const": "gpt-6-astra",
                       "type": "string"
                     },
                     "modelDir": {
@@ -1838,6 +2357,7 @@
                     "type": "string"
                   },
                   "model": {
+                    "const": "gpt-6-astra",
                     "type": "string"
                   },
                   "modelDir": {
@@ -1898,6 +2418,7 @@
                     "type": "string"
                   },
                   "model": {
+                    "const": "gpt-6-astra",
                     "type": "string"
                   },
                   "modelDir": {
@@ -1958,6 +2479,7 @@
                     "type": "string"
                   },
                   "model": {
+                    "const": "gpt-6-astra",
                     "type": "string"
                   },
                   "modelDir": {
@@ -2024,6 +2546,7 @@
                       "type": "string"
                     },
                     "model": {
+                      "const": "gpt-6-astra",
                       "type": "string"
                     },
                     "modelDir": {
@@ -2114,6 +2637,7 @@
                     "choices",
                     "actions",
                     "settings",
+                    "host",
                     "error"
                   ],
                   "properties": {
@@ -2165,8 +2689,10 @@
                           "description",
                           "wildcard",
                           "resolved",
-                          "protected",
-                          "lastTransformedTurn"
+                          "lastTransformedTurn",
+                          "playerId",
+                          "playerName",
+                          "localPlayer"
                         ],
                         "properties": {
                           "id": {
@@ -2226,9 +2752,6 @@
                           "resolved": {
                             "type": "boolean"
                           },
-                          "protected": {
-                            "type": "boolean"
-                          },
                           "lastTransformedTurn": {
                             "anyOf": [
                               {
@@ -2240,6 +2763,15 @@
                                 "type": "integer"
                               }
                             ]
+                          },
+                          "playerId": {
+                            "type": "string"
+                          },
+                          "playerName": {
+                            "type": "string"
+                          },
+                          "localPlayer": {
+                            "type": "boolean"
                           }
                         }
                       }
@@ -2317,7 +2849,6 @@
                       "type": "object",
                       "required": [
                         "mode",
-                        "drawChance",
                         "maxPerTurn",
                         "cooldownTurns",
                         "strength",
@@ -2328,9 +2859,6 @@
                       "properties": {
                         "mode": {
                           "type": "string"
-                        },
-                        "drawChance": {
-                          "type": "number"
                         },
                         "maxPerTurn": {
                           "anyOf": [
@@ -2369,6 +2897,9 @@
                           "type": "boolean"
                         }
                       }
+                    },
+                    "host": {
+                      "type": "boolean"
                     },
                     "error": {
                       "type": [
@@ -2426,6 +2957,414 @@
                     },
                     "singlePlayerOnly": {
                       "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/multiplayer/cards": {
+      "get": {
+        "operationId": "game_Get_multiplayer_cards",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "role",
+                    "runId",
+                    "active",
+                    "peers"
+                  ],
+                  "properties": {
+                    "role": {
+                      "type": "string"
+                    },
+                    "runId": {
+                      "type": "string"
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "peers": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "playerId",
+                          "connected",
+                          "pending",
+                          "received",
+                          "error"
+                        ],
+                        "properties": {
+                          "playerId": {
+                            "type": "string"
+                          },
+                          "connected": {
+                            "type": "boolean"
+                          },
+                          "pending": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "received": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "error": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/voice": {
+      "get": {
+        "operationId": "game_Get_voice",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "enabled",
+                    "listening",
+                    "error"
+                  ],
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "listening": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "game_Put_voice",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enabled"
+                ],
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enabled"
+                ],
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "enabled"
+                ],
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "enabled",
+                    "listening",
+                    "error"
+                  ],
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "listening": {
+                      "type": "boolean"
+                    },
+                    "error": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/voice/segments": {
+      "post": {
+        "operationId": "game_Post_voice_segments",
+        "tags": [
+          "Game controls"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "runId",
+                      "playerId",
+                      "playerName",
+                      "startedAt",
+                      "endedAt",
+                      "pcmBase64"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "runId": {
+                        "type": "string"
+                      },
+                      "playerId": {
+                        "type": "string"
+                      },
+                      "playerName": {
+                        "type": "string"
+                      },
+                      "startedAt": {
+                        "type": "string"
+                      },
+                      "endedAt": {
+                        "type": "string"
+                      },
+                      "pcmBase64": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/game/multiplayer/cards/resync": {
+      "post": {
+        "operationId": "game_Post_multiplayer_cards_resync",
+        "tags": [
+          "Game controls"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "playerId"
+                ],
+                "properties": {
+                  "playerId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "playerId"
+                ],
+                "properties": {
+                  "playerId": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "playerId"
+                ],
+                "properties": {
+                  "playerId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": false,
+                  "type": "object",
+                  "required": [
+                    "role",
+                    "runId",
+                    "active",
+                    "peers"
+                  ],
+                  "properties": {
+                    "role": {
+                      "type": "string"
+                    },
+                    "runId": {
+                      "type": "string"
+                    },
+                    "active": {
+                      "type": "boolean"
+                    },
+                    "peers": {
+                      "type": "array",
+                      "items": {
+                        "additionalProperties": false,
+                        "type": "object",
+                        "required": [
+                          "playerId",
+                          "connected",
+                          "pending",
+                          "received",
+                          "error"
+                        ],
+                        "properties": {
+                          "playerId": {
+                            "type": "string"
+                          },
+                          "connected": {
+                            "type": "boolean"
+                          },
+                          "pending": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "received": {
+                            "anyOf": [
+                              {
+                                "format": "integer",
+                                "default": 0,
+                                "type": "string"
+                              },
+                              {
+                                "type": "integer"
+                              }
+                            ]
+                          },
+                          "error": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -5128,7 +6067,6 @@
                 "type": "object",
                 "required": [
                   "mode",
-                  "drawChance",
                   "maxPerTurn",
                   "cooldownTurns",
                   "strength",
@@ -5139,9 +6077,6 @@
                 "properties": {
                   "mode": {
                     "type": "string"
-                  },
-                  "drawChance": {
-                    "type": "number"
                   },
                   "maxPerTurn": {
                     "anyOf": [
@@ -5188,7 +6123,6 @@
                 "type": "object",
                 "required": [
                   "mode",
-                  "drawChance",
                   "maxPerTurn",
                   "cooldownTurns",
                   "strength",
@@ -5199,9 +6133,6 @@
                 "properties": {
                   "mode": {
                     "type": "string"
-                  },
-                  "drawChance": {
-                    "type": "number"
                   },
                   "maxPerTurn": {
                     "anyOf": [
@@ -5248,7 +6179,6 @@
                 "type": "object",
                 "required": [
                   "mode",
-                  "drawChance",
                   "maxPerTurn",
                   "cooldownTurns",
                   "strength",
@@ -5259,9 +6189,6 @@
                 "properties": {
                   "mode": {
                     "type": "string"
-                  },
-                  "drawChance": {
-                    "type": "number"
                   },
                   "maxPerTurn": {
                     "anyOf": [
@@ -5314,7 +6241,6 @@
                   "type": "object",
                   "required": [
                     "mode",
-                    "drawChance",
                     "maxPerTurn",
                     "cooldownTurns",
                     "strength",
@@ -5325,9 +6251,6 @@
                   "properties": {
                     "mode": {
                       "type": "string"
-                    },
-                    "drawChance": {
-                      "type": "number"
                     },
                     "maxPerTurn": {
                       "anyOf": [
@@ -5364,176 +6287,6 @@
                     },
                     "debugConsole": {
                       "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/game/cards/protection": {
-      "put": {
-        "operationId": "game_Put_cards_protection",
-        "tags": [
-          "Game controls"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "additionalProperties": false,
-                "type": "object",
-                "required": [
-                  "instanceId",
-                  "protected"
-                ],
-                "properties": {
-                  "instanceId": {
-                    "type": "string"
-                  },
-                  "protected": {
-                    "type": "boolean"
-                  }
-                }
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "additionalProperties": false,
-                "type": "object",
-                "required": [
-                  "instanceId",
-                  "protected"
-                ],
-                "properties": {
-                  "instanceId": {
-                    "type": "string"
-                  },
-                  "protected": {
-                    "type": "boolean"
-                  }
-                }
-              }
-            },
-            "multipart/form-data": {
-              "schema": {
-                "additionalProperties": false,
-                "type": "object",
-                "required": [
-                  "instanceId",
-                  "protected"
-                ],
-                "properties": {
-                  "instanceId": {
-                    "type": "string"
-                  },
-                  "protected": {
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Response for status 200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": false,
-                  "type": "object",
-                  "required": [
-                    "id",
-                    "modelId",
-                    "definitionId",
-                    "name",
-                    "rarity",
-                    "type",
-                    "cost",
-                    "upgradeLevel",
-                    "pile",
-                    "description",
-                    "wildcard",
-                    "resolved",
-                    "protected",
-                    "lastTransformedTurn"
-                  ],
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "modelId": {
-                      "type": "string"
-                    },
-                    "definitionId": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "rarity": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string"
-                    },
-                    "cost": {
-                      "anyOf": [
-                        {
-                          "format": "integer",
-                          "default": 0,
-                          "type": "string"
-                        },
-                        {
-                          "type": "integer"
-                        }
-                      ]
-                    },
-                    "upgradeLevel": {
-                      "anyOf": [
-                        {
-                          "format": "integer",
-                          "default": 0,
-                          "type": "string"
-                        },
-                        {
-                          "type": "integer"
-                        }
-                      ]
-                    },
-                    "pile": {
-                      "type": "string"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "wildcard": {
-                      "type": "boolean"
-                    },
-                    "resolved": {
-                      "type": "boolean"
-                    },
-                    "protected": {
-                      "type": "boolean"
-                    },
-                    "lastTransformedTurn": {
-                      "anyOf": [
-                        {
-                          "format": "integer",
-                          "default": 0,
-                          "type": "string"
-                        },
-                        {
-                          "type": "integer"
-                        }
-                      ]
                     }
                   }
                 }

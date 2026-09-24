@@ -22,13 +22,21 @@ public static class DrawPatch
         var instructions = source.ToList();
         var cardField = Machine.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Single(f => f.FieldType == typeof(CardModel) && f.Name.StartsWith("<card>"));
         var resultField = Machine.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Single(f => f.FieldType == typeof(List<CardModel>));
+        var contextField = Machine.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Single(f => f.FieldType == typeof(PlayerChoiceContext));
         var getResult = AccessTools.Method(typeof(TaskAwaiter<CardPileAddResult>), "GetResult");
         var addCount = 0;
         var resultCount = 0;
         for (var i = 0; i < instructions.Count; i++)
         {
             var instruction = instructions[i];
-            if (instruction.Calls(Add)) { instruction.operand = AccessTools.Method(typeof(DrawPatch), nameof(AddDrawn)); addCount++; }
+            if (instruction.Calls(Add))
+            {
+                var context = new CodeInstruction(OpCodes.Ldarg_0); context.labels.AddRange(instruction.labels); context.blocks.AddRange(instruction.blocks);
+                instruction.labels.Clear(); instruction.blocks.Clear();
+                yield return context;
+                yield return new CodeInstruction(OpCodes.Ldfld, contextField);
+                instruction.operand = AccessTools.Method(typeof(DrawPatch), nameof(AddDrawn)); addCount++;
+            }
             if (instruction.opcode == OpCodes.Pop && i > 0 && instructions[i - 1].Calls(getResult))
             {
                 var first = new CodeInstruction(OpCodes.Ldarg_0); first.labels.AddRange(instruction.labels); first.blocks.AddRange(instruction.blocks);
@@ -43,11 +51,11 @@ public static class DrawPatch
         }
         if (addCount != 1 || resultCount != 1) throw new InvalidOperationException("Unsupported Draw implementation; automatic transformations were not installed.");
     }
-    public static async Task<CardPileAddResult> AddDrawn(CardModel card, CardPile hand, CardPilePosition position, AbstractModel? clonedBy, bool skipVisuals)
+    public static async Task<CardPileAddResult> AddDrawn(CardModel card, CardPile hand, CardPilePosition position, AbstractModel? clonedBy, bool skipVisuals, PlayerChoiceContext context)
     {
         var result = await CardPileCmd.Add(card, hand, position, clonedBy, skipVisuals);
         if (!result.success || !hand.Cards.Contains(result.cardAdded)) return result;
-        result.cardAdded = await Director.Drawn(result.cardAdded);
+        result.cardAdded = await Director.Drawn(result.cardAdded, context);
         return result;
     }
     public static void Accept(CardPileAddResult result, ref CardModel current, List<CardModel> drawn)

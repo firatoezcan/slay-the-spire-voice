@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { existsSync } from "node:fs";
 import { dataDir, origins, port, token } from "./config";
 import { store } from "./store";
+import { PromptId, PromptUpdate, PromptRecord, listPrompts, savePrompt } from "./prompts";
 import {
   currentState,
   providers,
@@ -20,6 +21,7 @@ import {
   Generate,
   Job,
   Transcript,
+  AmbientDecision,
   ProviderSettings,
   Health,
   type JobRecord,
@@ -188,6 +190,10 @@ export const app = new Elysia({
     response: t.Array(Job),
     detail: { operationId: "listJobs", tags: ["Generation"] },
   })
+  .get("/api/decisions", ({ query }) => store.all("moment-evaluations", query.runId), {
+    query: t.Object({ runId: t.Optional(t.String()) }), response: t.Array(AmbientDecision),
+    detail: { operationId: "listAmbientDecisions", tags: ["Voice"] },
+  })
   .post(
     "/api/jobs",
     ({ body }) => enqueue(body.instanceId, body.lucky, body.immediate),
@@ -251,6 +257,16 @@ export const app = new Elysia({
       t.Unsafe(runtimeSchema(gameSpec.components.schemas.CardDefinition)),
     ),
     detail: { operationId: "listDefinitions", tags: ["Cards"] },
+  })
+  .get("/api/prompts", listPrompts, {
+    response: t.Array(PromptRecord),
+    detail: { operationId: "listPrompts", tags: ["Settings"] },
+  })
+  .put("/api/prompts/:id", ({ params, body }) => savePrompt(params.id, body.instructions), {
+    params: t.Object({ id: PromptId }),
+    body: PromptUpdate,
+    response: PromptRecord,
+    detail: { operationId: "setPrompt", tags: ["Settings"] },
   })
   .get("/api/provider", providers, {
     response: ProviderSettings,

@@ -1,5 +1,7 @@
 import { t } from "elysia";
 import type { Static } from "@sinclair/typebox";
+import { CardDecision, MomentEvaluation } from "./ambient/classifier";
+import { generationModel } from "./providers/models";
 
 export const Inspiration = t.Object({
   text: t.String({ minLength: 1, maxLength: 4000 }), source: t.Union([t.Literal("microphone"), t.Literal("chat"), t.Literal("tts"), t.Literal("manual")]),
@@ -12,10 +14,19 @@ export const Job = t.Object({
   createdAt: t.String(), completedAt: t.Nullable(t.String()), error: t.Nullable(t.String()), result: t.Nullable(t.String()),
 });
 export type JobRecord = Static<typeof Job>;
-export const Transcript = t.Object({ id: t.String(), runId: t.String(), text: t.String(), source: t.String(), mood: t.String(), createdAt: t.String() });
+export const Transcript = t.Object({ id: t.String(), runId: t.String(), text: t.String(), source: t.String(), mood: t.String(), createdAt: t.String(),
+  playerId: t.Optional(t.String()), playerName: t.Optional(t.String()), startedAt: t.Optional(t.String()), endedAt: t.Optional(t.String()),
+  noiseProbability: t.Optional(t.Number()), accidentalProbability: t.Optional(t.Number()), error: t.Optional(t.String()) });
 export type TranscriptRecord = Static<typeof Transcript>;
+export const AmbientDecision = t.Object({
+  id: t.String(), runId: t.String(), at: t.String(), action: t.Union([t.Literal("ignore"), t.Literal("create_card")]), reason: t.String(),
+  anchorId: t.String(), transcriptIds: t.Array(t.String()), contextIds: t.Array(t.String()),
+  windowStartedAt: t.String(), windowEndedAt: t.String(),
+  classifier: t.Union([MomentEvaluation, t.Null()]), confirmation: t.Union([CardDecision, t.Null()]),
+});
+export type AmbientDecisionRecord = Static<typeof AmbientDecision>;
 export const ProviderSettings = t.Object({
-  id: t.Literal("provider"), model: t.String(), modelDir: t.String(), autoPrepare: t.Boolean(),
+  id: t.Literal("provider"), model: t.Literal(generationModel), modelDir: t.String(), autoPrepare: t.Boolean(),
   cardTimeoutMs: t.Integer({ minimum: 10000, maximum: 600000 }), artTimeoutMs: t.Integer({ minimum: 10000, maximum: 900000 }),
 });
 export type ProviderConfig = Static<typeof ProviderSettings>;

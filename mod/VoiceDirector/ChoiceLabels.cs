@@ -1,5 +1,7 @@
 using System.Text.RegularExpressions;
 using Godot;
+using HarmonyLib;
+using MegaCrit.Sts2.Core.ControllerInput;
 using MegaCrit.Sts2.Core.Nodes.Cards.Holders;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
@@ -13,6 +15,20 @@ namespace VoiceDirector;
 
 public static class ChoiceLabels
 {
+    private static readonly AccessTools.FieldRef<NCardHolder, bool> CardClickable = AccessTools.FieldRefAccess<NCardHolder, bool>("_isClickable");
+    private static NCardHolder? CardHolder(Node node)
+    {
+        for (Node? parent = node; parent is not null; parent = parent.GetParent())
+            if (parent is NCardHolder holder) return holder;
+        return null;
+    }
+    public static void Activate(NClickableControl button)
+    {
+        // Card holders listen to controller selection or mouse events, not ForceClick's Released signal.
+        if (CardHolder(button) is { } holder)
+            holder._GuiInput(new InputEventAction { Action = MegaInput.select, Pressed = true });
+        else button.ForceClick();
+    }
     public static IEnumerable<Node> Walk(Node root)
     {
         yield return root;
@@ -21,6 +37,7 @@ public static class ChoiceLabels
     public static bool Available(NClickableControl button)
     {
         if (!GodotObject.IsInstanceValid(button) || !button.IsVisibleInTree() || !button.IsEnabled || Director.RewardInstance is not null) return false;
+        if (CardHolder(button) is { } holder && !CardClickable(holder)) return false;
         if (button is NMapPoint map && !(NMapScreen.Instance is { } mapScreen &&
             ((mapScreen.IsDebugTravelEnabled && !mapScreen.IsTraveling) || (mapScreen.IsTravelEnabled && map.State == MapPointState.Travelable)))) return false;
         var screen = ActiveScreenContext.Instance.GetCurrentScreen() as Node;

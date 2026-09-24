@@ -10,7 +10,8 @@
     "cli": "bun run apps/companion/src/cli.ts",
     "mcp": "bun run apps/companion/src/mcp.ts",
     "mod:build": "nix shell nixpkgs#dotnet-sdk_9 --command dotnet build mod/VoiceDirector/VoiceDirector.csproj",
-    "mod:install": "bun run scripts/install-mod.ts"
+    "mod:install": "bun run scripts/install-mod.ts",
+    "mod:package": "bun run scripts/package-mod.ts"
   },
   "devDependencies": {"@types/bun": "latest", "typescript": "~5.9.3", "openapi-typescript": "^7.13.0"}
 }

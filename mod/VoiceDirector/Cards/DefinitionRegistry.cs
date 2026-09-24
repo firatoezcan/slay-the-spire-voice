@@ -15,15 +15,23 @@ public static class DefinitionRegistry
     private static readonly Dictionary<string, CardDefinition> Definitions = [];
     private static readonly Dictionary<string, Type> Types = [];
     private static readonly Dictionary<string, ImageTexture> Portraits = [];
+    private static readonly Dictionary<string, string> Entries = [];
+    public const string WireEntry = "VOICE_DIRECTOR_GENERATED";
     private static readonly ModuleBuilder Module = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("VoiceDirector.Generated"), AssemblyBuilderAccess.Run).DefineDynamicModule("Cards");
     public static CardDefinition Get(string id) => Definitions[id];
     public static CardDefinition[] All() => Definitions.Values.ToArray();
     public static CardModel Canonical(string id) => ModelDb.GetById<CardModel>(ModelDb.GetId(Types[id]));
+    public static bool TryGet(ModelId id, out CardDefinition definition)
+    {
+        definition = null!;
+        return id.Category == "CARD" && Entries.TryGetValue(id.Entry, out var key) && Definitions.TryGetValue(key, out definition!);
+    }
 
     public static void Restore()
     {
         if (!ModelDb.Contains(typeof(GeneratedPool))) ModelDb.Inject(typeof(GeneratedPool));
         RegisterIds(ModelDb.GetId<GeneratedPool>());
+        Add("_entryNameToNetIdMap", "_netIdToEntryNameMap", "EntryIdBitSize", WireEntry);
         ModelDb.GetById<CardPoolModel>(ModelDb.GetId<GeneratedPool>()).InitId(ModelDb.GetId<GeneratedPool>());
         var folder = Path.Combine(LocalFiles.Root, "definitions");
         if (!Directory.Exists(folder)) return;
@@ -34,6 +42,7 @@ public static class DefinitionRegistry
     public static void Register(CardDefinition definition)
     {
         CardRules.Validate(definition);
+        _ = GeneratedCardSerialization.Encode(definition);
         if (Definitions.TryGetValue(definition.Id, out var existing))
         {
             if (JsonSerializer.Serialize(existing, LocalFiles.Json) != JsonSerializer.Serialize(definition, LocalFiles.Json))
@@ -51,7 +60,7 @@ public static class DefinitionRegistry
         var type = builder.CreateType()!;
         Types.Add(definition.Id, type);
         ModelDb.Inject(type);
-        RegisterIds(ModelDb.GetId(type));
+        Entries.Add(ModelDb.GetId(type).Entry, definition.Id);
         Canonical(definition.Id).InitId(ModelDb.GetId(type));
     }
 
@@ -81,14 +90,14 @@ public static class DefinitionRegistry
     public static void SetArt(string id, byte[] png)
     {
         _ = Get(id);
-        if (png.Length > 16 * 1024 * 1024) throw new ArgumentException("Artwork exceeds 16 MiB.");
-        var image = new Image();
+        ArtworkRules.Validate(png);
+        using var image = new Image();
         if (image.LoadPngFromBuffer(png) != Error.Ok) throw new ArgumentException("Artwork must be a PNG.");
-        if (image.GetWidth() > 4096 || image.GetHeight() > 4096) throw new ArgumentException("Artwork dimensions exceed 4096 pixels.");
-        image.Resize(512, 384);
-        Portrait(id).SetImage(image);
         Directory.CreateDirectory(Path.Combine(LocalFiles.Root, "art"));
-        image.SavePng(Path.Combine(LocalFiles.Root, "art", id + ".png"));
+        var file = Path.Combine(LocalFiles.Root, "art", id + ".png");
+        File.WriteAllBytes(file + ".pending", png);
+        File.Move(file + ".pending", file, true);
+        Portrait(id).SetImage(image);
     }
 }
 

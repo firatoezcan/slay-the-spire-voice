@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { eq, useLiveQuery } from "@tanstack/react-db";
 import {
-  Shield,
   Sparkles,
   Image as ImageIcon,
   ArrowRight,
@@ -16,12 +15,10 @@ import {
   SelectContent,
   SelectItem,
 } from "./components/ui/select";
-import { Switch } from "./components/ui/switch";
 import {
   cards,
   definitions,
   forRun,
-  protectCard,
   api,
   command,
   plain,
@@ -84,8 +81,8 @@ export function RunView({ state, act, pending, connected }: GameProps) {
     (job) => job.kind === "art" && job.definitionId === current?.definitionId,
   );
   const eligible =
+    state?.host && state.phase !== "ended" &&
     current &&
-    !current.protected &&
     !(current.wildcard && current.resolved) &&
     ["Common", "Uncommon", "Rare", "Basic"].includes(current.rarity);
   const invoke = (path: string, extra: object) =>
@@ -161,11 +158,8 @@ export function RunView({ state, act, pending, connected }: GameProps) {
                         onClick={() => setSelected(card.id)}
                       >
                         {card.name}
-                        {card.protected && (
-                          <Shield size={13} aria-label="Protected" />
-                        )}
                       </button>
-                      <span className="rarity">{card.rarity}</span>
+                      <span className="rarity">{card.rarity} · {card.playerName}</span>
                     </td>
                     <td className="numeric">
                       {card.cost < 0 ? "X" : card.cost}
@@ -208,7 +202,7 @@ export function RunView({ state, act, pending, connected }: GameProps) {
                 <span className="cost">{current.cost}</span>
               </div>
               <p className="card-meta">
-                {current.rarity} · {current.type}
+                {current.playerName} · {current.rarity} · {current.type}
                 {current.upgradeLevel > 0
                   ? ` · Upgraded ${current.upgradeLevel}`
                   : ""}
@@ -241,29 +235,10 @@ export function RunView({ state, act, pending, connected }: GameProps) {
               )}
               {ready && (
                 <p className="ready-note">
-                  <Sparkles size={15} />A replacement is ready for a future
-                  draw.
+                  <Sparkles size={15} />A replacement is ready for the next eligible draw.
                 </p>
               )}
               <div className="inspector-controls">
-                <label className="switch-line" htmlFor="protect-card">
-                  <span>
-                    Protect this card
-                    <small>Prevent further transformations.</small>
-                  </span>
-                  <Switch
-                    id="protect-card"
-                    checked={current.protected}
-                    disabled={pending(`protect:${current.id}`) || !connected}
-                    onCheckedChange={(value) =>
-                      act(
-                        value ? "Card protected" : "Card protection removed",
-                        () => protectCard(current.id, value),
-                        `protect:${current.id}`,
-                      )
-                    }
-                  />
-                </label>
                 <Button
                   disabled={
                     !eligible || pending(`generate:${current.id}`) || !connected
@@ -288,7 +263,7 @@ export function RunView({ state, act, pending, connected }: GameProps) {
                   </p>
                 )}
               </div>
-              {pile === "Hand" && state?.phase === "combat" && (
+              {pile === "Hand" && current.localPlayer && state?.phase === "combat" && (
                 <div className="play-controls">
                   <label htmlFor="play-target">Target</label>
                   <Select
@@ -337,7 +312,7 @@ export function RunView({ state, act, pending, connected }: GameProps) {
       </div>
       <div className="run-bottom">
         <section>
-          <h2>Give the director an idea</h2>
+          <h2>Add to the conversation</h2>
           <VoiceInput act={act} pending={pending("idea")} />
         </section>
         <section className="game-controls">
@@ -431,9 +406,7 @@ export function RunView({ state, act, pending, connected }: GameProps) {
   );
 }
 function status(card: Card) {
-  return card.protected
-    ? "Protected"
-    : card.wildcard && !card.resolved
+  return card.wildcard && !card.resolved
       ? "Wildcard"
       : card.definitionId
         ? "Transformed"

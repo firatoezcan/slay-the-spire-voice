@@ -6,6 +6,7 @@ import type {
   JobRecord,
   ProviderConfig,
   TranscriptRecord,
+  AmbientDecisionRecord,
 } from "../../companion/src/schema";
 
 export type State = components["schemas"]["GameSnapshot"];
@@ -110,7 +111,7 @@ const polling = {
 };
 const stateQuery = {
   queryKey: ["state"],
-  queryFn: () => api<State | null>("/game/state"),
+  queryFn: () => api<State | null>("/game/state").catch(() => null),
   queryClient,
   ...polling,
 };
@@ -164,6 +165,7 @@ function createRunCollections(runId: string) {
     jobs: runCollection<JobRecord>("jobs", runId),
     transcripts: runCollection<TranscriptRecord>("transcripts", runId),
     events: runCollection<Event>("events", runId),
+    decisions: runCollection<AmbientDecisionRecord>("decisions", runId),
   };
 }
 const runCollections = new Map<
@@ -207,28 +209,6 @@ const changeSettings = createOptimisticAction<Partial<Settings>>({
 });
 export const saveSettings = (changes: Partial<Settings>) =>
   changeSettings(changes).isPersisted.promise;
-
-const changeProtection = createOptimisticAction<{
-  instanceId: string;
-  protected: boolean;
-}>({
-  onMutate: (input) => {
-    const keys = [...cards.values()]
-      .filter((card) => card.id === input.instanceId)
-      .map((card) => card.rowId);
-    cards.update(keys, (drafts) => {
-      for (const draft of drafts) draft.protected = input.protected;
-    });
-  },
-  mutationFn: async (input) =>
-    inOrder(`protect:${input.instanceId}`, async () => {
-      await api("/game/cards/protection", "PUT", input);
-      await cards.utils.refetch({ throwOnError: true });
-    }),
-});
-export const protectCard = (instanceId: string, protectedValue: boolean) =>
-  changeProtection({ instanceId, protected: protectedValue }).isPersisted
-    .promise;
 
 export const plain = (text: string) => text.replace(/\[\/?[^\]]+\]/g, "");
 export const time = (value: string) =>

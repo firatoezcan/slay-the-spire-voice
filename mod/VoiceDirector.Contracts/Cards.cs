@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Immutable;
 
 namespace VoiceDirector.Contracts;
 
@@ -6,17 +7,17 @@ public sealed record CardEffect(string Kind, int Amount, string Target = "self",
     int UpgradeAmount = 0, string Condition = "always", int Repeat = 1);
 
 public sealed record CardDefinition(string Id, string Name, string Rarity, string Type, string Target,
-    [property: Range(0, 5)] int Cost, CardEffect[] Effects, string[] Keywords, string Theme,
+    [property: Range(0, 5)] int Cost, ImmutableArray<CardEffect> Effects, ImmutableArray<string> Keywords, string Theme,
     string Rationale, string ArtPrompt, [property: Range(0, 12)] double Quality);
 
 public sealed record CardInstance(string Id, string ModelId, string? DefinitionId, string Name, string Rarity,
     string Type, int Cost, int UpgradeLevel, string Pile, string Description,
-    bool Wildcard, bool Resolved, bool Protected, int LastTransformedTurn);
+    bool Wildcard, bool Resolved, int LastTransformedTurn,
+    string PlayerId, string PlayerName, bool LocalPlayer);
 
 public sealed record CandidateRequest(string RunId, string InstanceId, CardDefinition Definition, bool Lucky = false);
 public sealed record TransformRequest(string RunId, string InstanceId, string DefinitionId, string RequestId);
 public sealed record ArtRequest(string DefinitionId, string PngBase64);
-public sealed record ProtectionRequest(string InstanceId, bool Protected);
 public sealed record CardReference(string ModelId, string Name, string Pool, string Rarity, string Type,
     int Cost, string Description, string UpgradeDescription, string[] Keywords);
 public sealed record ArtReferenceRequest(string ModelId);
@@ -25,6 +26,7 @@ public sealed record CardValidation(bool Valid, string? Error);
 
 public static class CardRules
 {
+    public static bool IsDefinitionId(string? id) => id is not null && System.Text.RegularExpressions.Regex.IsMatch(id, "^[a-z0-9_]{8,64}$");
     public static void ValidateCandidate(CardDefinition card)
     {
         Validate(card);
@@ -44,12 +46,16 @@ public static class CardRules
     public static readonly string[] Powers = ["Strength", "Dexterity", "Vulnerable", "Weak", "Poison", "Thorns", "Artifact"];
     public static void Validate(CardDefinition card)
     {
-        if (!System.Text.RegularExpressions.Regex.IsMatch(card.Id, "^[a-z0-9_]{8,64}$")) throw new ArgumentException("Definition ID must contain 8–64 lowercase letters, digits or underscores.");
+        ArgumentNullException.ThrowIfNull(card);
+        if (card.Effects.IsDefault || card.Keywords.IsDefault || card.Effects.Any(effect => effect is null) ||
+            card.Id is null || card.Theme is null || card.Rationale is null || card.ArtPrompt is null)
+            throw new ArgumentException("Card content is incomplete.");
+        if (!IsDefinitionId(card.Id)) throw new ArgumentException("Definition ID must contain 8–64 lowercase letters, digits or underscores.");
         if (string.IsNullOrWhiteSpace(card.Name) || card.Name.Length > 60) throw new ArgumentException("Card name must contain 1–60 characters.");
         if (!new[] { "Basic", "Common", "Uncommon", "Rare" }.Contains(card.Rarity)) throw new ArgumentException("Unsupported rarity.");
         if (!new[] { "Attack", "Skill" }.Contains(card.Type)) throw new ArgumentException("Only Attack and Skill definitions are supported.");
         if (!new[] { "Self", "AnyEnemy", "AllEnemies" }.Contains(card.Target)) throw new ArgumentException("Unsupported target.");
-        if (card.Cost is < 0 or > 5 || card.Quality is < 0 or > 12 || card.Effects.Length is < 1 or > 8) throw new ArgumentException("Card is outside supported bounds.");
+        if (card.Cost is < 0 or > 5 || !double.IsFinite(card.Quality) || card.Quality is < 0 or > 12 || card.Effects.Length is < 1 or > 8) throw new ArgumentException("Card is outside supported bounds.");
         if (card.Keywords.Any(k => !new[] { "Exhaust", "Retain", "Ethereal", "Innate" }.Contains(k))) throw new ArgumentException("Unsupported keyword.");
         foreach (var effect in card.Effects)
         {

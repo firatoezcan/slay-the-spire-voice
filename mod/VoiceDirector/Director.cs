@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Runs;
 using MegaCrit.Sts2.Core.Nodes.CommonUi;
 using MegaCrit.Sts2.Core.Multiplayer.Game;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using VoiceDirector.Cards;
 using VoiceDirector.Contracts;
 
@@ -14,21 +15,8 @@ public static class Director
 {
     public static DirectorSettings Settings { get; private set; } = LocalFiles.Read<DirectorSettings>("director.json") ?? new();
     public static RunState? Run => RunManager.Instance?.DebugOnlyGetState();
-    public static Player? Player => Run?.Players.Count == 1 && RunManager.Instance.NetService.Type == NetGameType.Singleplayer ? Run.Players[0] : null;
-    private static RunState? _lastRun;
-    private static string _runId = "";
-    public static string RunId
-    {
-        get
-        {
-            if (Run is not { } run || Player is not { } player) return "";
-            var saved = player.Deck.Cards.Select(c => Lineage.Get(c).RunId).FirstOrDefault(id => id.Length > 0);
-            if (run != _lastRun) { _lastRun = run; _runId = saved ?? Guid.NewGuid().ToString("N"); }
-            if (saved is not null) _runId = saved;
-            foreach (var card in player.Deck.Cards) Lineage.Get(card).RunId = _runId;
-            return _runId;
-        }
-    }
+    public static Player? Player => Run?.Players.FirstOrDefault(p => p.NetId == MegaCrit.Sts2.Core.Context.LocalContext.NetId);
+    public static string RunId => Multiplayer.CardTransfer.RunId;
     public static string CombatId => $"{RunId}:{Run?.CurrentActIndex}:{Run?.CurrentMapPoint?.coord}:{Run?.CurrentRoomCount}";
     public static int Turn => Player?.PlayerCombatState?.TurnNumber ?? 0;
     public static readonly EventLog Events = new();
@@ -38,68 +26,81 @@ public static class Director
 
     public static DirectorSettings Configure(DirectorSettings value)
     {
-        if (value.Mode is not ("wildcard" or "living-deck") || value.DrawChance is < 0 or > 1 || value.MaxPerTurn is < 1 or > 10 || value.CooldownTurns is < 0 or > 20 || value.Strength is < 0 or > 1 || value.Synergy is < 0 or > 1)
-            throw new ArgumentException("Settings are outside supported ranges.");
+        if (Multiplayer.CardTransfer.IsMultiplayer && !Multiplayer.CardTransfer.IsAuthority)
+            throw new InvalidOperationException("The host controls mod settings for this run.");
+        DirectorSettingsRules.Validate(value);
         LocalFiles.Write("director.json", value);
-        return Settings = value;
+        Settings = value;
+        Multiplayer.CardTransfer.PublishSettings();
+        return Settings;
     }
+    internal static void ApplyHostSettings(DirectorSettings value) { DirectorSettingsRules.Validate(value); Settings = value; }
+    internal static void RestoreLocalSettings() => Settings = LocalFiles.Read<DirectorSettings>("director.json") ?? new();
 
     public static CardModel Resolve(string id, bool combat = false)
     {
-        var player = Player ?? throw new InvalidOperationException("A single-player run is required.");
-        var cards = combat ? player.PlayerCombatState?.AllCards ?? [] : player.Deck.Cards;
+        var run = Run ?? throw new InvalidOperationException("Start a run first.");
+        var cards = run.Players.SelectMany(player => combat ? player.PlayerCombatState?.AllCards ?? [] : player.Deck.Cards);
         return cards.FirstOrDefault(c => Lineage.Get(c).Id == id) ?? throw new ArgumentException("Card instance is no longer available.");
     }
     public static void Prepare(CandidateRequest request)
     {
+        if (!Multiplayer.CardTransfer.IsAuthority) throw new InvalidOperationException("Only the host generates cards.");
         RequireRun(request.RunId);
         var card = Resolve(request.InstanceId);
         var state = Lineage.Get(card);
-        if (state.Protected || !card.IsTransformable || card.Enchantment is not null || card.Affliction is not null)
-            throw new InvalidOperationException("This card is protected from transformation.");
+        if (!card.IsTransformable || card.Enchantment is not null || card.Affliction is not null)
+            throw new InvalidOperationException("This card or its permanent modifiers cannot be transformed.");
         if (state.Resolved && state.Wildcard) throw new InvalidOperationException("This wildcard is already resolved.");
         if (request.Definition.Rarity != card.Rarity.ToString()) throw new ArgumentException("Replacement must preserve rarity.");
         CardRules.ValidateCandidate(request.Definition);
         DefinitionRegistry.Register(request.Definition);
+        Multiplayer.CardTransfer.PublishDefinition(request.Definition.Id);
         Candidates[request.InstanceId] = request;
         LocalFiles.Write("candidates.json", Candidates);
         Events.Emit("candidate-ready", card, request.Definition.Id);
     }
     public static void RequireRun(string id)
     {
-        if (string.IsNullOrEmpty(id) || id != RunId) throw new InvalidOperationException("Stale or unavailable run.");
+        if (!Multiplayer.CardTransfer.Active || string.IsNullOrEmpty(id) || id != RunId) throw new InvalidOperationException("Stale or unavailable run.");
     }
 
-    public static async Task<CardModel> Drawn(CardModel card)
+    public static async Task<CardModel> Drawn(CardModel card, PlayerChoiceContext context)
+    {
+        var definition = await Multiplayer.CardChoices.Draw(card, context, () => PickForDraw(card));
+        return definition is null ? card : await Commit(card, definition);
+    }
+    private static string? PickForDraw(CardModel card)
     {
         var state = Lineage.Get(card);
-        if (!Settings.Enabled || Busy || card.DeckVersion is null || state.Protected || state.Reserved) return card;
-        if (!card.IsTransformable || !card.DeckVersion.IsTransformable || card.Enchantment is not null || card.Affliction is not null) return card;
-        if (Settings.Mode == "wildcard" && (!state.Wildcard || state.Resolved)) return card;
-        if (state.Wildcard && state.Resolved) return card;
-        if (card.Rarity is not (CardRarity.Common or CardRarity.Uncommon or CardRarity.Rare or CardRarity.Basic)) return card;
-        if (state.LastCombat == CombatId && Turn - state.LastTurn <= Settings.CooldownTurns) return card;
-        if ((Player?.Deck.Cards.Count(c => Lineage.Get(c).LastCombat == CombatId && Lineage.Get(c).LastTurn == Turn) ?? 0) >= Settings.MaxPerTurn) return card;
-        if (!Candidates.TryGetValue(state.Id, out var candidate) || candidate.RunId != RunId) return card;
+        var turn = card.Owner.PlayerCombatState?.TurnNumber ?? 0;
+        if (!Settings.Enabled || Busy || card.DeckVersion is null || state.Reserved) return null;
+        if (!card.IsTransformable || !card.DeckVersion.IsTransformable || card.Enchantment is not null || card.Affliction is not null) return null;
+        if (Settings.Mode == "wildcard" && (!state.Wildcard || state.Resolved)) return null;
+        if (state.Wildcard && state.Resolved) return null;
+        if (card.Rarity is not (CardRarity.Common or CardRarity.Uncommon or CardRarity.Rare or CardRarity.Basic)) return null;
+        if (state.LastCombat == CombatId && turn - state.LastTurn <= Settings.CooldownTurns) return null;
+        if (card.Owner.Deck.Cards.Count(c => Lineage.Get(c).LastCombat == CombatId && Lineage.Get(c).LastTurn == turn) >= Settings.MaxPerTurn) return null;
+        if (!Candidates.TryGetValue(state.Id, out var candidate) || candidate.RunId != RunId) return null;
         // Persisted candidates must still satisfy today's admission policy.
         try { CardRules.ValidateCandidate(candidate.Definition); }
-        catch (ArgumentException) { Candidates.Remove(state.Id); LocalFiles.Write("candidates.json", Candidates); return card; }
-        if (Random.Shared.NextDouble() >= Settings.DrawChance) return card;
-        return await Commit(card, candidate.Definition.Id);
+        catch (ArgumentException) { Candidates.Remove(state.Id); LocalFiles.Write("candidates.json", Candidates); return null; }
+        return candidate.Definition.Id;
     }
 
     public static async Task<CardModel> Commit(CardModel original, string definitionId)
     {
         var state = Lineage.Get(original);
-        if (Busy || state.Reserved || state.Protected || (state.Wildcard && state.Resolved)) throw new InvalidOperationException("Card is not eligible.");
-        if (state.LastCombat == CombatId && state.LastTurn == Turn) throw new InvalidOperationException("Card already transformed this turn.");
+        var turn = original.Owner.PlayerCombatState?.TurnNumber ?? 0;
+        if (Busy || state.Reserved || (state.Wildcard && state.Resolved)) throw new InvalidOperationException("Card is not eligible.");
+        if (state.LastCombat == CombatId && state.LastTurn == turn) throw new InvalidOperationException("Card already transformed this turn.");
         var canonical = DefinitionRegistry.Canonical(definitionId);
         CardRules.ValidateCandidate(DefinitionRegistry.Get(definitionId));
         var persistent = original.DeckVersion ?? original;
         if (!original.IsTransformable || !persistent.IsTransformable || original.Pile is null || persistent.Pile is null)
             throw new InvalidOperationException("Card cannot be transformed in its current state.");
         if (canonical.Rarity != original.Rarity) throw new InvalidOperationException("Rarity mismatch.");
-        if (original.Enchantment is not null || original.Affliction is not null) throw new InvalidOperationException("Cards with permanent modifiers are protected.");
+        if (original.Enchantment is not null || original.Affliction is not null) throw new InvalidOperationException("Cards with permanent modifiers cannot be transformed.");
         Busy = state.Reserved = true;
         try
         {
@@ -122,7 +123,7 @@ public static class Director
                 result = newCombat;
             }
             state.Resolved = state.Wildcard || state.Resolved;
-            state.LastTurn = Turn;
+            state.LastTurn = turn;
             state.LastCombat = CombatId;
             Candidates.Remove(state.Id);
             LocalFiles.Write("candidates.json", Candidates);

@@ -33,6 +33,11 @@ public static class ApiHost
         var routes = Inline.Create().Serializers(Serialization.Default(new JsonSerializerOptions(JsonSerializerDefaults.Web)))
             .Get("/state", (IRequest r) => Authorized(r, game.Snapshot))
             .Get("/capabilities", (IRequest r) => Authorized(r, game.Capabilities))
+            .Get("/multiplayer/cards", (IRequest r) => Authorized(r, game.CardSync))
+            .Get("/voice", (IRequest r) => Authorized(r, game.VoiceStatus))
+            .Put("/voice", (IRequest r, VoiceSettings body) => Authorized(r, () => game.ConfigureVoice(body)))
+            .Post("/voice/segments", (IRequest r) => Authorized(r, game.VoiceSegments))
+            .Post("/multiplayer/cards/resync", (IRequest r, CardSyncRequest body) => Authorized(r, () => game.ResyncCards(body)))
             .Get("/definitions", (IRequest r) => Authorized(r, game.Definitions))
             .Get("/cards/references", (IRequest r) => Authorized(r, game.CardReferences))
             .Post("/cards/art-reference", (IRequest r, ArtReferenceRequest body) => Authorized(r, () => game.ArtReference(body)))
@@ -51,7 +56,6 @@ public static class ApiHost
             .Post("/cards/transform", (IRequest r, TransformRequest body) => Authorized(r, () => game.Transform(body)))
             .Post("/cards/art", (IRequest r, ArtRequest body) => Authorized(r, () => game.Art(body)))
             .Put("/settings", (IRequest r, DirectorSettings body) => Authorized(r, () => game.Configure(body)))
-            .Put("/cards/protection", (IRequest r, ProtectionRequest body) => Authorized(r, () => game.Protect(body)))
             .Add(ApiDescription.Create().Title("Voice Director Game API").Version("1.0.0").PostProcessor((_, document) =>
             {
                 foreach (var schema in document.Definitions.Values) SchemaPolicy.Normalize(schema);

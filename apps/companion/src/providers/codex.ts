@@ -1,6 +1,7 @@
 import { Effect } from "effect";
 import { join, resolve, relative } from "node:path";
 import { realpath } from "node:fs/promises";
+import type { ReasoningEffort } from "./codex-profile";
 import {
   codexExecutable,
   dataDir,
@@ -15,6 +16,8 @@ export function codexJob(input: {
   timeout: number;
   model: string;
   images?: string[];
+  systemPrompt?: string;
+  reasoningEffort?: ReasoningEffort;
 }) {
   return Effect.async<{ text: string; events: string }, Error>((resume) => {
     const worker = new Worker(

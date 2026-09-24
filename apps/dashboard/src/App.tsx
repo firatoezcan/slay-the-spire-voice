@@ -7,6 +7,7 @@ import {
   CircleHelp,
   ExternalLink,
   List,
+  NotebookPen,
   Radio,
   SlidersHorizontal,
   Terminal,
@@ -18,6 +19,7 @@ import { api, connect, restoreSession, states, type Health } from "./data";
 import { RunView } from "./RunView";
 import { DirectorView, SettingsView, ConsoleView } from "./SettingsView";
 import { JobsView, EventsView, VoiceView } from "./HistoryViews";
+import { PromptsView } from "./PromptsView";
 
 export type Act = (
   label: string,
@@ -29,6 +31,7 @@ const pages = [
   { id: "run", title: "Run", icon: BookOpen },
   { id: "director", title: "Director", icon: SlidersHorizontal },
   { id: "voice", title: "Voice", icon: AudioLines },
+  { id: "prompts", title: "Prompts", icon: NotebookPen },
   { id: "jobs", title: "Jobs", icon: List },
   { id: "events", title: "History", icon: Radio },
   { id: "console", title: "Console", icon: Terminal },
@@ -198,7 +201,7 @@ export function App() {
                 {page === "run"
                   ? state?.runId
                     ? `${state.phase === "combat" ? `Combat · Turn ${state.turn}` : state.phase === "wildcard-acquired" ? "Wildcard acquired" : state.phase.replace(/Room$/, "")} · ${state.settings.mode === "wildcard" ? "Wildcard" : "Living Deck"}`
-                    : "Start a single player run to see its cards here."
+                    : "Start or join a run to see the party's cards here."
                   : descriptions[page]}
               </p>
             </div>
@@ -242,6 +245,7 @@ export function App() {
             />
           )}{" "}
           {page === "events" && <EventsView runId={state?.runId ?? ""} />}
+          {page === "prompts" && <PromptsView act={act} pending={props.pending} />}
           {page === "settings" && (
             <SettingsView
               act={act}
@@ -257,7 +261,8 @@ export function App() {
 }
 const descriptions: Record<string, string> = {
   director: "Choose when cards can change and how far they can go.",
-  voice: "Speech and chat give the director ideas for upcoming cards.",
+  voice: "Conversation, input checks, and the decision to create a card.",
+  prompts: "Edit the instructions behind each decision, card, and illustration.",
   jobs: "Card rules and artwork are generated in the background.",
   events: "Decisions and changes from this run.",
   console: "The game's built in commands. These can change the run.",

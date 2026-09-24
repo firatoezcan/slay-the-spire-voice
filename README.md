@@ -4,7 +4,19 @@ A Slay the Spire 2 mod that turns speech and chat into cards. A C# mod runs insi
 
 The mod is running on macOS ARM64 against Slay the Spire 2 v0.107.1. [Current behavior](docs/current-behavior.md) describes the implementation. [Runtime validation](docs/runtime-validation.md) records what has been played and checked.
 
-## Run locally
+[Contracts and boundaries](docs/design-by-contract.md) describes ownership, shared validation, delivery, and game execution.
+
+## Install
+
+Download [VoiceDirector 0.5.0](https://github.com/firatoezcan/slay-the-spire-voice/releases/tag/v0.5.0) or get the [player ZIP directly](https://github.com/firatoezcan/slay-the-spire-voice/releases/download/v0.5.0/VoiceDirector-0.5.0.zip). Choose `VoiceDirector-0.5.0.zip` under release assets for the installable mod.
+
+Friends install the supplied `VoiceDirector` folder in the game's `mods` directory and launch through Steam. The ZIP contains the mod's dependencies. Follow the [player instructions](docs/player-install.md).
+
+The host runs the AI and transcription for the party. Follow [host setup](docs/host-install.md) for installation and the current multiplayer verification status.
+
+Living Deck is the default. Prepared replacements apply on their next eligible draw. The dashboard's Prompts page lets the host edit classification, card design, review, and artwork instructions.
+
+### Host development setup
 
 Install Bun, Nix, the game through Steam, and Codex with an existing sign in. The local Parakeet path defaults to the Oh My Pi model cache; adjust it in Settings if needed.
 

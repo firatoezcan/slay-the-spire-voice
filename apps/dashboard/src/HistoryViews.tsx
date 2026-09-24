@@ -1,63 +1,30 @@
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useLiveQuery } from "@tanstack/react-db";
-import { Mic, Square, ArrowUpRight, RotateCcw, X } from "lucide-react";
+import { ArrowUpRight, RotateCcw, X } from "lucide-react";
 import { Button } from "./components/ui/button";
 import { Textarea } from "./components/ui/textarea";
 import { forRun, api, refresh, time, type Health } from "./data";
-import { recordUtterance } from "./voice";
+import { Switch } from "./components/ui/switch";
+import type { components } from "../../../packages/contracts/src/game";
 import type { Act, Pending } from "./App";
+import type { AmbientDecisionRecord, TranscriptRecord } from "../../companion/src/schema";
 
 export function VoiceInput({
   act,
   pending,
-  canRecord = true,
 }: {
   act: Act;
   pending: boolean;
-  canRecord?: boolean;
 }) {
   const [text, setText] = useState("");
-  const [status, setStatus] = useState("Ready to record");
-  const [recording, setRecording] = useState(false);
-  const capture = useRef<Awaited<ReturnType<typeof recordUtterance>> | null>(
-    null,
-  );
-  useEffect(
-    () => () => {
-      void capture.current?.cancel();
-    },
-    [],
-  );
-  async function toggle() {
-    if (recording) {
-      setRecording(false);
-      await capture.current?.stop();
-      capture.current = null;
-      return;
-    }
-    try {
-      capture.current = await recordUtterance(
-        (value) => {
-          setStatus(value);
-          if (value !== "Recording…") setRecording(false);
-        },
-        async (samples) => {
-          await api("/voice/utterances", "POST", { samples });
-          await refresh("transcripts");
-        },
-      );
-      setRecording(true);
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : String(error));
-    }
-  }
   return (
     <form
       className="voice-input"
       onSubmit={(event) => {
         event.preventDefault();
         act(
-          "Idea added",
+          "Conversation added",
           async () => {
             await api("/inspiration", "POST", {
               text: text.trim(),
@@ -71,35 +38,22 @@ export function VoiceInput({
       }}
     >
       <label className="sr-only" htmlFor="inspiration">
-        Idea for the director
+        Add to the conversation
       </label>
       <Textarea
         id="inspiration"
         value={text}
         maxLength={4000}
-        placeholder="A stubborn knight who turns pain into a shield…"
+        placeholder="We brought five shields to a fistfight."
         onChange={(event) => setText(event.target.value)}
       />
       <div className="voice-input-actions">
-        <div>
-          <Button
-            type="button"
-            variant={recording ? "destructive" : "outline"}
-            disabled={!canRecord || status === "Transcribing…"}
-            onClick={() => void toggle()}
-          >
-            {recording ? <Square size={15} /> : <Mic size={15} />}{" "}
-            {recording ? "Stop recording" : "Record"}
-          </Button>
-          <span role="status">{status}</span>
-        </div>
         <Button type="submit" disabled={pending || !text.trim()}>
-          Add idea <ArrowUpRight size={15} />
+          Add conversation <ArrowUpRight size={15} />
         </Button>
       </div>
       <p className="help">
-        Recording stops after 29 seconds. Audio stays on this computer;
-        transcripts can be sent to Codex with card requests.
+        Add a line to the same conversation the director hears.
       </p>
     </form>
   );
@@ -116,7 +70,10 @@ export function VoiceView({
   health?: Health;
   runId: string;
 }) {
-  const { transcripts } = forRun(runId);
+  const { transcripts, decisions } = forRun(runId);
+  const voice = useQuery({ queryKey: ["microphone"], queryFn: () => api<components["schemas"]["VoiceStatus"]>("/game/voice"), refetchInterval: 1000, retry: false });
+  const [changingMicrophone, setChangingMicrophone] = useState(false);
+  const { data: judgments = [] } = useLiveQuery({ query: q => q.from({ decision: decisions }).orderBy(({ decision }) => decision.at, "desc") });
   const { data: entries = [] } = useLiveQuery({
     query: (q) =>
       q
@@ -127,40 +84,54 @@ export function VoiceView({
     <div className="reading-layout">
       <section>
         <div className="section-heading">
-          <h2>Speech and ideas</h2>
+          <h2>Conversation</h2>
           <span className="state-label">
             {health?.speech.ready ? "Parakeet ready" : "Model unavailable"}
           </span>
         </div>
-        <VoiceInput
-          act={act}
-          pending={pending}
-          canRecord={health?.speech.ready}
-        />
+        <label className="switch-line" htmlFor="ambient-microphone">
+          <span>Use my microphone<small>{voice.isError ? "Open the game to change this setting" : voice.data?.listening ? "Listening during this run" : voice.data?.enabled ? "Waiting for a run" : "Microphone off"}</small></span>
+          <Switch id="ambient-microphone" checked={voice.data?.enabled ?? false} disabled={!voice.data || voice.isError || changingMicrophone}
+            onCheckedChange={enabled => act("Microphone setting saved", async () => {
+              setChangingMicrophone(true);
+              try { await api("/game/voice", "PUT", { enabled }); await voice.refetch(); }
+              finally { setChangingMicrophone(false); }
+            })} />
+        </label>
+        {voice.data?.error && <p role="alert">{voice.data.error}. Check Steam microphone settings, then switch the microphone off and on.</p>}
+        <p className="help">Each player enables their microphone in the game's Sound settings. Audio goes to the host for local transcription. Recent conversation is sent to Codex for classification.</p>
+        <VoiceInput act={act} pending={pending} />
         <h2 className="section-break">This run</h2>
         {entries.length ? (
-          <ol className="transcript-list">
+          <ol className="transcript-list conversation-list">
             {entries.map((entry) => (
-              <li key={entry.id}>
+              <li key={entry.id} id={`transcript-${entry.id}`}>
                 <div>
-                  <span>{entry.source}</span>
+                  <span>{entry.playerName ?? entry.source}</span>
                   <time>{time(entry.createdAt)}</time>
                 </div>
-                <p>{entry.text}</p>
+                {entry.error ? <p role="alert">Transcription failed: {entry.error}</p> : <p>{entry.text}</p>}
+                {entry.noiseProbability !== undefined && <small>
+                  {(entry.noiseProbability >= 0.5 || (entry.accidentalProbability ?? 0) >= 0.5) ? "Skipped input" : "Conversation kept"}
+                  {` · Noise ${percent(entry.noiseProbability)} · Accidental ${percent(entry.accidentalProbability ?? 0)}`}
+                </small>}
                 {entry.mood && <small>Mood: {entry.mood}</small>}
+                {judgments.filter(decision => decision.anchorId === entry.id).map(decision =>
+                  <TranscriptDecision key={decision.id} decision={decision} entries={entries} />)}
               </li>
             ))}
           </ol>
         ) : (
-          <div className="empty">Record speech or add an idea to begin.</div>
+          <div className="empty">Speech appears here while the microphone is enabled in a run.</div>
         )}
       </section>
       <aside className="notes">
         <h2>What gets used</h2>
         <p>
-          The director includes recent transcripts when preparing a card. Speech
-          gives it a theme; the draw rules decide when a card can change.
+          Luna classifies the latest 15 seconds with the previous conversation, up to two minutes in total. Noise and accidental audio are skipped. Each decision appears beside its input.
         </p>
+        <p>A 95% Yes sends the moment to Astra. Astra must reach 90% before designing the card. Accepted moments have a 45 second pause between them. The percentages are model estimates.</p>
+        <p>The director reacts to the situation and shared jokes. Cards should be fun for the player and the audience, and useful to play.</p>
         <h3>External input</h3>
         <p>
           Send chat, TTS, or a mood through <code>POST /api/inspiration</code>{" "}
@@ -172,6 +143,39 @@ export function VoiceView({
       </aside>
     </div>
   );
+}
+
+const percent = (value: number) => `${Math.round(value * 100)}%`;
+function TranscriptDecision({ decision, entries }: { decision: AmbientDecisionRecord; entries: TranscriptRecord[] }) {
+  const byId = new Map(entries.map(entry => [entry.id, entry]));
+  const stages = [
+    { label: "Luna", evaluation: decision.classifier },
+    { label: "Astra", evaluation: decision.confirmation },
+  ].filter(stage => stage.evaluation);
+  const excerpts = (ids: string[]) => ids.map(id => {
+    const entry = byId.get(id);
+    return entry && <blockquote key={id}>
+      <a href={`#transcript-${id}`}>{entry.playerName ?? entry.source} · {time(entry.createdAt)}</a>
+      <p>{entry.text}</p>
+    </blockquote>;
+  });
+  return <section className="transcript-decision" aria-label={`Decision at ${time(decision.at)}`}>
+    <header><strong>{decision.action === "create_card" ? "Card queued" : "Skipped"}</strong><time>{time(decision.at)}</time></header>
+    {stages.length > 0 && <table className="decision-probabilities">
+      <caption>Create a card?</caption>
+      <thead><tr><th scope="col">Evaluation</th><th scope="col">Yes</th><th scope="col">No</th></tr></thead>
+      <tbody>{stages.map(({ label, evaluation }) => <tr key={label}>
+        <th scope="row">{label}</th><td>{percent(evaluation!.answers.create_card.noul)}</td><td>{percent(1 - evaluation!.answers.create_card.noul)}</td>
+      </tr>)}</tbody>
+    </table>}
+    <p className="help">{decision.reason}</p>
+    <details><summary>Last 15 seconds · {decision.transcriptIds.length} {decision.transcriptIds.length === 1 ? "input" : "inputs"}</summary>
+      {excerpts(decision.transcriptIds)}
+    </details>
+    {decision.contextIds.length > 0 && <details><summary>Earlier conversation · {decision.contextIds.length} {decision.contextIds.length === 1 ? "input" : "inputs"}</summary>
+      {excerpts(decision.contextIds)}
+    </details>}
+  </section>;
 }
 
 export function JobsView({

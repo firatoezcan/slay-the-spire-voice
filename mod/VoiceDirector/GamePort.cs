@@ -35,14 +35,14 @@ public sealed class GamePort : IGamePort
         if (root is not null)
             foreach (var button in ChoiceLabels.Walk(root).OfType<NClickableControl>().Where(b => ChoiceLabels.Available(b) && ChoiceLabels.Describe(b) is not null))
                 _choices[button.GetInstanceId().ToString()] = button;
-        var cards = player is null ? [] : player.Deck.Cards.Concat(player.PlayerCombatState?.AllCards ?? []).Select(View).ToArray();
+        var cards = Director.Run?.Players.SelectMany(p => p.Deck.Cards.Concat(p.PlayerCombatState?.AllCards ?? [])).Select(View).ToArray() ?? [];
         var creatures = player?.Creature.CombatState?.Creatures.Select(c => new CreatureView(c.CombatId.ToString() ?? "player", c.Name, c.CurrentHp, c.MaxHp, c.Block, c.IsEnemy)).ToArray() ?? [];
         var choices = _choices.Select(kv => new ChoiceView(kv.Key, kv.Value.GetType().Name, ChoiceLabels.Describe(kv.Value)!, true)).ToList();
         if (Director.RewardInstance is { } reward)
             choices.AddRange(new[] { "keep", "transform", "lucky" }.Select(c => new ChoiceView("wildcard:" + c, "wildcard", c, true)));
-        var phase = Director.RewardInstance is not null ? "wildcard-acquired" : player?.PlayerCombatState is not null && !CombatManager.Instance.IsOverOrEnding ? "combat" : Director.Run?.CurrentRoom?.GetType().Name ?? "menu";
+        var phase = Multiplayer.CardTransfer.Ended ? "ended" : RewardHooks.Waiting ? "wildcard-acquired" : player?.PlayerCombatState is not null && !CombatManager.Instance.IsOverOrEnding ? "combat" : Director.Run?.CurrentRoom?.GetType().Name ?? "menu";
         var state = new GameSnapshot(runId, 0, phase, Director.Turn, cards, creatures, choices.ToArray(),
-            phase == "combat" ? ["play", "endTurn", "choose", "usePotion"] : ["choose"], Director.Settings);
+            phase == "combat" ? ["play", "endTurn", "choose", "usePotion"] : ["choose"], Director.Settings, Multiplayer.CardTransfer.IsAuthority);
         var serialized = System.Text.Json.JsonSerializer.Serialize(state, LocalFiles.Json);
         if (serialized != _snapshotContent) { _revision++; _snapshotContent = serialized; }
         return state with { Revision = _revision };
@@ -52,7 +52,8 @@ public sealed class GamePort : IGamePort
         var state = Lineage.Get(card);
         return new(state.Id, card.Id.ToString(), (card as GeneratedCard)?.DefinitionId, card.Title, card.Rarity.ToString(), card.Type.ToString(),
             card.EnergyCost.GetWithModifiers(CostModifiers.All), card.CurrentUpgradeLevel, card.Pile?.Type.ToString() ?? "None", card.GetDescriptionForPile(card.Pile?.Type ?? PileType.None),
-            state.Wildcard, state.Resolved, state.Protected, state.LastTurn);
+            state.Wildcard, state.Resolved, state.LastTurn,
+            card.Owner.NetId.ToString(), card.Owner == Director.Player ? "You" : MegaCrit.Sts2.Core.Platform.PlatformUtil.GetPlayerNameRaw(RunManager.Instance.NetService.Platform, card.Owner.NetId), MegaCrit.Sts2.Core.Context.LocalContext.IsMe(card.Owner));
     }
     private Creature? Target(string? id) => id is null ? null : Director.Player?.Creature.CombatState?.Creatures.FirstOrDefault(c => c.CombatId.ToString() == id)
         ?? throw new ArgumentException("Target is no longer available.");
@@ -75,7 +76,14 @@ public sealed class GamePort : IGamePort
         });
         return Task.FromResult(operation);
     }
-    public Task<Capabilities> Capabilities() => GameThread.Run(() => new Capabilities("0.107.1", Director.Player is not null, CardRules.EffectKinds, CardRules.Powers, true));
+    public Task<Capabilities> Capabilities() => GameThread.Run(() => new Capabilities("0.107.1", Director.Player is not null, CardRules.EffectKinds, CardRules.Powers, false));
+    public Task<CardSyncStatus> CardSync() => GameThread.Run(() => Multiplayer.CardTransfer.Status());
+    public Task<CardSyncStatus> ResyncCards(CardSyncRequest request) => GameThread.Run(() =>
+    {
+        if (!ulong.TryParse(request.PlayerId, out var peer)) throw new ArgumentException("Choose a connected player.");
+        Multiplayer.CardTransfer.Resync(peer);
+        return Multiplayer.CardTransfer.Status();
+    });
     public Task<CardDefinition[]> Definitions() => GameThread.Run(DefinitionRegistry.All);
     public Task<CardReference[]> CardReferences() => GameThread.Run(ReferenceLibrary.Cards);
     public Task<ArtReferenceSheet> ArtReference(ArtReferenceRequest request) => GameThread.Run(() => ReferenceLibrary.Art(request.ModelId));
@@ -106,7 +114,9 @@ public sealed class GamePort : IGamePort
     public Task<Operation> Play(PlayRequest request) => Execute(request.RequestId, "play", () =>
     {
         Director.RequireRun(request.RunId);
-        if (!Director.Resolve(request.InstanceId, true).TryManualPlay(Target(request.TargetId))) throw new InvalidOperationException("Card cannot be played now.");
+        var card = Director.Resolve(request.InstanceId, true);
+        if (card.Owner != Director.Player) throw new InvalidOperationException("Choose a card from your own hand.");
+        if (!card.TryManualPlay(Target(request.TargetId))) throw new InvalidOperationException("Card cannot be played now.");
         return Task.CompletedTask;
     }, true);
     public Task<Operation> EndTurn(ActionRequest request) => Execute(request.RequestId, "end-turn", () =>
@@ -123,7 +133,7 @@ public sealed class GamePort : IGamePort
         if (request.ChoiceId.StartsWith("wildcard:")) { RewardHooks.Choose(request.ChoiceId[9..]); return Task.CompletedTask; }
         if (!_choices.TryGetValue(request.ChoiceId, out var button) || !ChoiceLabels.Available(button))
             throw new InvalidOperationException("Choice is no longer available; refresh state.");
-        button.ForceClick();
+        ChoiceLabels.Activate(button);
         return Task.CompletedTask;
     }, true);
     public Task<Operation> UsePotion(PotionRequest request) => Execute(request.RequestId, "potion", () =>
@@ -138,11 +148,18 @@ public sealed class GamePort : IGamePort
     public Task<Operation> Transform(TransformRequest request) => Execute(request.RequestId, "transform", async () =>
     {
         Director.RequireRun(request.RunId);
-        if (Director.RewardInstance != request.InstanceId) throw new InvalidOperationException("Manual transformation is only available in the post-take reward interaction.");
-        await Director.Commit(Director.Resolve(request.InstanceId), request.DefinitionId);
-        RewardHooks.Choose("keep");
+        await RewardHooks.Complete(request.InstanceId, request.DefinitionId);
     });
-    public Task<Operation> Art(ArtRequest request) => Execute("art:" + request.DefinitionId, "art", () => { DefinitionRegistry.SetArt(request.DefinitionId, Convert.FromBase64String(request.PngBase64)); return Task.CompletedTask; });
+    public Task<Operation> Art(ArtRequest request) => Execute("art:" + request.DefinitionId, "art", () =>
+    {
+        if (!Multiplayer.CardTransfer.IsAuthority) throw new InvalidOperationException("Only the host supplies artwork.");
+        var png = CardArtwork.Prepare(Convert.FromBase64String(request.PngBase64));
+        DefinitionRegistry.SetArt(request.DefinitionId, png);
+        Multiplayer.CardTransfer.PublishArtwork(request.DefinitionId);
+        return Task.CompletedTask;
+    });
     public Task<DirectorSettings> Configure(DirectorSettings request) => GameThread.Run(() => Director.Configure(request));
-    public Task<CardInstance> Protect(ProtectionRequest request) => GameThread.Run(() => { var card = Director.Resolve(request.InstanceId); Lineage.Get(card).Protected = request.Protected; return View(card); });
+    public Task<VoiceStatus> VoiceStatus() => GameThread.Run(Voice.AmbientVoice.Status);
+    public Task<VoiceStatus> ConfigureVoice(VoiceSettings request) => GameThread.Run(() => Voice.AmbientVoice.Configure(request));
+    public Task<VoiceSegment[]> VoiceSegments() => GameThread.Run(Voice.AmbientVoice.Drain);
 }

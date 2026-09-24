@@ -96,6 +96,292 @@
         }
       }
     },
+    "/multiplayer/cards": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_multiplayer_cards",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/voice": {
+      "get": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Get_voice",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Put_voice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VoiceSettings"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/VoiceSettings"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/VoiceSettings"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/VoiceSettings"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/VoiceSettings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VoiceStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/voice/segments": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_voice_segments",
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VoiceSegment"
+                  }
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VoiceSegment"
+                  }
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VoiceSegment"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VoiceSegment"
+                  }
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VoiceSegment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/multiplayer/cards/resync": {
+      "post": {
+        "tags": [
+          "Inline"
+        ],
+        "operationId": "game_Post_multiplayer_cards_resync",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CardSyncRequest"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/CardSyncRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CardSyncRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CardSyncRequest"
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CardSyncRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "A response containing no body"
+          },
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardSyncStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/definitions": {
       "get": {
         "tags": [
@@ -1351,78 +1637,6 @@
           }
         }
       }
-    },
-    "/cards/protection": {
-      "put": {
-        "tags": [
-          "Inline"
-        ],
-        "operationId": "game_Put_cards_protection",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ProtectionRequest"
-              }
-            },
-            "application/yaml": {
-              "schema": {
-                "$ref": "#/components/schemas/ProtectionRequest"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/ProtectionRequest"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/ProtectionRequest"
-              }
-            },
-            "text/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/ProtectionRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "A response containing no body"
-          },
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CardInstance"
-                }
-              },
-              "application/yaml": {
-                "schema": {
-                  "$ref": "#/components/schemas/CardInstance"
-                }
-              },
-              "application/x-www-form-urlencoded": {
-                "schema": {
-                  "$ref": "#/components/schemas/CardInstance"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/CardInstance"
-                }
-              },
-              "text/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/CardInstance"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -1440,6 +1654,7 @@
           "choices",
           "actions",
           "settings",
+          "host",
           "error"
         ],
         "properties": {
@@ -1484,6 +1699,9 @@
           "settings": {
             "$ref": "#/components/schemas/DirectorSettings"
           },
+          "host": {
+            "type": "boolean"
+          },
           "error": {
             "type": "string",
             "nullable": true
@@ -1506,8 +1724,10 @@
           "description",
           "wildcard",
           "resolved",
-          "protected",
-          "lastTransformedTurn"
+          "lastTransformedTurn",
+          "playerId",
+          "playerName",
+          "localPlayer"
         ],
         "properties": {
           "id": {
@@ -1549,12 +1769,18 @@
           "resolved": {
             "type": "boolean"
           },
-          "protected": {
-            "type": "boolean"
-          },
           "lastTransformedTurn": {
             "type": "integer",
             "format": "int32"
+          },
+          "playerId": {
+            "type": "string"
+          },
+          "playerName": {
+            "type": "string"
+          },
+          "localPlayer": {
+            "type": "boolean"
           }
         }
       },
@@ -1622,7 +1848,6 @@
         "additionalProperties": false,
         "required": [
           "mode",
-          "drawChance",
           "maxPerTurn",
           "cooldownTurns",
           "strength",
@@ -1633,10 +1858,6 @@
         "properties": {
           "mode": {
             "type": "string"
-          },
-          "drawChance": {
-            "type": "number",
-            "format": "double"
           },
           "maxPerTurn": {
             "type": "integer",
@@ -1693,6 +1914,147 @@
           },
           "singlePlayerOnly": {
             "type": "boolean"
+          }
+        }
+      },
+      "CardSyncStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "runId",
+          "active",
+          "peers"
+        ],
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "runId": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "peers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardSyncPeer"
+            }
+          }
+        }
+      },
+      "CardSyncPeer": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "playerId",
+          "connected",
+          "pending",
+          "received",
+          "error"
+        ],
+        "properties": {
+          "playerId": {
+            "type": "string"
+          },
+          "connected": {
+            "type": "boolean"
+          },
+          "pending": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "received": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VoiceStatus": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "enabled",
+          "listening",
+          "error"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "listening": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "VoiceSettings": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "VoiceSegment": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "runId",
+          "playerId",
+          "playerName",
+          "startedAt",
+          "endedAt",
+          "pcmBase64"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "runId": {
+            "type": "string"
+          },
+          "playerId": {
+            "type": "string"
+          },
+          "playerName": {
+            "type": "string"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "pcmBase64": {
+            "type": "string"
+          }
+        }
+      },
+      "CardSyncRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "playerId"
+        ],
+        "properties": {
+          "playerId": {
+            "type": "string"
           }
         }
       },
@@ -2244,22 +2606,6 @@
           },
           "pngBase64": {
             "type": "string"
-          }
-        }
-      },
-      "ProtectionRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "instanceId",
-          "protected"
-        ],
-        "properties": {
-          "instanceId": {
-            "type": "string"
-          },
-          "protected": {
-            "type": "boolean"
           }
         }
       }

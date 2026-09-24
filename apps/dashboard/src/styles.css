@@ -733,6 +733,21 @@ summary {
 .settings-form > button {
   justify-self: start;
 }
+.prompt-list { min-width: 0; }
+.prompt-editor { margin: 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.prompt-editor > summary { display: flex; align-items: center; gap: 12px; padding: 20px 0; list-style: none; }
+.prompt-editor > summary::-webkit-details-marker { display: none; }
+.prompt-editor > summary > span:first-child { flex: 1; min-width: 0; }
+.prompt-editor > summary strong { display: block; font-size: 15px; color: var(--foreground); }
+.prompt-editor > summary small, .prompt-state { color: var(--muted-foreground); font-size: 12px; }
+.prompt-editor[open] > summary > svg { transform: rotate(180deg); }
+.prompt-editor form { display: grid; gap: 12px; padding-bottom: 24px; }
+.prompt-editor label { font-size: 13px; font-weight: 550; }
+.prompt-editor textarea { width: 100%; min-height: 260px; resize: vertical; padding: 14px; border: 1px solid var(--input); border-radius: var(--radius); background: var(--card); color: var(--foreground); font: inherit; line-height: 1.65; }
+.prompt-editor textarea:disabled { opacity: 0.65; }
+.prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.prompt-contract { margin: 4px 0 0; }
+.prompt-contract p { color: var(--muted-foreground); overflow-wrap: anywhere; }
 .field {
   display: grid;
   gap: 8px;
@@ -838,6 +853,31 @@ dd {
   margin-top: 10px;
   color: var(--muted-foreground);
 }
+.conversation-list > li { scroll-margin-top: 24px; }
+.transcript-decision {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: var(--muted);
+  font-size: 12px;
+}
+.transcript-decision header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+.transcript-decision time { color: var(--muted-foreground); }
+.decision-probabilities { width: 100%; margin: 12px 0; font-variant-numeric: tabular-nums; }
+.decision-probabilities caption { text-align: left; font-weight: 550; margin-bottom: 6px; }
+.decision-probabilities th, .decision-probabilities td { padding: 3px 0; text-align: right; }
+.decision-probabilities th:first-child { text-align: left; }
+.decision-probabilities thead { color: var(--muted-foreground); }
+.decision-probabilities tbody th { font-weight: 400; }
+.transcript-decision details { margin-top: 10px; }
+.transcript-decision summary { cursor: pointer; }
+.transcript-decision blockquote { margin: 12px 0 16px; }
+.transcript-decision blockquote a { font-size: 11px; }
+.conversation-list .transcript-decision .help { font-size: 12px; }
 .filter-tabs {
   display: flex;
   gap: 6px;

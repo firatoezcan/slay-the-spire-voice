@@ -48,6 +48,10 @@ typography:
     fontWeight: 600
     lineHeight: 1.4
     letterSpacing: "-0.015em"
+  prompt-summary:
+    fontFamily: '"Geist Variable", sans-serif'
+    fontSize: "15px"
+    lineHeight: 1.55
   inspector-title:
     fontFamily: '"Geist Variable", sans-serif'
     fontSize: "21px"
@@ -178,6 +182,8 @@ This document records the implemented dashboard package. The surface strategy re
 
 Extraction scope: current source and the existing desktop, mobile, and user-width captures in [.impeccable/review](.impeccable/review). The finish verdict resolved four findings: narrow inspector access, connection and action accuracy, contrast, and accessible selection. That verdict did not claim whole-surface approval. This documentation pass ran no new browser review or visual detector.
 
+The Prompts extension preserves this system. Its scoped finish verdict, current captures, interaction verification, and remaining runtime limits are recorded in [Prompt editing](../../docs/dashboard-prompts.md).
+
 ## Colors
 
 The palette is green throughout, with enough neutral space for dense information. The frontmatter records the reused values; local variations remain in the stylesheet.
@@ -205,6 +211,8 @@ The sidebar uses its own dark frame, light labels, and a pale selected item with
 Geist Variable is locally imported and used throughout, with a sans-serif fallback. There is no separate display face. The type scale is a practical hierarchy rather than a fixed mathematical ratio.
 
 Page headings use `headline`; the mobile role applies at the smallest breakpoint. Section titles use `title`, with `inspector-title` giving the selected card more emphasis. Body text, table text, labels, and metadata use the corresponding frontmatter roles. Card names are slightly heavier than row values; card descriptions use a larger reading size (15px) and looser line height (1.65). General paragraphs stop at a readable measure (72ch).
+
+Collapsible prompt headings use `prompt-summary` with native strong emphasis. Their model labels and saved-state text use the quieter table-size text so each editor's title remains the first thing to scan.
 
 Numbers in costs, output values, times, and creature statistics use tabular figures. Code is compact (12px) and may wrap within long identifiers. Small metadata sometimes drops to 10px for counts, rarity, and table footers; this is not the default size for explanatory prose.
 
@@ -255,6 +263,14 @@ Text inputs and select triggers share the control radius, input border, compact 
 
 Base UI manages select behavior. Invalid fields use the destructive border and ring; disabled fields lose emphasis. Labels and nearby help text explain each control.
 
+### Prompt editors
+
+Prompt editors extend the flat settings layout. Six native disclosures are separated by fine horizontal rules; the classifier opens initially. Each summary groups a strong title, muted model label, explicit Default, Custom, or Unsaved state, and a chevron that turns when expanded. Summaries retain the shared keyboard focus outline.
+
+The editor uses the existing white surface, input border, and control radius. Its textarea fills the column, grows vertically from a minimum height (260px), and uses comfortable padding (14px) with body-size text and a looser line height (1.65). The label and nearby description identify the instructions being edited. The action row wraps with the existing compact spacing (8px): Save prompt is primary, Use default is outlined, and Discard edits is a ghost action shown when the draft differs. Pending saves disable the editor and its actions; the primary label becomes Saving….
+
+Required response and game rules sit in a quieter nested disclosure. The notes column explains when edits apply and where prompts are stored. It follows the editors at widths of 900px or less, matching the existing reading layout. Loading uses a status message; a failed load provides an alert and Try again action.
+
 ### Navigation
 
 The current page uses a pale filled item with dark green text on the dark rail. Other items use light muted text, gaining a darker green hover fill and white text. Every navigation button has an accessible name. The current page is marked with `aria-current`. At intermediate widths, icons retain those names; mobile restores visible text labels.
@@ -271,7 +287,7 @@ The run table and inspector share one outer boundary. The inspector uses tone an
 
 Card names are real buttons. The selected button exposes `aria-pressed` and points to the inspector with `aria-controls`. The corresponding row has a pale selected fill, and row hover uses a separate light fill. Preserve the focus outline so keyboard selection remains visible.
 
-The inspector puts card identity, cost, description, protection, generation actions, and rationale together. At intermediate widths the actions appear before the rationale to keep them within reach.
+The inspector puts card identity, cost, description, generation actions, and rationale together. At intermediate widths the actions appear before the rationale to keep them within reach.
 
 ### Switches
 
