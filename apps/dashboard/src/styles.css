@@ -733,6 +733,13 @@ summary {
 .settings-form > button {
   justify-self: start;
 }
+.speech-setup { display: grid; gap: 10px; }
+.speech-setup p { margin: 0; }
+.speech-setup-status { font-weight: 550; }
+.speech-download { display: grid; gap: 6px; }
+.speech-download progress { width: 100%; height: 8px; accent-color: var(--primary); }
+.speech-setup-error { display: grid; gap: 10px; color: var(--destructive); }
+.speech-setup-error > button { justify-self: start; }
 .prompt-list { min-width: 0; }
 .prompt-editor { margin: 0; border-bottom: 1px solid var(--border); font-size: 14px; }
 .prompt-editor > summary { display: flex; align-items: center; gap: 12px; padding: 20px 0; list-style: none; }

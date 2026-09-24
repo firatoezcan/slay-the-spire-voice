@@ -5,7 +5,7 @@ import { join } from "node:path";
 export const dataDir = process.env.VOICE_DIRECTOR_DATA ?? join(homedir(), ".local/share/slay-the-spire-voice");
 export const gameUrl = process.env.VOICE_DIRECTOR_GAME_URL ?? "http://127.0.0.1:57542";
 export const port = Number(process.env.VOICE_DIRECTOR_PORT ?? 57543);
-export const modelDir = process.env.VOICE_DIRECTOR_MODEL_DIR ?? join(homedir(), ".omp/agent/cache/tiny-models/csukuangfj/sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8");
+export const modelDir = join(dataDir, "models", "parakeet-tdt-0.6b-v3-int8");
 await mkdir(dataDir, { recursive: true, mode: 0o700 });
 const tokenPath = join(dataDir, "token");
 try { await writeFile(tokenPath, crypto.randomUUID().replaceAll("-", "") + crypto.randomUUID().replaceAll("-", ""), { flag: "wx", mode: 0o600 }); }

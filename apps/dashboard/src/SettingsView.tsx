@@ -20,6 +20,7 @@ import {
 } from "./data";
 import type { Act } from "./App";
 import type { GameProps } from "./RunView";
+import { SpeechSetup } from "./SpeechSetup";
 export { ConsoleView } from "./ConsoleView";
 
 export function DirectorView(props: GameProps) {
@@ -297,19 +298,7 @@ function ProviderForm({
           </div>
         </div>
         <h2 className="section-break">Speech</h2>
-        <div className="field">
-          <label htmlFor="model-dir">Parakeet model folder</label>
-          <Input
-            id="model-dir"
-            value={draft.modelDir}
-            onChange={(e) => setDraft({ ...draft, modelDir: e.target.value })}
-          />
-          <p className="help">
-            {health?.speech.ready
-              ? "The installed Parakeet files are available."
-              : `Missing: ${health?.speech.missing.join(", ") ?? "checking model files…"}`}
-          </p>
-        </div>
+        <SpeechSetup speech={health?.speech} act={act} />
         <Button type="submit" disabled={pending}>
           Save provider settings
         </Button>

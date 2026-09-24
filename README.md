@@ -8,7 +8,7 @@ The mod is running on macOS ARM64 against Slay the Spire 2 v0.107.1. [Current be
 
 ## Install
 
-Download [VoiceDirector 0.5.0](https://github.com/firatoezcan/slay-the-spire-voice/releases/tag/v0.5.0) or get the [player ZIP directly](https://github.com/firatoezcan/slay-the-spire-voice/releases/download/v0.5.0/VoiceDirector-0.5.0.zip). Choose `VoiceDirector-0.5.0.zip` under release assets for the installable mod.
+Download [VoiceDirector 0.5.1](https://github.com/firatoezcan/slay-the-spire-voice/releases/tag/v0.5.1) or get the [player ZIP directly](https://github.com/firatoezcan/slay-the-spire-voice/releases/download/v0.5.1/VoiceDirector-0.5.1.zip). Choose `VoiceDirector-0.5.1.zip` under release assets for the installable mod.
 
 Friends install the supplied `VoiceDirector` folder in the game's `mods` directory and launch through Steam. The ZIP contains the mod's dependencies. Follow the [player instructions](docs/player-install.md).
 
@@ -18,7 +18,7 @@ Living Deck is the default. Prepared replacements apply on their next eligible d
 
 ### Host development setup
 
-Install Bun, Nix, the game through Steam, and Codex with an existing sign in. The local Parakeet path defaults to the Oh My Pi model cache; adjust it in Settings if needed.
+Install Bun, Nix, the game through Steam, and Codex with an existing sign in. Voice Director downloads and sets up Parakeet automatically on first launch. The dashboard shows progress and offers retry if setup fails.
 
 ```sh
 bun install

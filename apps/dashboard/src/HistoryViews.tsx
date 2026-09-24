@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SpeechSetup, speechLabel } from "./SpeechSetup";
 import { useQuery } from "@tanstack/react-query";
 import { useLiveQuery } from "@tanstack/react-db";
 import { ArrowUpRight, RotateCcw, X } from "lucide-react";
@@ -86,7 +87,7 @@ export function VoiceView({
         <div className="section-heading">
           <h2>Conversation</h2>
           <span className="state-label">
-            {health?.speech.ready ? "Parakeet ready" : "Model unavailable"}
+            {speechLabel(health?.speech)}
           </span>
         </div>
         <label className="switch-line" htmlFor="ambient-microphone">
@@ -100,6 +101,7 @@ export function VoiceView({
         </label>
         {voice.data?.error && <p role="alert">{voice.data.error}. Check Steam microphone settings, then switch the microphone off and on.</p>}
         <p className="help">Each player enables their microphone in the game's Sound settings. Audio goes to the host for local transcription. Recent conversation is sent to Codex for classification.</p>
+        {health?.speech && !health.speech.ready && <SpeechSetup speech={health.speech} act={act} />}
         <VoiceInput act={act} pending={pending} />
         <h2 className="section-break">This run</h2>
         {entries.length ? (

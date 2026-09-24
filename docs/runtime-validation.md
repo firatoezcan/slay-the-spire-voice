@@ -93,6 +93,8 @@ The user accepted proceeding without a live two-client session. Host/client admi
 
 ## API execution boundary
 
+Automatic Parakeet setup in 0.5.1 was checked with verified local files, real upstream downloads, the packaged recognizer, error/retry cases, and dashboard states. See [speech setup verification](speech-setup.md#verification). The game remained closed during these checks.
+
 Card plays and other native asynchronous operations report dispatched once the game accepts them. Callers must observe subsequent game state to confirm the effect. Generated client and console metadata checks do not establish that every native command is safe or useful in every game phase.
 
 The local recordings, game saves, authentication token, model cache, and generated game data remain outside the repository.

@@ -207,6 +207,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/speech/setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["prepareSpeechModel"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/prompts": {
         parameters: {
             query?: never;
@@ -714,7 +730,12 @@ export interface operations {
                             modelDir: string;
                             ready: boolean;
                             busy: boolean;
-                            missing: string[];
+                            /** @enum {string} */
+                            phase: "checking" | "copying" | "downloading" | "ready" | "error";
+                            completedBytes: string | number;
+                            totalBytes: string | number;
+                            file: ((string | null) | null) | null;
+                            error: ((string | null) | null) | null;
                         };
                     };
                 };
@@ -1302,6 +1323,37 @@ export interface operations {
             };
         };
     };
+    prepareSpeechModel: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        model: string;
+                        modelDir: string;
+                        ready: boolean;
+                        busy: boolean;
+                        /** @enum {string} */
+                        phase: "checking" | "copying" | "downloading" | "ready" | "error";
+                        completedBytes: string | number;
+                        totalBytes: string | number;
+                        file: ((string | null) | null) | null;
+                        error: ((string | null) | null) | null;
+                    };
+                };
+            };
+        };
+    };
     listPrompts: {
         parameters: {
             query?: never;
@@ -1394,7 +1446,6 @@ export interface operations {
                         id: "provider";
                         /** @constant */
                         model: "gpt-6-astra";
-                        modelDir: string;
                         autoPrepare: boolean;
                         cardTimeoutMs: string | number;
                         artTimeoutMs: string | number;
@@ -1417,7 +1468,6 @@ export interface operations {
                     id: "provider";
                     /** @constant */
                     model: "gpt-6-astra";
-                    modelDir: string;
                     autoPrepare: boolean;
                     cardTimeoutMs: string | number;
                     artTimeoutMs: string | number;
@@ -1427,7 +1477,6 @@ export interface operations {
                     id: "provider";
                     /** @constant */
                     model: "gpt-6-astra";
-                    modelDir: string;
                     autoPrepare: boolean;
                     cardTimeoutMs: string | number;
                     artTimeoutMs: string | number;
@@ -1437,7 +1486,6 @@ export interface operations {
                     id: "provider";
                     /** @constant */
                     model: "gpt-6-astra";
-                    modelDir: string;
                     autoPrepare: boolean;
                     cardTimeoutMs: string | number;
                     artTimeoutMs: string | number;
@@ -1456,7 +1504,6 @@ export interface operations {
                         id: "provider";
                         /** @constant */
                         model: "gpt-6-astra";
-                        modelDir: string;
                         autoPrepare: boolean;
                         cardTimeoutMs: string | number;
                         artTimeoutMs: string | number;

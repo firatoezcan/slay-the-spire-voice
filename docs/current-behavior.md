@@ -48,6 +48,6 @@ The game and companion generate OpenAPI from their C# and TypeBox contracts. CLI
 
 ## Execution boundaries
 
-The current provider launches Codex exec in a worker using Bun.spawnSync. Classification, card design, and review requests use custom base prompts with tools and discovery disabled. Cards and reviews use JSON schemas; artwork uses image generation. Parakeet runs locally in its own process using the installed Oh My Pi model. OpenCode remains a possible later provider.
+The current provider launches Codex exec in a worker using Bun.spawnSync. Classification, card design, and review requests use custom base prompts with tools and discovery disabled. Cards and reviews use JSON schemas; artwork uses image generation. Parakeet runs locally in its own process. The companion automatically prepares a verified copy in its own data folder, downloading missing files and reusing matching local files. The dashboard shows progress and retry; no model folder needs configuration. See [automatic speech setup](speech-setup.md). OpenCode remains a possible later provider.
 
 Card preparation, artwork, configuration, and console tasks expose completion or failure. Normal gameplay requests currently report dispatch; callers must observe game state for their actual effects. See runtime-validation.md for remaining qualification work.

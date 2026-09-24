@@ -1,6 +1,6 @@
 import { gameRequest, type GameState } from "../game";
 import { currentState, enqueue, providers } from "../jobs";
-import { transcribe } from "../providers/speech";
+import { speechStatus, transcribe } from "../providers/speech";
 import { store } from "../store";
 import type { AmbientDecisionRecord, JobRecord, TranscriptRecord } from "../schema";
 import type { components } from "../../../../packages/contracts/src/game";
@@ -57,7 +57,7 @@ function saveInputProbabilities(evaluation: MomentEvaluation, expectedRun: strin
   }
 }
 async function decodeNext() {
-  if (transcribing || !audio.length) return;
+  if (transcribing || !audio.length || !speechStatus().ready) return;
   const segment = audio.shift()!;
   if (segment.runId !== runId || Date.parse(segment.endedAt) < Date.now() - 15000) return;
   transcribing = true;
@@ -66,7 +66,7 @@ async function decodeNext() {
     if (pcm.length % 2 || pcm.length > 16000 * 2 * 8) throw new Error("Invalid microphone audio length.");
     const samples = new Float32Array(pcm.length / 2);
     for (let n = 0; n < samples.length; n++) samples[n] = pcm.readInt16LE(n * 2) / 32768;
-    const text = (await transcribe(samples, providers().modelDir)).trim();
+    const text = (await transcribe(samples)).trim();
     if (!text || activeState()?.runId !== segment.runId) return;
     store.put("transcripts", { id: segment.id, runId: segment.runId, playerId: segment.playerId, playerName: segment.playerName,
       text, startedAt: segment.startedAt, endedAt: segment.endedAt, source: "microphone", mood: "", createdAt: segment.endedAt }, segment.runId);

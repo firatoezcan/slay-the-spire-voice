@@ -89,7 +89,11 @@
                         "modelDir",
                         "ready",
                         "busy",
-                        "missing"
+                        "phase",
+                        "completedBytes",
+                        "totalBytes",
+                        "file",
+                        "error"
                       ],
                       "properties": {
                         "model": {
@@ -104,11 +108,57 @@
                         "busy": {
                           "type": "boolean"
                         },
-                        "missing": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "checking",
+                            "copying",
+                            "downloading",
+                            "ready",
+                            "error"
+                          ]
+                        },
+                        "completedBytes": {
+                          "minimum": 0,
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "minimum": 0,
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "totalBytes": {
+                          "minimum": 1,
+                          "anyOf": [
+                            {
+                              "format": "integer",
+                              "default": 0,
+                              "type": "string"
+                            },
+                            {
+                              "minimum": 1,
+                              "type": "integer"
+                            }
+                          ]
+                        },
+                        "file": {
+                          "nullable": true,
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "error": {
+                          "nullable": true,
+                          "type": [
+                            "string",
+                            "null"
+                          ]
                         }
                       }
                     }
@@ -2060,6 +2110,103 @@
         }
       }
     },
+    "/api/speech/setup": {
+      "post": {
+        "operationId": "prepareSpeechModel",
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Response for status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "model",
+                    "modelDir",
+                    "ready",
+                    "busy",
+                    "phase",
+                    "completedBytes",
+                    "totalBytes",
+                    "file",
+                    "error"
+                  ],
+                  "properties": {
+                    "model": {
+                      "type": "string"
+                    },
+                    "modelDir": {
+                      "type": "string"
+                    },
+                    "ready": {
+                      "type": "boolean"
+                    },
+                    "busy": {
+                      "type": "boolean"
+                    },
+                    "phase": {
+                      "type": "string",
+                      "enum": [
+                        "checking",
+                        "copying",
+                        "downloading",
+                        "ready",
+                        "error"
+                      ]
+                    },
+                    "completedBytes": {
+                      "minimum": 0,
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "totalBytes": {
+                      "minimum": 1,
+                      "anyOf": [
+                        {
+                          "format": "integer",
+                          "default": 0,
+                          "type": "string"
+                        },
+                        {
+                          "minimum": 1,
+                          "type": "integer"
+                        }
+                      ]
+                    },
+                    "file": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/prompts": {
       "get": {
         "operationId": "listPrompts",
@@ -2273,7 +2420,6 @@
                   "required": [
                     "id",
                     "model",
-                    "modelDir",
                     "autoPrepare",
                     "cardTimeoutMs",
                     "artTimeoutMs"
@@ -2285,9 +2431,6 @@
                     },
                     "model": {
                       "const": "gpt-6-astra",
-                      "type": "string"
-                    },
-                    "modelDir": {
                       "type": "string"
                     },
                     "autoPrepare": {
@@ -2346,7 +2489,6 @@
                 "required": [
                   "id",
                   "model",
-                  "modelDir",
                   "autoPrepare",
                   "cardTimeoutMs",
                   "artTimeoutMs"
@@ -2358,9 +2500,6 @@
                   },
                   "model": {
                     "const": "gpt-6-astra",
-                    "type": "string"
-                  },
-                  "modelDir": {
                     "type": "string"
                   },
                   "autoPrepare": {
@@ -2407,7 +2546,6 @@
                 "required": [
                   "id",
                   "model",
-                  "modelDir",
                   "autoPrepare",
                   "cardTimeoutMs",
                   "artTimeoutMs"
@@ -2419,9 +2557,6 @@
                   },
                   "model": {
                     "const": "gpt-6-astra",
-                    "type": "string"
-                  },
-                  "modelDir": {
                     "type": "string"
                   },
                   "autoPrepare": {
@@ -2468,7 +2603,6 @@
                 "required": [
                   "id",
                   "model",
-                  "modelDir",
                   "autoPrepare",
                   "cardTimeoutMs",
                   "artTimeoutMs"
@@ -2480,9 +2614,6 @@
                   },
                   "model": {
                     "const": "gpt-6-astra",
-                    "type": "string"
-                  },
-                  "modelDir": {
                     "type": "string"
                   },
                   "autoPrepare": {
@@ -2535,7 +2666,6 @@
                   "required": [
                     "id",
                     "model",
-                    "modelDir",
                     "autoPrepare",
                     "cardTimeoutMs",
                     "artTimeoutMs"
@@ -2547,9 +2677,6 @@
                     },
                     "model": {
                       "const": "gpt-6-astra",
-                      "type": "string"
-                    },
-                    "modelDir": {
                       "type": "string"
                     },
                     "autoPrepare": {

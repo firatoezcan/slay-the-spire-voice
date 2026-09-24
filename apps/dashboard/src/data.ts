@@ -7,6 +7,7 @@ import type {
   ProviderConfig,
   TranscriptRecord,
   AmbientDecisionRecord,
+  HealthState,
 } from "../../companion/src/schema";
 
 export type State = components["schemas"]["GameSnapshot"];
@@ -16,17 +17,7 @@ export type Event = components["schemas"]["GameEvent"];
 export type Operation = components["schemas"]["Operation"];
 export type Settings = components["schemas"]["DirectorSettings"];
 export type { JobRecord, ProviderConfig, TranscriptRecord };
-export type Health = {
-  game: boolean;
-  error: string | null;
-  speech: {
-    ready: boolean;
-    busy: boolean;
-    model: string;
-    modelDir: string;
-    missing: string[];
-  };
-};
+export type Health = HealthState;
 export const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 600 } },
 });

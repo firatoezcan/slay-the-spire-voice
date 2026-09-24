@@ -14,11 +14,11 @@ This build targets Slay the Spire 2 v0.107.1. Use the same game version and Voic
 
 The installer records the local Bun and Codex locations and sets the game to start the companion. The dashboard is available between runs. Queued work starts only for a hosted run; a joining client does not generate cards.
 
-The default speech model folder is the existing Oh My Pi cache at `~/.omp/agent/cache/tiny-models/csukuangfj/sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8`. Change the folder in dashboard settings if it is elsewhere.
+Voice Director sets up Parakeet automatically when the companion starts. The first download is about 670 MB; progress and a retry action appear under Speech in the dashboard. It reuses a matching model already on this computer and keeps its own verified copy for later runs. Once setup finishes, transcription works offline. Oh My Pi and manual model installation are not required.
 
 ## Give friends the mod
 
-Send friends the [0.5.0 player ZIP](https://github.com/firatoezcan/slay-the-spire-voice/releases/download/v0.5.0/VoiceDirector-0.5.0.zip) and the [player instructions](player-install.md). To build it locally, run `bun run mod:package`; the archive is written to `dist/VoiceDirector-0.5.0.zip`. It contains the mod and its managed dependencies. Your sign-in, token, transcripts, generated artwork, saves, and speech model are stored separately.
+Send friends the [0.5.1 player ZIP](https://github.com/firatoezcan/slay-the-spire-voice/releases/download/v0.5.1/VoiceDirector-0.5.1.zip) and the [player instructions](player-install.md). To build it locally, run `bun run mod:package`; the archive is written to `dist/VoiceDirector-0.5.1.zip`. It contains the mod and its managed dependencies. Your sign-in, token, transcripts, generated artwork, saves, and speech model are stored separately.
 
 Friends only extract that archive into the game's mod directory. They need no repository checkout, terminal commands, Bun, Codex, Nix, separate .NET installation, speech model, or AI account. The game loads the included DLLs. The host installer creates the local companion launcher; that launcher is excluded from the player archive.
 

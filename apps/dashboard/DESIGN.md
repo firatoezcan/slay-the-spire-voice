@@ -299,6 +299,8 @@ Artwork is runtime card content served by the API. The inspector normally crops 
 
 Connection text distinguishes game availability from companion failure. Pending work appears as a status message; errors use an alert with recovery wording. Color reinforces these messages.
 
+Speech setup replaces the model folder input with a plain readiness label. During download, a full-width native progress bar uses the primary accent and a text amount below it. Checking and local copying use an indeterminate bar with an explanation. Failure shows an alert and an outlined Retry speech setup button. Settings remains editable while health updates arrive; Voice also shows setup status while preparation is incomplete. Attribution links sit beneath the status in the existing help-text style.
+
 ## Do's and Don'ts
 
 ### Do:

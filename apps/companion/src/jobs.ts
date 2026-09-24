@@ -1,6 +1,6 @@
 import { Effect, Fiber } from "effect";
 import Ajv from "ajv-draft-04";
-import { dataDir, modelDir } from "./config";
+import { dataDir } from "./config";
 import { store } from "./store";
 import { promptInstructions } from "./prompts";
 import {
@@ -30,15 +30,13 @@ const validateDefinition = new Ajv({
   formats: { int32: true, double: true },
 }).compile(schema);
 const validateReview = new Ajv({ strict: false }).compile(CardReview);
-export const providers = (): ProviderConfig => ({
-    id: "provider" as const,
-    modelDir,
-    autoPrepare: true,
-    cardTimeoutMs: 120000,
-    artTimeoutMs: 300000,
-    ...store.get<ProviderConfig>("settings", "provider"),
-    model: generationModel,
-  });
+export const providers = (): ProviderConfig => {
+  const saved = store.get<ProviderConfig>("settings", "provider");
+  return { id: "provider", model: generationModel,
+    autoPrepare: saved?.autoPrepare ?? true,
+    cardTimeoutMs: saved?.cardTimeoutMs ?? 120000,
+    artTimeoutMs: saved?.artTimeoutMs ?? 300000 };
+};
 let snapshot: GameState | undefined;
 let connectionError: string | null = "Waiting for Slay the Spire 2.";
 const active = new Map<string, Fiber.RuntimeFiber<void, never>>();

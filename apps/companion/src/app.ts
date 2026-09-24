@@ -16,6 +16,7 @@ import {
 } from "./jobs";
 import { gameRequest, type GameState } from "./game";
 import { speechStatus, transcribe } from "./providers/speech";
+import { startSpeechSetup } from "./providers/speech-model";
 import {
   Inspiration,
   Generate,
@@ -24,6 +25,7 @@ import {
   AmbientDecision,
   ProviderSettings,
   Health,
+  SpeechStatus,
   type JobRecord,
 } from "./schema";
 import gameSpec from "../../../packages/contracts/schema/game.openapi.json";
@@ -170,7 +172,7 @@ export const app = new Elysia({
       id: "health" as const,
       game: currentState().error === null,
       error: currentState().error,
-      speech: await speechStatus(providers().modelDir),
+      speech: speechStatus(),
     }),
     { response: Health, detail: { operationId: "getHealth", tags: ["Connection"] } },
   )
@@ -230,7 +232,6 @@ export const app = new Elysia({
     async ({ body }) => {
       const text = await transcribe(
         new Float32Array(body.samples),
-        providers().modelDir,
       );
       return text.trim() ? inspiration({ text, source: "microphone" }) : null;
     },
@@ -257,6 +258,10 @@ export const app = new Elysia({
       t.Unsafe(runtimeSchema(gameSpec.components.schemas.CardDefinition)),
     ),
     detail: { operationId: "listDefinitions", tags: ["Cards"] },
+  })
+  .post("/api/speech/setup", () => { startSpeechSetup(); return speechStatus(); }, {
+    response: SpeechStatus,
+    detail: { operationId: "prepareSpeechModel", tags: ["Settings"] },
   })
   .get("/api/prompts", listPrompts, {
     response: t.Array(PromptRecord),

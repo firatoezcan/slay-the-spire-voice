@@ -26,12 +26,18 @@ export const AmbientDecision = t.Object({
 });
 export type AmbientDecisionRecord = Static<typeof AmbientDecision>;
 export const ProviderSettings = t.Object({
-  id: t.Literal("provider"), model: t.Literal(generationModel), modelDir: t.String(), autoPrepare: t.Boolean(),
+  id: t.Literal("provider"), model: t.Literal(generationModel), autoPrepare: t.Boolean(),
   cardTimeoutMs: t.Integer({ minimum: 10000, maximum: 600000 }), artTimeoutMs: t.Integer({ minimum: 10000, maximum: 900000 }),
 });
 export type ProviderConfig = Static<typeof ProviderSettings>;
+export const SpeechStatus = t.Object({
+  model: t.String(), modelDir: t.String(), ready: t.Boolean(), busy: t.Boolean(),
+  phase: t.Union([t.Literal("checking"), t.Literal("copying"), t.Literal("downloading"), t.Literal("ready"), t.Literal("error")]),
+  completedBytes: t.Integer({ minimum: 0 }), totalBytes: t.Integer({ minimum: 1 }),
+  file: t.Nullable(t.String()), error: t.Nullable(t.String()),
+});
 export const Health = t.Object({
   id: t.Literal("health"), game: t.Boolean(), error: t.Nullable(t.String()),
-  speech: t.Object({ model: t.String(), modelDir: t.String(), ready: t.Boolean(), busy: t.Boolean(), missing: t.Array(t.String()) }),
+  speech: SpeechStatus,
 });
 export type HealthState = Static<typeof Health>;

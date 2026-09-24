@@ -20,7 +20,7 @@ Turn speech and external chat context into useful, surprising cards when an elig
 
 ## Operating Context
 
-The app runs locally on the same computer as the game. It reuses the Parakeet model installed with Oh My Pi. The current implementation targets one player on macOS.
+The host runs the app locally beside the game. Voice Director downloads and manages Parakeet automatically, reusing a verified local copy when available. Friends install the mod files and receive generated cards through the game connection. The current host installer targets macOS.
 
 ## Capabilities and Constraints
 

@@ -1,6 +1,6 @@
 # Join a Voice Director game
 
-Download [VoiceDirector-0.5.0.zip](https://github.com/firatoezcan/slay-the-spire-voice/releases/download/v0.5.0/VoiceDirector-0.5.0.zip), or use the same archive from your host. Use the same Slay the Spire 2 version as the host; this build targets v0.107.1.
+Download [VoiceDirector-0.5.1.zip](https://github.com/firatoezcan/slay-the-spire-voice/releases/download/v0.5.1/VoiceDirector-0.5.1.zip), or use the same archive from your host. Use the same Slay the Spire 2 version as the host; this build targets v0.107.1.
 
 You only install the mod files. Everything needed by the mod is either in the ZIP or already supplied by the game. Bun, Codex, Nix, a separate .NET installation, model downloads, and AI accounts are host concerns.
 
